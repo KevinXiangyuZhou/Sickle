@@ -5,21 +5,25 @@ import json
 '''
 a table is represented by set of cells
 '''
-class Annotated_table:
+class AnnotatedTable:
 
     # construct the table with the given dataset.
     def __init__(self, cells):
         self.df = cells  # a set of cells
         #self.load_and_clean_dataframe(dataset)
 
+    def to_dataframe(self):
+        """ convert annotated table to a dataframe
+        """
+        pass
 
-'''
-check if the set of values stored in target table is a subset of the set
-of values stored in this table, if the argument contained in the trace of
-tuple stored in target table is a subset of argument in the corresponding trace,
-and check if operators match.
-'''
+
 def check_function(actual, target):
+    """ check if the set of values stored in target table is a subset of the set
+    of values stored in this table, if the argument contained in the trace of
+    tuple stored in target table is a subset of argument in the corresponding trace,
+    and check if operators match.
+    """
     for target_cell in target.df:
         exist = False
         for this_cell in actual.df:
@@ -38,11 +42,10 @@ def load_and_clean_dataframe(df):
 def get_df(self):
     pass
 
-'''
-this class represents a cell stored in the data frame with its trace
-'''
-class Table_cell:
-
+class TableCell:
+    """
+    this class represents a cell stored in the data frame with its trace
+    """
     def __init__(self, value, argument, operator):
         self.value = value
         self.argument = argument
