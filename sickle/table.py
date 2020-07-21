@@ -1,6 +1,7 @@
 #2020/7/16
 
 import json
+import pandas as pd
 
 '''
 a table is represented by set of cells
@@ -13,7 +14,8 @@ class AnnotatedTable:
         #self.load_and_clean_dataframe(dataset)
 
     def extract_values(self):
-        """ convert annotated table to a dataframe
+        """ convert annotated table to a dataframe 
+            (drop trace information and keep only values and store it as a dataframe)
         """
         pass
 
@@ -23,7 +25,6 @@ class AnnotatedTable:
         [{"a": {"value": 3, "trace": {"operator": "sum", "argument": [1, 2]}} ,"b": 4,"c": 5},
          {"a": {"value": 6, "trace": {"operator": "sum", "argument": [4, 2]}} ,"b": 3,"c": 7}]
         """
-
         pass
 
     def from_dict(self):
