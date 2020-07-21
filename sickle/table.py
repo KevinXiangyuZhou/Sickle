@@ -12,9 +12,22 @@ class AnnotatedTable:
         self.df = cells  # a set of cells
         #self.load_and_clean_dataframe(dataset)
 
-    def to_dataframe(self):
+    def extract_values(self):
         """ convert annotated table to a dataframe
         """
+        pass
+
+    def to_dict(self):
+        """convert to a dictionary for easy import export
+        something like this:
+        [{"a": {"value": 3, "trace": {"operator": "sum", "argument": [1, 2]}} ,"b": 4,"c": 5},
+         {"a": {"value": 6, "trace": {"operator": "sum", "argument": [4, 2]}} ,"b": 3,"c": 7}]
+        """
+
+        pass
+
+    def from_dict(self):
+        """load from a dictionary represented annotated table"""
         pass
 
 
@@ -35,12 +48,6 @@ def check_function(actual, target):
             return False
     return True
 
-
-def load_and_clean_dataframe(df):
-    pass
-
-def get_df(self):
-    pass
 
 class TableCell:
     """
