@@ -3,12 +3,14 @@
 import json
 import pandas as pd
 
-'''
+"""
 a table is represented by set of cells
-'''
+"""
 class AnnotatedTable:
 
-    # construct the table with the given dataset.
+    """
+    construct the table with the given dataset.
+    """
     def __init__(self, cells):
         self.df = cells  # a set of cells
         #self.load_and_clean_dataframe(dataset)
