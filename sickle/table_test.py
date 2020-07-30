@@ -2,17 +2,18 @@ from table import *
 import unittest
 
 
-a = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg'},
-     {'value': 5, 'argument': [[5, 0, 1]], 'operator': 'sum'},
-     {'value': 6, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum'}])
 
-b = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg'}])
-c = AnnotatedTable([{'value': 3, 'argument': [[5, 0, 1]], 'operator': 'avg'}])
-d = AnnotatedTable([{'value': 6, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum'}])
-e = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum'}])
-f = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': None},
-                   {'value': 6, 'argument': None, 'operator': 'sum'}])
-g = AnnotatedTable([{'value': None, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg'}])
+a = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg', 'attribute': None},
+     {'value': 5, 'argument': [[5, 0, 1]], 'operator': 'sum', 'attribute': None},
+     {'value': 6, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum', 'attribute': None}])
+
+b = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg', 'attribute': None}])
+c = AnnotatedTable([{'value': 3, 'argument': [[5, 0, 1]], 'operator': 'avg', 'attribute': None}])
+d = AnnotatedTable([{'value': 6, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum', 'attribute': None}])
+e = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'sum', 'attribute': None}])
+f = AnnotatedTable([{'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': None, 'attribute': None},
+                   {'value': 6, 'argument': None, 'operator': 'sum', 'attribute': None}])
+g = AnnotatedTable([{'value': None, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg', 'attribute': None}])
 
 class TableTest(unittest.TestCase):
 
@@ -36,6 +37,8 @@ class TableTest(unittest.TestCase):
         self.assertTrue(check_function(a,f))
         self.assertFalse(check_function(a,g))
 
+    def testExtractValue(self):
+        pass
 
 if __name__ == '__main__':
     unittest.main()

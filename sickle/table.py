@@ -1,7 +1,7 @@
 #2020/7/16
 
 import json
-#import pandas as pd
+import pandas as pd
 
 """
 a table is represented by set of cells
@@ -15,17 +15,18 @@ class AnnotatedTable:
         """load from a dictionary represented annotated table"""
         self.df = []
         for cell in source:
-            self.df.append(TableCell(cell['value'], cell['argument'], cell['operator']))
+            self.df.append(TableCell(cell['value'], cell['argument'], cell['operator'], cell['attribute']))
 
     def extract_values(self):
         """ convert annotated table to a dataframe 
             (drop trace information and keep only values and store it as a dataframe)
         """
-        # stored as a list
-        dataframe = []
+        data = []
         for cell in self.df:
-            dataframe.append(cell.value)
-        return dataframe
+            dict = cell.to_dict()
+            attribute = cell.get_attribute()
+            data.append({attribute: dict[attribute]['value']})
+        return pd.DataFrame(data)
 
     def to_dict(self):
         """convert to a dictionary for easy import export
@@ -65,10 +66,11 @@ class TableCell:
     """
     this class represents a cell stored in the data frame with its trace
     """
-    def __init__(self, value, argument, operator):
+    def __init__(self, value, argument, operator, attribute):
         self.value = value
         self.argument = argument  # a list of [value, coordinate_x, coordinate_y]
         self.operator = operator
+        self.attribute = attribute
 
     def get_value(self):
         return self.value
@@ -90,6 +92,14 @@ class TableCell:
         return ls1 == ls2
 
     def to_dict(self):
-        return {'value': self.value,
-                'argument': self.argument.copy(),
-                'operator': self.operator}
+        return {self.attribute:
+                    {'value': self.value,
+                     'trace': {
+                         'operator': self.operator,
+                         'argument': self.argument.copy()
+                        }
+                     }
+                }
+
+    def get_attribute(self):
+        return self.attribute

@@ -68,8 +68,25 @@ class Select(Node):
 		self.cols = cols
 
 	def eval(self, inputs):
-		df = self.q.eval(inputs)
-		return df[[df.columns[i] for i in self.cols]]
+		df = self.q.eval(inputs)  # of pandas dataframe
+		cellList = []
+		# for each column each cell in the selected column list
+		# make it a dictionary of the cell looks like
+		# {'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg', 'attribute': None}
+		cid = 0
+		for colName, colData in df.iteritems():
+			if colName not in self.cols:
+				cid += 1
+				continue
+			rid = 0
+			for data in colData:
+				cellList.append({'value': data,
+								'argument': [[data, cid, rid]],
+								'operator': 'select',
+								'attribute': colName})
+				rid += 1
+		# return an annotated table
+		return AnnotatedTable(cellList)
 
 	def to_dict(self):
 		return {
