@@ -3,6 +3,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 import copy
 import itertools
+from table import *
 
 
 class Node(ABC):
@@ -69,10 +70,10 @@ class Select(Node):
 
 	def eval(self, inputs):
 		df = self.q.eval(inputs)  # of pandas dataframe
-		cellList = []
+		cell_list = []
 		# for each column each cell in the selected column list
 		# make it a dictionary of the cell looks like
-		# {'value': 3, 'argument': [[1, 0, 0], [5, 0, 1]], 'operator': 'avg', 'attribute': None}
+		# {"value": 3, "argument": [(1, 0, 0), (5, 0, 1)], "operator": "avg", "attribute": None}
 		cid = 0
 		for colName, colData in df.iteritems():
 			if colName not in self.cols:
@@ -80,13 +81,13 @@ class Select(Node):
 				continue
 			rid = 0
 			for data in colData:
-				cellList.append({'value': data,
-								'argument': [[data, cid, rid]],
-								'operator': 'select',
-								'attribute': colName})
+				cell_list.append({"value": data,
+								"argument": [(data, cid, rid)],
+								"operator": "select",
+								"attribute": colName})
 				rid += 1
 		# return an annotated table
-		return AnnotatedTable(cellList)
+		return AnnotatedTable(cell_list)
 
 	def to_dict(self):
 		return {
@@ -105,13 +106,16 @@ class Unite(Node):
 		self.sep = sep
 
 	def eval(self, inputs):
+		# unite target columns to form a new df
 		df = self.q.eval(inputs)
 		ret = df.copy()
 		new_col = get_fresh_col(list(ret.columns))[0]
 		c1, c2 = ret.columns[self.col1], ret.columns[self.col2]
 		ret[new_col] = ret[c1] + self.sep + ret[c2]
 		ret = ret.drop(columns=[c1, c2])
-		return ret
+		# transform new df into annotated table
+		rlt = df_to_annotated_table(ret, "unite")
+		return rlt
 
 	def to_dict(self):
 		return {
@@ -134,11 +138,12 @@ class Filter(Node):
 		df = self.q.eval(inputs)
 		col = df.columns[self.col_index]
 		if self.op == "==":
-			return df[df[col] == self.const].reset_index()
+			ret = df[df[col] == self.const]
 		elif self.op == "!=":
-			return df[df[col] != self.const].reset_index()
+			ret = df[df[col] != self.const].reset_index()
 		else:
 			sys.exit(-1)
+		return df_to_annotated_table(ret, "filter")
 
 	def to_dict(self):
 		return {
@@ -165,8 +170,8 @@ class GroupSummary(Node):
 		res = df.groupby(group_keys).agg({target: self.aggr_func})
 		if self.aggr_func == "mean":
 			res[target] = res[target].round(2)
-		res = res.rename(columns={target: f'{self.aggr_func}_{target}'}).reset_index()
-		return res
+		res = res.rename(columns={target: f"{self.aggr_func}_{target}"}).reset_index()
+		return df_to_annotated_table(res, "group")
 
 	def to_dict(self):
 		return {
@@ -189,7 +194,7 @@ class CumSum(Node):
 		ret = df.copy()
 		#new_col = get_fresh_col(list(ret.columns))[0]
 		ret["cumsum"] = ret[ret.columns[self.target]].cumsum()
-		return ret
+		return df_to_annotated_table(ret, "cumsum")
 
 	def to_dict(self):
 		return {
@@ -239,3 +244,20 @@ def extract_table_schema(df):
 
 	schema = [dtype_mapping(s) for s in df.infer_objects().dtypes]
 	return schema
+
+
+""" return an annotated table for dataframe df with the given operator op"""
+def df_to_annotated_table(df, op):
+	cell_list = []
+	cid = 0
+	for colName in df.columns:
+		rid = 0
+		colData = df[colName]
+		for data in colData:
+			cell_list.append({"value": data,
+							  "argument": [(data, cid, rid)],
+							  "operator": op,
+							  "attribute": colName})
+			cid += 1
+		rid += 1
+	return AnnotatedTable(cell_list)

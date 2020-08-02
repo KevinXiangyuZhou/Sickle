@@ -15,7 +15,7 @@ class AnnotatedTable:
         """load from a dictionary represented annotated table"""
         self.df = []
         for cell in source:
-            self.df.append(TableCell(cell['value'], cell['argument'], cell['operator'], cell['attribute']))
+            self.df.append(TableCell(cell["value"], cell["argument"], cell["operator"], cell["attribute"]))
 
     def extract_values(self):
         """ convert annotated table to a dataframe 
@@ -23,9 +23,8 @@ class AnnotatedTable:
         """
         data = []
         for cell in self.df:
-            dict = cell.to_dict()
             attribute = cell.get_attribute()
-            data.append({attribute: dict[attribute]['value']})
+            data.append({attribute: cell.get_value()})
         return pd.DataFrame(data)
 
     def to_dict(self):
@@ -68,7 +67,7 @@ class TableCell:
     """
     def __init__(self, value, argument, operator, attribute):
         self.value = value
-        self.argument = argument  # a list of [value, coordinate_x, coordinate_y]
+        self.argument = argument  # a tuple of (value, coordinate_x, coordinate_y)
         self.operator = operator
         self.attribute = attribute
 
@@ -93,10 +92,10 @@ class TableCell:
 
     def to_dict(self):
         return {self.attribute:
-                    {'value': self.value,
-                     'trace': {
-                         'operator': self.operator,
-                         'argument': self.argument.copy()
+                    {"value": self.value,
+                     "trace": {
+                         "operator": self.operator,
+                         "argument": self.argument.copy()
                         }
                      }
                 }
