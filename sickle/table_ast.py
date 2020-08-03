@@ -86,6 +86,7 @@ class Select(Node):
 								"operator": "select",
 								"attribute": colName})
 				rid += 1
+			cid += 1
 		# return an annotated table
 		return AnnotatedTable(cell_list)
 
@@ -111,7 +112,7 @@ class Unite(Node):
 		ret = df.copy()
 		new_col = get_fresh_col(list(ret.columns))[0]
 		c1, c2 = ret.columns[self.col1], ret.columns[self.col2]
-		ret[new_col] = ret[c1] + self.sep + ret[c2]
+		ret[new_col] = ret[c1] + ret[c2]
 		ret = ret.drop(columns=[c1, c2])
 		# transform new df into annotated table
 		rlt = df_to_annotated_table(ret, "unite")
@@ -258,6 +259,6 @@ def df_to_annotated_table(df, op):
 							  "argument": [(data, cid, rid)],
 							  "operator": op,
 							  "attribute": colName})
-			cid += 1
-		rid += 1
+			rid += 1
+		cid += 1
 	return AnnotatedTable(cell_list)
