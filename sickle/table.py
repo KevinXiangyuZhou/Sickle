@@ -38,6 +38,8 @@ class AnnotatedTable:
             dicts.append(cell.to_dict())
         return dicts
 
+    def cells(self):
+        return self.df.copy()
 
     def from_dict(self, source):
         pass

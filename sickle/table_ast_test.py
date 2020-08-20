@@ -18,44 +18,53 @@ test_data_0 = [{"Totals":7,"Value":"A","variable":"alpha","value":2,"cumsum":2},
              {"Totals":9,"Value":"C","variable":"gamma","value":3,"cumsum":9},
              {"Totals":9,"Value":"D","variable":"gamma","value":2,"cumsum":9},
              {"Totals":9,"Value":"E","variable":"gamma","value":2,"cumsum":9}]
+
 test_data_1 = [{"a": 3, "b": 4},
                {"a": 5},
                {"a": 6, "b": 7, "c": 8}]
+
+test_dest_2 = [{"a": 3, "b": 4},
+               {"a": 3, "b": 5},
+               {"a": 6, "b": 7, "c": 8}]
 inputs = {0: pd.DataFrame.from_dict(test_data_0),
-          1: pd.DataFrame.from_dict(test_data_1)}
+          1: pd.DataFrame.from_dict(test_data_1),
+          2: pd.DataFrame.from_dict(test_dest_2)}
 
 class AstTest(unittest.TestCase):
 
-    def testSelect(self):
+    def test_select(self):
         q = Table(data_id=1)
         # print(q.eval(inputs).to_dict())
         q = Select(q, ["a"])
         rlt = q.eval(inputs)
+        """
         annotated = [{"a" : {"value": 3, "trace": {"operator": "select", "argument": [(3, 0, 0)]}}},
              {"a" : {"value": 5, "trace": {"operator": "select", "argument": [(5, 0, 1)]}}},
              {"a" : {"value": 6, "trace": {"operator": "select", "argument": [(6, 0, 2)]}}}]
+        """
         print("---Select---")
         print(rlt.to_dict())
         print()
         # self.assertEqual(rlt.to_dict(), annotated)
 
-    def testFilter(self):
+    def test_filter(self):
         q = Table(data_id=1)
-        q = Filter(q, 0, "==", 3)
+        q = Filter(q, 0, "==", 5)
         rlt = q.eval(inputs)
 
         # currently casted to float
+        """
         annotated = [{"a": {"value": 3, "trace": {"operator": "filter", "argument": [(3, 0, 0)]}}},
                      {"b": {"value": 4.0, "trace": {"operator": "filter", "argument": [(4.0, 1, 0)]}}},
                      {"c": {"value": float('nan'),
                             "trace": {"operator": "filter", "argument": [(float('nan'), 2, 0)]}}}]
-
+        """
         print("---Filter---")
         print(rlt.to_dict())
         print()
         # self.assertEqual(rlt.to_dict(), annotated)
 
-    def testUnite(self):
+    def test_unite(self):
         t = Table(data_id=1)
         q = Unite(t, 0, 1)
         rlt = q.eval(inputs)
@@ -63,12 +72,37 @@ class AstTest(unittest.TestCase):
         print(rlt.to_dict())
         print()
 
-    def testCumSum(self):
+    def test_cumsum(self):
         q = Table(data_id=1)
         q = CumSum(q, 0)
         rlt = q.eval(inputs)
-        print("---CunSum---")
+        print("---CumSum---")
         print(rlt.to_dict())
+        print()
+
+    def test_groupsummary(self):
+        q = Table(data_id=2)
+        q = GroupSummary(q, [0], 1, "sum")
+        rlt = q.eval(inputs)
+        print("---GroupSummary---")
+        print(rlt.to_dict())
+        print()
+
+    def test_groupmutate(self):
+        q = Table(data_id=2)
+        q = GroupMutate(q, [0], 1, "sum", ["b"], asc=False)
+        rlt = q.eval(inputs)
+        print("---GroupMutate---")
+        print(rlt.to_dict())
+        print()
+
+    def test_mutate(self):
+        q = Table(data_id=2)
+        q = Mutate(q, 0, "*2")
+        rlt = q.eval(inputs)
+        print("---Mutate---")
+        print(rlt.to_dict())
+        print()
 
 
 if __name__ == '__main__':
