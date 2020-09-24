@@ -19,16 +19,81 @@ test_data_0 = [{"Totals":7,"Value":"A","variable":"alpha","value":2,"cumsum":2},
              {"Totals":9,"Value":"D","variable":"gamma","value":2,"cumsum":9},
              {"Totals":9,"Value":"E","variable":"gamma","value":2,"cumsum":9}]
 
+test_data_biketrip = [{"date": "2015-09-24"},
+                  {"date": "2015-09-24"},
+                  {"date": "2015-09-24"},
+                  {"date": "2015-09-24"},
+                  {"date": "2015-09-30"},
+                  {"date": "2015-09-30"},
+                  {"date": "2015-09-30"},
+                  {"date": "2015-11-16"}]
+intermediate_test_data_biketrip = [{"date": "2015-09-24", "count_date": 4},
+                              {"date": "2015-09-30", "count_date": 3},
+                              {"date": "2015-11-16", "count_date": 1}]
+
+test_data_salepercentage = [{"id": 1, "total": 24.78},
+                            {"id": 2, "total": 28.54},
+                            {"id": 3, "total": 48.69},
+                            {"id": 4, "total": -16.39},
+                            {"id": 5, "total": 29.92},
+                            {"id": 6, "total": 12.5},
+                            {"id": 7, "total": 10.2},
+                            {"id": 8, "total": 5.22}]
+
+test_data_int_salepercent = [{"id": 1, "total": 24.78, "total.sum()": 143.46},
+                            {"id": 2, "total": 28.54, "total.sum()": 143.46},
+                            {"id": 3, "total": 48.69, "total.sum()": 143.46},
+                            {"id": 4, "total": -16.39, "total.sum()": 143.46},
+                            {"id": 5, "total": 29.92, "total.sum()": 143.46},
+                            {"id": 6, "total": 12.5, "total.sum()": 143.46},
+                            {"id": 7, "total": 10.2, "total.sum()": 143.46},
+                            {"id": 8, "total": 5.22, "total.sum()": 143.46}]
+
+test_data_emp = [{"empno": 7369, "depno": 20, "sal": 800},
+                 {"empno": 7499, "depno": 30, "sal": 1600},
+                 {"empno": 7521, "depno": 30, "sal": 1250},
+                 {"empno": 7566, "depno": 20, "sal": 2975},
+                 {"empno": 7654, "depno": 30, "sal": 1250},
+                 {"empno": 7698, "depno": 30, "sal": 2850},
+                 {"empno": 7782, "depno": 10, "sal": 2450},
+                 {"empno": 7788, "depno": 20, "sal": 3000},
+                 {"empno": 7839, "depno": 10, "sal": 5000},
+                 {"empno": 7844, "depno": 30, "sal": 1500},
+                 {"empno": 7876, "depno": 20, "sal": 1100},
+                 {"empno": 7900, "depno": 30, "sal": 950},
+                 {"empno": 7902, "depno": 20, "sal": 3000},
+                 {"empno": 7934, "depno": 10, "sal": 1300}]
+
+
 test_data_1 = [{"a": 3, "b": 4},
                {"a": 5},
                {"a": 6, "b": 7, "c": 8}]
 
-test_dest_2 = [{"a": 3, "b": 4},
-               {"a": 3, "b": 5},
+test_data_2 = [{"a": 3, "b": 4, "c": 3},
+               {"a": 3, "b": 5, "c": 6},
                {"a": 6, "b": 7, "c": 8}]
+
 inputs = {0: pd.DataFrame.from_dict(test_data_0),
           1: pd.DataFrame.from_dict(test_data_1),
-          2: pd.DataFrame.from_dict(test_dest_2)}
+          2: pd.DataFrame.from_dict(test_data_2),
+          3: pd.DataFrame.from_dict(test_data_biketrip),
+          4: pd.DataFrame.from_dict(intermediate_test_data_biketrip),
+          5: pd.DataFrame.from_dict(test_data_salepercentage),
+          6: pd.DataFrame.from_dict(test_data_int_salepercent),
+          7: pd.DataFrame.from_dict(test_data_emp)}
+
+a = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0)], "operator": "select", "attribute": "a"},
+                    {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"}])
+
+b = AnnotatedTable([{"value": 5, "argument": [(5, 1, 1)], "operator": "select", "attribute": "b"},
+                    {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"},
+                    {"value": 6, "argument": [(6, 2, 1)], "operator": "select", "attribute": "c"},
+                    {"value": 8, "argument": [(8, 2, 2)], "operator": "select", "attribute": "c"}])
+
+c = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0)], "operator": "select", "attribute": "a"},
+                    {"value": 3, "argument": [(3, 2, 0)], "operator": "select", "attribute": "c"},
+                    {"value": 6, "argument": [(6, 0, 2)], "operator": "select", "attribute": "a"},
+                    {"value": 8, "argument": [(8, 2, 2)], "operator": "select", "attribute": "c"}])
 
 class AstTest(unittest.TestCase):
 
@@ -37,11 +102,6 @@ class AstTest(unittest.TestCase):
         # print(q.eval(inputs).to_dict())
         q = Select(q, ["a"])
         rlt = q.eval(inputs)
-        """
-        annotated = [{"a" : {"value": 3, "trace": {"operator": "select", "argument": [(3, 0, 0)]}}},
-             {"a" : {"value": 5, "trace": {"operator": "select", "argument": [(5, 0, 1)]}}},
-             {"a" : {"value": 6, "trace": {"operator": "select", "argument": [(6, 0, 2)]}}}]
-        """
         print("---Select---")
         print(rlt.to_dict())
         print()
@@ -51,14 +111,6 @@ class AstTest(unittest.TestCase):
         q = Table(data_id=1)
         q = Filter(q, 0, "==", 5)
         rlt = q.eval(inputs)
-
-        # currently casted to float
-        """
-        annotated = [{"a": {"value": 3, "trace": {"operator": "filter", "argument": [(3, 0, 0)]}}},
-                     {"b": {"value": 4.0, "trace": {"operator": "filter", "argument": [(4.0, 1, 0)]}}},
-                     {"c": {"value": float('nan'),
-                            "trace": {"operator": "filter", "argument": [(float('nan'), 2, 0)]}}}]
-        """
         print("---Filter---")
         print(rlt.to_dict())
         print()
@@ -90,7 +142,7 @@ class AstTest(unittest.TestCase):
 
     def test_groupmutate(self):
         q = Table(data_id=2)
-        q = GroupMutate(q, [0], 1, "sum", ["b"], asc=False)
+        q = GroupMutate(q, [0], 2, "sum", ["b"], asc=False)
         rlt = q.eval(inputs)
         print("---GroupMutate---")
         print(rlt.to_dict())
@@ -98,11 +150,92 @@ class AstTest(unittest.TestCase):
 
     def test_mutate(self):
         q = Table(data_id=2)
-        q = Mutate(q, 0, "*2")
+        q = Mutate(q, 0, "*2", False)
         rlt = q.eval(inputs)
         print("---Mutate---")
         print(rlt.to_dict())
         print()
+
+    def test_checker_function1(self):
+        """
+        q = Table(data_id=2)
+        # print(q.eval(inputs).to_dict())
+        q = Select(q, ["a", "b", "c"])
+        rlt = q.eval(inputs)
+        """
+        rlt = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select", "attribute": "a"},
+                              {"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select",
+                               "attribute": "a"},
+                              {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"},
+                              {"value": 5, "argument": [(5, 1, 1)], "operator": "select", "attribute": "b"},
+                              {"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select",
+                               "attribute": "c"},
+                              {"value": 6, "argument": [(6, 2, 1)], "operator": "select", "attribute": "c"}])
+        print("---CheckerFunction1---")
+        print(checker_function(rlt, a))
+        print()
+
+    def test_checker_function2(self):
+        q = Table(data_id=2)
+        # print(q.eval(inputs).to_dict())
+        q = Select(q, ["a", "b", "c"])
+        rlt = q.eval(inputs)
+        print("---CheckerFunction2---")
+        print(checker_function(rlt, b))
+        print()
+
+    def test_checker_function3(self):
+        q = Table(data_id=2)
+        # print(q.eval(inputs).to_dict())
+        q = Select(q, ["a", "b", "c"])
+        rlt = q.eval(inputs)
+        print("---CheckerFunction3---")
+        print(checker_function(rlt, c))
+        x = a.get_cell(0,0)
+        y = a.get_cell(1,0)
+        print()
+
+    def test_zbike_trips(self):
+        q = Table(data_id=3)
+        q = GroupSummary(q, [0], 0, "count")
+        rlt = q.eval(inputs)
+        print("---BikeTrip---")
+        print(rlt.to_dict())
+        print()
+        q = Table(data_id=4)
+        q = CumSum(q, 1)
+        rlt = q.eval(inputs)
+        print(rlt.to_dict())
+
+    def test_zsale_percentage(self):
+        q = Table(data_id=5)
+        q = Mutate(q, 1, ".sum()", True)
+        rlt = q.eval(inputs)
+        print("---SalePercent---")
+        print(rlt.to_dict())
+        print()
+        q = Table(data_id=6)
+        q = Mutate(q, 1, "/ x[\'total.sum()\']", False)  # mutate function is currently limited
+        rlt = q.eval(inputs)
+        print(rlt.to_dict())
+        print()
+
+    def test_zempsal1(self):
+        q = Table(data_id=7)
+        q = GroupSummary(q, [1], 2, "mean")
+        rlt = q.eval(inputs)
+        print("---EmpSal1---")
+        print(rlt.to_dict())
+        print()
+
+    def test_zempsal2(self):
+        q = Table(data_id=7)
+        q = GroupMutate(q, [1], 2, "mean")
+        rlt = q.eval(inputs)
+        print("---EmpSal2---")
+        print(rlt.to_dict())
+        print()
+
 
 
 if __name__ == '__main__':

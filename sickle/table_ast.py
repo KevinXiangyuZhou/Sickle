@@ -6,6 +6,10 @@ import itertools
 from table import *
 
 
+# two special symbols used in the language
+HOLE = "_?_"
+UNKNOWN = "_UNK_"
+
 class Node(ABC):
 	def __init__(self):
 		super(AbstractExpression, self).__init__()
@@ -24,12 +28,13 @@ class Node(ABC):
 	def load_from_dict(ast):
 		"""given a dictionary represented AST, load it in to a program form"""
 		constructors = {
-			"select": Select, "unite": Unite,
-			"filter": Filter, "separate": Separate,
-			"spread": Spread, "gather": Gather,
+			"select": Select,
+			"unite": Unite,
+			"filter": Filter,
 			"group_sum": GroupSummary,
-			"cumsum": CumSum, "mutate": Mutate,
-			"mutate_custom": MutateCustom,
+			"group_mutate": GroupMutate,
+			"cumsum": CumSum,
+			"mutate": Mutate,
 		}
 		if ast["op"] == "table_ref":
 			return Table(ast["children"][0]["value"])
@@ -39,11 +44,92 @@ class Node(ABC):
 						*[arg["value"] for arg in ast["children"][1:]])
 			return node
 
+	def to_stmt_dict(self):
+		"""translate the expression into a  """
+		def _recursive_translate(ast, used_vars):
+			if ast["op"] == "table_ref":
+				# create a variable to capture the return variable
+				stmt_dict = copy.copy(ast)
+				var = get_temp_var(used_vars)
+				stmt_dict["return_as"] = var
+				return [stmt_dict], used_vars + [var]
+			else:
+				stmt_dict = copy.copy(ast)
+				# iterate over all possible subtrees
+				sub_tree_stmts = []
+				for i, arg in enumerate(ast["children"]):
+					# check if the argument is an ast
+					if isinstance(arg, (dict,)) and arg["type"] == "node":
+						stmts, used_vars = _recursive_translate(ast["children"][0], used_vars)
+						sub_tree_stmts += stmts
+						# the subtree is replaced by a reference to the variable
+						retvar = stmts[-1]["return_as"]
+						stmt_dict["children"][i] = {"value": retvar, "type": "variable"}
+				# use a temp variable to wrap the current statement, and add it to the coolection
+				var = get_temp_var(used_vars)
+				stmt_dict["return_as"] = var
+				return sub_tree_stmts + [stmt_dict], used_vars + [var]
+		stmts, _ = _recursive_translate(self.to_dict(), [])
+		return stmts
+
+	def is_abstract(self):
+
+		"""Check if the subtree is abstract (contains any holes)"""
+
+		def contains_hole(node):
+
+			for i, arg in enumerate(node["children"]):
+
+				if arg["type"] == "node":
+
+					if contains_hole(arg):
+						return True
+
+				elif arg["value"] == HOLE:
+
+					# we find a variable to infer
+
+					return True
+
+			return False
+
+		return contains_hole(self.to_dict())
+
+	def stmt_string(self):
+
+		"""generate a string from stmts, for the purpose of pretty printing"""
+
+		stmts = self.to_stmt_dict()
+
+		result = []
+
+		for s in stmts:
+			lhs = s['return_as']
+
+			f = s['op']
+
+			arg_str = ', '.join([str(x['value']) for x in s["children"]])
+
+			result.append(f"{lhs} <- {f}({arg_str})")
+
+		return "; ".join(result)
 
 class Table(Node):
 	def __init__(self, data_id):
 		self.data_id = data_id
 
+	def infer_domain(self, arg_id, inputs, config):
+		assert False, "Table has no args to infer domain."
+
+	def infer_output_info(self, inputs):
+		"""infer output schema """
+		inp = inputs[self.data_id]
+		if isinstance(inp, (list,)):
+			df = pd.DataFrame.from_dict(inp)
+		else:
+			df = inp
+		schema = extract_table_schema(df)
+		return schema
 
 	def eval(self, inputs):
 		inp = inputs[self.data_id]
@@ -68,8 +154,24 @@ class Select(Node):
 		self.q = q
 		self.cols = cols
 
+	def infer_domain(self, arg_id, inputs, config):
+		if arg_id == 1:
+			input_schema = self.q.infer_output_info(inputs)
+			col_num = len(input_schema)
+			col_list_candidates = []
+			for size in range(1, col_num + 1):
+				col_list_candidates += list(itertools.combinations(list(range(col_num)), size))
+			return col_list_candidates
+		else:
+			assert False, "[Select] No args to infer domain for id > 1."
+
+	def infer_output_info(self, inputs):
+		schema = self.q.infer_output_info(inputs)
+		return [s for i, s in enumerate(schema) if i in self.cols]
+
 	def eval(self, inputs):
 		df = self.q.eval(inputs)  # of pandas dataframe
+		print(df)
 		cell_list = []
 		# for each column each cell in the selected column list
 		# make it a dictionary of the cell looks like
@@ -88,6 +190,7 @@ class Select(Node):
 				rid += 1
 			cid += 1
 		# return an annotated table
+		print(df)
 		return AnnotatedTable(cell_list)
 
 	def to_dict(self):
@@ -104,6 +207,21 @@ class Unite(Node):
 		self.q = q
 		self.col1 = col1
 		self.col2 = col2
+
+	def infer_domain(self, arg_id, inputs, config):
+		input_schema = self.q.infer_output_info(inputs)
+		str_cols = [i for i, s in enumerate(input_schema) if s == "string"]
+		if arg_id == 1:
+			return str_cols
+		if arg_id == 2:
+			# refine the domain according to the first argumnet
+			return str_cols if self.col1 == HOLE else [i for i in str_cols if i > self.col1]
+		else:
+			assert False, "[Unite] No args to infer domain for id > 2."
+
+	def infer_output_info(self, inputs):
+		input_schema = self.q.infer_output_info(inputs)
+		return [s for i, s in enumerate(input_schema) if i not in [self.col1, self.col2]] + ["string"]
 
 	def eval(self, inputs):
 		# unite target columns to form a new df
@@ -141,6 +259,19 @@ class Filter(Node):
 		self.op = op
 		self.const = const
 
+	def infer_domain(self, arg_id, inputs, config):
+		if arg_id == 1:
+			col_num = len(self.q.infer_output_info(inputs))
+			return list(range(col_num))
+		elif arg_id == 2:
+			return config["filer_op"]
+		elif arg_id == 3:
+			return config["constants"]
+		else:
+			assert False, "[Filter] No args to infer domain for id > 3."
+
+	def infer_output_info(self, inputs):
+		return self.q.infer_output_info(inputs)
 
 	def eval(self, inputs):
 		df = self.q.eval(inputs)
@@ -149,9 +280,15 @@ class Filter(Node):
 			ret = df[df[col] == self.const]
 		elif self.op == "!=":
 			ret = df[df[col] != self.const]
+		elif self.op == ">":
+			ret = df[df[col] > self.const]
+		elif self.op == "<":
+			ret = df[df[col] < self.const]
 		else:
 			sys.exit(-1)
 		arguments = generate_direct_arguments(df)
+		print(df)
+		print(ret)
 		return df_to_annotated_table_index_colname(ret, "filter", arguments)
 
 	def to_dict(self):
@@ -171,6 +308,60 @@ class GroupSummary(Node):
 		self.group_cols = group_cols
 		self.aggr_col = aggr_col
 		self.aggr_func = aggr_func
+
+	def infer_domain(self, arg_id, inputs, config):
+		schema = self.q.infer_output_info(inputs)
+		if arg_id == 1:
+			# approximation: only get fields with more than one values
+			# for the purpose of avoiding empty fields
+			try:
+				df = self.q.eval(inputs)
+			except Exception as e:
+				print(f"[eval error in infer_domain] {e}")
+				return []
+			# use this list to store primitive table keys,
+			# use them to elimiate column combinations that contain no duplicates
+			table_keys = []
+			col_num = len(schema)
+			col_list_candidates = []
+			for size in range(1, col_num + 1 - 1):
+				for gb_keys in itertools.combinations(list(range(col_num)), size):
+					if any([set(banned).issubset(set(gb_keys)) for banned in table_keys]):
+						# current key group is subsumbed by a table key, so all fields will be distinct
+						continue
+					gb_cols = df[[df.columns[k] for k in gb_keys]]
+					if not gb_cols.duplicated().any():
+						# a key group is valid for aggregation
+						#   if there exists at least a key appear more than once
+						table_keys.append(gb_keys)
+						continue
+					col_list_candidates += [gb_keys]
+			return col_list_candidates
+		elif arg_id == 2:
+			number_fields = [i for i, s in enumerate(schema) if s == "number"]
+			if self.group_cols != HOLE:
+				cols = [i for i in number_fields if i not in self.group_cols]
+			else:
+				cols = number_fields
+			# the special column -1 is used for the purpose of "count", no other real intent
+			cols += [-1]
+			return cols
+		elif arg_id == 3:
+			if self.aggr_col != HOLE:
+				if self.aggr_col == -1:
+					return ["count"] if "count" in config["aggr_func"] else []
+				else:
+					return [f for f in config["aggr_func"] if f != "count"]
+			else:
+				return config["aggr_func"]
+		else:
+			assert False, "[Gather] No args to infer domain for id > 1."
+
+	def infer_output_info(self, inputs):
+		input_schema = self.q.infer_output_info(inputs)
+		aggr_type = input_schema[self.aggr_col] if self.aggr_func != "count" else "number"
+		return [s for i, s in enumerate(input_schema) if i in self.group_cols] + [aggr_type]
+
 
 	def eval(self, inputs):
 		df = self.q.eval(inputs)
@@ -192,14 +383,6 @@ class GroupSummary(Node):
 					arguments[gid][col_name].append((group.to_dict()[col_name][row_index],
 													 get_col_index_by_name(group, col_name),
 													 row_index))
-				"""
-				if col in self.group_cols: # add the arguments for group_cols
-					for rid in group.to_dict()[col]:  # {0: 3, 1: 3}
-						key_arguments.append((group.to_dict()[col][rid], get_col_index_by_name(res, col), rid))
-				else: # add arguments for other cols
-					for rid in group.to_dict()[col]:  # {0: 4, 1: 5}
-						group_arguments.append((group.to_dict()[col][rid], get_col_index_by_name(res, col), rid))
-				"""
 			gid += 1
 		res = res.agg({target: self.aggr_func})
 		#print(res.to_dict())
@@ -228,7 +411,7 @@ class GroupSummary(Node):
 			]}
 
 class GroupMutate(Node):
-	def __init__(self, q, group_cols, target_col, aggr_func, sort_by, asc):
+	def __init__(self, q, group_cols, target_col, aggr_func, sort_by=None, asc=True):
 		self.q = q
 		self.group_cols = group_cols
 		self.target_col = target_col
@@ -236,9 +419,61 @@ class GroupMutate(Node):
 		self.sort_by = sort_by
 		self.asc = asc
 
+	def infer_domain(self, arg_id, inputs, config):
+		schema = self.q.infer_output_info(inputs)
+		if arg_id == 1:
+			# approximation: only get fields with more than one values
+			# for the purpose of avoiding empty fields
+			try:
+				df = self.q.eval(inputs)
+			except Exception as e:
+				print(f"[eval error in infer_domain] {e}")
+				return []
+			# use this list to store primitive table keys,
+			# use them to elimiate column combinations that contain no duplicates
+			table_keys = []
+			col_num = len(schema)
+			col_list_candidates = []
+			for size in range(1, col_num + 1 - 1):
+				for gb_keys in itertools.combinations(list(range(col_num)), size):
+					if any([set(banned).issubset(set(gb_keys)) for banned in table_keys]):
+						# current key group is subsumbed by a table key, so all fields will be distinct
+						continue
+					gb_cols = df[[df.columns[k] for k in gb_keys]]
+					if not gb_cols.duplicated().any():
+						# a key group is valid for aggregation
+						#   if there exists at least a key appear more than once
+						table_keys.append(gb_keys)
+						continue
+					col_list_candidates += [gb_keys]
+			return col_list_candidates
+		elif arg_id == 2:
+			number_fields = [i for i, s in enumerate(schema) if s == "number"]
+			if self.group_cols != HOLE:
+				cols = [i for i in number_fields if i not in self.group_cols]
+			else:
+				cols = number_fields
+			# the special column -1 is used for the purpose of "count", no other real intent
+			cols += [-1]
+			return cols
+		elif arg_id == 3:
+			if self.target_col != HOLE:
+				if self.target_col == -1:
+					return ["count"] if "count" in config["aggr_func"] else []
+				else:
+					return [f for f in config["aggr_func"] if f != "count"]
+			else:
+				return config["aggr_func"]
+		else:
+			assert False, "[Gather] No args to infer domain for id > 1."
+
+	def infer_output_info(self, inputs):
+		input_schema = self.q.infer_output_info(inputs)
+		aggr_type = input_schema[self.target_col] if self.aggr_func != "count" else "number"
+		return [s for i, s in enumerate(input_schema) if i in self.group_cols] + [aggr_type]
+
 	def eval(self, inputs):
 		df = self.q.eval(inputs)
-		print(df)
 		res = df.copy()
 		target = df.columns[self.target_col]
 		if self.sort_by is not None:
@@ -264,14 +499,14 @@ class GroupMutate(Node):
 				if row_index not in arguments:
 					arguments[row_index] = {}
 				arguments[row_index][target] = temp_arg
-
-		res[target] = temp.transform(self.aggr_func)
+		res[target] = temp.transform(self.aggr_func)[target]
 		res = res.rename(columns={target: f"{self.aggr_func}_{target}"})
 
-		# change name of the target col name in arguments
+		# change the target col name in arguments
 		for i in arguments:
 			arguments[i][self.aggr_func + "_" + target] = arguments[i][target]
 
+		print(df)
 		print(res)
 		return df_to_annotated_table_index_colname(res, "group + " + self.aggr_func, arguments)
 
@@ -283,28 +518,37 @@ class GroupMutate(Node):
 				self.q.to_dict(),
 				value_to_dict(self.group_cols, "col_index_list"),
 				value_to_dict(self.target_col, "col_index"),
-				value_to_dict(self.func, "func")
+				value_to_dict(self.aggr_func, "func")
 			]}
 
 class Mutate(Node):
-	def __init__(self, q, target_col, func):
+	def __init__(self, q, target_col, func, agg):
 		self.q = q
 		self.target_col = target_col
 		self.func = func
+		self.agg = agg
 
 	def eval(self, inputs):
 		df = self.q.eval(inputs)
 		target = df.columns[self.target_col]
-		expression = eval("lambda x: x[\'" + target + "\']" + self.func)
-		function = {target: expression}
 		res = df.copy()
+		new_col = get_fresh_col(list(res.columns))[0]
+		expression = eval("lambda x: x[\'" + target + "\']" + self.func)
+		function = {new_col: expression}
 		arguments = generate_direct_arguments(res)
 		res = res.assign(**function)
-		res = res.rename(columns={target: f"{target}{self.func}"})
-		print(res)
-
+		res = res.rename(columns={new_col: f"{target}{self.func}"})
+		# change the target col name in arguments
 		for index in arguments:
 			arguments[index][target + self.func] = arguments[index][target]
+		if self.agg:
+			# trace for the generated new column should be a list of cells in target column
+			target_col = []
+			for i in arguments:
+				target_col.append(arguments[i][target + self.func])
+			for index in arguments:
+				arguments[index][target + self.func] = target_col.copy()
+		print(res)
 		return df_to_annotated_table_index_colname(res, "Mutate", arguments)
 
 	def to_dict(self):
@@ -314,12 +558,24 @@ class Mutate(Node):
 			"children": [
 				self.q.to_dict(),
 				value_to_dict(self.target_col, "target_col"),
-				value_to_dict(self.func, "func")]}
+				value_to_dict(self.func, "func"),
+				value_to_dict(self.agg, "bool")]}
 
 class CumSum(Node):
 	def __init__(self, q, target):
 		self.q = q
 		self.target = target
+
+	def infer_domain(self, arg_id, inputs, config):
+		if arg_id == 1:
+			input_schema = self.q.infer_output_info(inputs)
+			return [i for i, s in enumerate(input_schema) if s == "number"]
+		else:
+			assert False, "[CumSum] No args to infer domain for id > 1."
+
+	def infer_output_info(self, inputs):
+		input_schema = self.q.infer_output_info(inputs)
+		return input_schema + ["number"]
 
 	def eval(self, inputs):
 		df = self.q.eval(inputs)
@@ -337,10 +593,7 @@ class CumSum(Node):
 							 get_col_index_by_name(df, target),
 							 index))
 
-			if index not in arguments:
-				arguments[index] = {}
-			arguments[index]["cumsum"] = temp_arg
-		#print(arguments)
+			arguments[index]["cumsum"] = temp_arg.copy()
 		return df_to_annotated_table_index_colname(ret, "cumsum", arguments)
 
 	def to_dict(self):
@@ -389,6 +642,7 @@ def extract_table_schema(df):
 			print(f"[unknown type] {dtype}")
 			sys.exit(-1)
 
+	# returns a list
 	schema = [dtype_mapping(s) for s in df.infer_objects().dtypes]
 	return schema
 
