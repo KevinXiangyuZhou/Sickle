@@ -19,14 +19,16 @@ test_data_0 = [{"Totals":7,"Value":"A","variable":"alpha","value":2,"cumsum":2},
              {"Totals":9,"Value":"D","variable":"gamma","value":2,"cumsum":9},
              {"Totals":9,"Value":"E","variable":"gamma","value":2,"cumsum":9}]
 
-test_data_biketrip = [{"date": "2015-09-24"},
-                  {"date": "2015-09-24"},
-                  {"date": "2015-09-24"},
-                  {"date": "2015-09-24"},
-                  {"date": "2015-09-30"},
-                  {"date": "2015-09-30"},
-                  {"date": "2015-09-30"},
-                  {"date": "2015-11-16"}]
+test_data_biketrip = [
+                        {"trip_id": 944732, "date": "2015-09-24"},
+                        {"trip_id": 984595, "date": "2015-09-24"},
+                        {"trip_id": 984596, "date": "2015-09-24"},
+                        {"trip_id": 1129385, "date": "2015-09-24"},
+                        {"trip_id": 1030383, "date": "2015-09-30"},
+                        {"trip_id": 969490, "date": "2015-09-30"},
+                        {"trip_id": 947105, "date": "2015-09-30"},
+                        {"trip_id": 1011650, "date": "2015-11-16"}
+                    ]
 intermediate_test_data_biketrip = [{"date": "2015-09-24", "count_date": 4},
                               {"date": "2015-09-30", "count_date": 3},
                               {"date": "2015-11-16", "count_date": 1}]
@@ -82,28 +84,46 @@ inputs = {0: pd.DataFrame.from_dict(test_data_0),
           6: pd.DataFrame.from_dict(test_data_int_salepercent),
           7: pd.DataFrame.from_dict(test_data_emp)}
 
-a = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0)], "operator": "select", "attribute": "a"},
-                    {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"}])
+a = AnnotatedTable([{"value": 3, "argument": [(0, 0, 0)], "operator": [], "attribute": "a"},
+                    {"value": 4, "argument": [(0, 1, 0)], "operator": [], "attribute": "b"}])
 
-b = AnnotatedTable([{"value": 5, "argument": [(5, 1, 1)], "operator": "select", "attribute": "b"},
-                    {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"},
-                    {"value": 6, "argument": [(6, 2, 1)], "operator": "select", "attribute": "c"},
-                    {"value": 8, "argument": [(8, 2, 2)], "operator": "select", "attribute": "c"}])
+b = AnnotatedTable([{"value": 5, "argument": [(2, 1, 1)], "operator": [], "attribute": "b"},
+                    {"value": 4, "argument": [(2, 1, 0)], "operator": [], "attribute": "b"},
+                    {"value": 6, "argument": [(2, 2, 1)], "operator": [], "attribute": "c"},
+                    {"value": 8, "argument": [(2, 2, 2)], "operator": [], "attribute": "c"}])
 
-c = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0)], "operator": "select", "attribute": "a"},
-                    {"value": 3, "argument": [(3, 2, 0)], "operator": "select", "attribute": "c"},
-                    {"value": 6, "argument": [(6, 0, 2)], "operator": "select", "attribute": "a"},
-                    {"value": 8, "argument": [(8, 2, 2)], "operator": "select", "attribute": "c"}])
+c = AnnotatedTable([{"value": 3, "argument": [(2, 0, 0)], "operator": [], "attribute": "a"},
+                    {"value": 3, "argument": [(2, 2, 0)], "operator": [], "attribute": "c"},
+                    {"value": 6, "argument": [(2, 0, 2)], "operator": [], "attribute": "a"},
+                    {"value": 8, "argument": [(2, 2, 2)], "operator": [], "attribute": "c"}])
+
 
 class AstTest(unittest.TestCase):
+    def test_join(self):
+        q = Table(data_id=2)
+        q = Join(q, q)
+        rlt = q.eval(inputs)
+        print("---Join---")
+        print(rlt.extract_values())
+        print(rlt.to_dataframe().to_csv())
+        print()
+
+    def test_join_by(self):
+        q = Table(data_id=2)
+        q = JoinBy(q, q, 1, 1)
+        rlt = q.eval(inputs)
+        print("---JoinBy---")
+        print(rlt.extract_values())
+        print(rlt.to_dataframe().to_csv())
+        print()
 
     def test_select(self):
         q = Table(data_id=1)
         # print(q.eval(inputs).to_dict())
-        q = Select(q, ["a"])
+        q = Select(q, [0])
         rlt = q.eval(inputs)
         print("---Select---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
         # self.assertEqual(rlt.to_dict(), annotated)
 
@@ -112,7 +132,7 @@ class AstTest(unittest.TestCase):
         q = Filter(q, 0, "==", 5)
         rlt = q.eval(inputs)
         print("---Filter---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
         # self.assertEqual(rlt.to_dict(), annotated)
 
@@ -121,7 +141,7 @@ class AstTest(unittest.TestCase):
         q = Unite(t, 0, 1)
         rlt = q.eval(inputs)
         print("---Unite---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
     def test_cumsum(self):
@@ -129,33 +149,58 @@ class AstTest(unittest.TestCase):
         q = CumSum(q, 0)
         rlt = q.eval(inputs)
         print("---CumSum---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
-    def test_groupsummary(self):
+    def test_zgroupsummary(self):
         q = Table(data_id=2)
         q = GroupSummary(q, [0], 1, "sum")
         rlt = q.eval(inputs)
         print("---GroupSummary---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
     def test_groupmutate(self):
         q = Table(data_id=2)
-        q = GroupMutate(q, [0], 2, "sum", ["b"], asc=False)
+        q = GroupMutate(q, [0], "cumsum", 2)
         rlt = q.eval(inputs)
         print("---GroupMutate---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
+    @unittest.skip
     def test_mutate(self):
         q = Table(data_id=2)
-        q = Mutate(q, 0, "*2", False)
+        q = Mutate(q, 1, "sum")
         rlt = q.eval(inputs)
         print("---Mutate---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
+        print(rlt.extract_values())
         print()
 
+    @unittest.skip
+    def test_mutate_arith(self):
+        q = Table(data_id=2)
+        q = MutateArithmetic(q, 0, "*", 1)
+        rlt = q.eval(inputs)
+        print("---Mutate_Arithmetic---")
+        print(rlt.to_dataframe().to_csv())
+        print(rlt.to_plain_dict())
+        print(rlt.extract_values())
+        print()
+
+    #@unittest.skip
+    def test_mutate_arith2(self):
+        q = Table(data_id=2)
+        q = Mutate_2(q, "lambda x, y: x * y - 0.2 * x", (1, 2))
+        rlt = q.eval(inputs)
+        print("---Mutate_Arithmetic---")
+        print(rlt.to_dataframe().to_csv())
+        print(rlt.to_plain_dict())
+        print(rlt.extract_values())
+        print()
+
+    #@unittest.skip
     def test_checker_function1(self):
         """
         q = Table(data_id=2)
@@ -163,31 +208,31 @@ class AstTest(unittest.TestCase):
         q = Select(q, ["a", "b", "c"])
         rlt = q.eval(inputs)
         """
-        rlt = AnnotatedTable([{"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select", "attribute": "a"},
-                              {"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select",
-                               "attribute": "a"},
-                              {"value": 4, "argument": [(4, 1, 0)], "operator": "select", "attribute": "b"},
-                              {"value": 5, "argument": [(5, 1, 1)], "operator": "select", "attribute": "b"},
-                              {"value": 3, "argument": [(3, 0, 0), (3, 0, 1), (3, 2, 0)], "operator": "select",
-                               "attribute": "c"},
-                              {"value": 6, "argument": [(6, 2, 1)], "operator": "select", "attribute": "c"}])
+        rlt = AnnotatedTable([{"value": 3, "argument": [(0, 0), (0, 1), (2, 0)], "operator": [], "attribute": "a"},
+                              {"value": 3, "argument": [(0, 0), (0, 1), (2, 0)], "operator": [], "attribute": "a"},
+                              {"value": 4, "argument": [(1, 0)], "operator": [], "attribute": "b"},
+                              {"value": 5, "argument": [(1, 1)], "operator": [], "attribute": "b"},
+                              {"value": 3, "argument": [(0, 0), (0, 1), (2, 0)], "operator": [], "attribute": "c"},
+                              {"value": 6, "argument": [(2, 1)], "operator": [], "attribute": "c"}])
         print("---CheckerFunction1---")
         print(checker_function(rlt, a))
         print()
 
+    #@unittest.skip
     def test_checker_function2(self):
         q = Table(data_id=2)
         # print(q.eval(inputs).to_dict())
-        q = Select(q, ["a", "b", "c"])
+        q = Select(q, [0, 1, 2])
         rlt = q.eval(inputs)
         print("---CheckerFunction2---")
         print(checker_function(rlt, b))
         print()
 
+    #@unittest.skip
     def test_checker_function3(self):
         q = Table(data_id=2)
         # print(q.eval(inputs).to_dict())
-        q = Select(q, ["a", "b", "c"])
+        q = Select(q, [0, 1, 2])
         rlt = q.eval(inputs)
         print("---CheckerFunction3---")
         print(checker_function(rlt, c))
@@ -195,45 +240,64 @@ class AstTest(unittest.TestCase):
         y = a.get_cell(1,0)
         print()
 
+    #@unittest.skip
+    def test_checker_function4(self):
+        q = Table(data_id=2)
+        # print(q.eval(inputs).to_dict())
+        q = Select(q, [0, 1, 2])
+        rlt = q.eval(inputs)
+        print(rlt.to_dataframe().to_csv())
+        print()
+        print(load_from_dict(test_data_2).to_dict())
+        print("---CheckerFunction4---")
+        print(checker_function(rlt, load_from_dict(test_data_2)))
+        x = a.get_cell(0, 0)
+        y = a.get_cell(1, 0)
+        print()
+
+    @unittest.skip
     def test_zbike_trips(self):
         q = Table(data_id=3)
-        q = GroupSummary(q, [0], 0, "count")
+        q = GroupSummary(q, [1], 0, "count")
         rlt = q.eval(inputs)
         print("---BikeTrip---")
-        print(rlt.to_dict())
+        print(rlt.extract_values())
         print()
-        q = Table(data_id=4)
+        #q = Table(data_id=4)
         q = CumSum(q, 1)
         rlt = q.eval(inputs)
-        print(rlt.to_dict())
+        print(rlt.extract_values())
 
+    @unittest.skip
     def test_zsale_percentage(self):
         q = Table(data_id=5)
         q = Mutate(q, 1, ".sum()", True)
         rlt = q.eval(inputs)
         print("---SalePercent---")
-        print(rlt.to_dict())
+        print(rlt.extract_values())
         print()
         q = Table(data_id=6)
         q = Mutate(q, 1, "/ x[\'total.sum()\']", False)  # mutate function is currently limited
         rlt = q.eval(inputs)
-        print(rlt.to_dict())
+        print(rlt.extract_values())
         print()
 
+    @unittest.skip
     def test_zempsal1(self):
         q = Table(data_id=7)
         q = GroupSummary(q, [1], 2, "mean")
         rlt = q.eval(inputs)
         print("---EmpSal1---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
+    @unittest.skip
     def test_zempsal2(self):
         q = Table(data_id=7)
         q = GroupMutate(q, [1], 2, "mean")
         rlt = q.eval(inputs)
         print("---EmpSal2---")
-        print(rlt.to_dict())
+        print(rlt.to_dataframe().to_csv())
         print()
 
 

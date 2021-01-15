@@ -1,0 +1,29 @@
+{
+  "input_data":
+  [
+    {"amount": 1000, "circle_id": 1},
+    {"amount": 3000, "circle_id": 2},
+    {"amount": 2000, "circle_id": 3},
+    {"amount": 3000, "circle_id": 1},
+    {"amount": 2500, "circle_id": 2},
+    {"amount": 3750, "circle_id": 3},
+    {"amount": 2000, "circle_id": 1},
+    {"amount": 2500, "circle_id": 2},
+    {"amount": 1450, "circle_id": 3}
+  ],
+  "output_data":
+  [
+    {"amount": 1000, "circle_id": 1, "cumsum_amount": 1000},
+    {"amount": 3000, "circle_id": 1, "cumsum_amount": 4000},
+    {"amount": 2000, "circle_id": 1, "cumsum_amount": 6000},
+    {"amount": 3000, "circle_id": 2, "cumsum_amount": 3000},
+    {"amount": 2500, "circle_id": 2, "cumsum_amount": 5500},
+    {"amount": 3750, "circle_id": 2, "cumsum_amount": 9250},
+    {"amount": 2000, "circle_id": 3, "cumsum_amount": 2000},
+    {"amount": 2500, "circle_id": 3, "cumsum_amount": 4500},
+    {"amount": 1450, "circle_id": 3, "cumsum_amount": 5950},
+  ],
+  "url":""
+
+
+}

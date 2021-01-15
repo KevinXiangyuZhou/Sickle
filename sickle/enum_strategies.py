@@ -91,8 +91,8 @@ def disable_sketch_limited(p):
     ast = p.to_dict()
     op_list = get_op_list(ast)
     # group_sum and mutate_custom can only be used in the last operator
-    if "group_sum" in op_list[1:] or "mutate_custom" in op_list[1:]:  # or "cumsum" in op_list[1:]:
-        return True
+    # if "group_sum" in op_list[1:] or "group_mutate" in op_list[1:] or "cumsum" in op_list[1:]:  # or "cumsum" in op_list[1:]:
+    #    return True
     def contains_repetition(_ast, except_list):
         """check if there is a sketch that contains repetitive components """
         for child in _ast["children"]:

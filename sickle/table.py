@@ -1,19 +1,28 @@
-#2020/7/16
+# 2020/7/16
 
 import json
 import pandas as pd
 
+# two special symbols used in the language
+HOLE = "_?_"
+UNKNOWN = "_UNK_"
+
 """
 a table is represented by set of cells
 """
-class AnnotatedTable:
 
+
+class AnnotatedTable:
     """
     construct the table with the given dataset.
     """
+
     def __init__(self, source):
         """load from a dictionary represented annotated table"""
         self.df = []  # stored as a two-level array with columns to be the inner level
+        self.load_from_dict(source)
+
+    def load_from_dict(self, source):
         col_cells = {}
         for cell in source:
             if cell["attribute"] not in col_cells.keys():
@@ -24,6 +33,9 @@ class AnnotatedTable:
                                                           cell["attribute"]))
         for key in col_cells:
             self.df.append(col_cells[key])
+
+    def add_column(self, new_column):
+        self.df.append(new_column.copy())
 
     def get_cell(self, x, y):
         return self.df[x][y]
@@ -42,12 +54,33 @@ class AnnotatedTable:
                 data[attribute].append(cell.get_value())
         return pd.DataFrame.from_dict(data)
 
-    def to_dict(self):
-        """convert to a dictionary for easy import export
-        something like this:
-        [{"a": {"value": 3, "trace": {"operator": "sum", "argument": [1, 2]}} ,"b": 4,"c": 5},
-         {"a": {"value": 6, "trace": {"operator": "sum", "argument": [4, 2]}} ,"b": 3,"c": 7}]
+    def extract_traces(self):
+        data = {}
+        for i in range(len(self.df)):
+            for j in range(len(self.df[i])):
+                cell = self.df[i][j]
+                attribute = cell.get_attribute()
+                if attribute not in data.keys():
+                    data[attribute] = []
+                data[attribute].append((cell.get_argument(), cell.get_operator()))
+        return pd.DataFrame.from_dict(data)
+
+    def to_dataframe(self):
+        """ convert annotated table to a dataframe
+            cells in the dataframe are represented as <{self.value}, {self.operator}, {self.argument}>
         """
+        data = {}
+        for i in range(len(self.df)):
+            for j in range(len(self.df[i])):
+                cell = self.df[i][j]
+                attribute = cell.get_attribute()
+                if attribute not in data.keys():
+                    data[attribute] = []
+                data[attribute].append(cell.to_stmt())
+        return pd.DataFrame.from_dict(data)
+
+    def to_dict(self):
+        """convert to a dictionary for easy import export"""
         dicts = []
         for i in range(len(self.df)):
             for j in range(len(self.df[i])):
@@ -55,11 +88,20 @@ class AnnotatedTable:
                 dicts.append(cell.to_dict())
         return dicts
 
+    def to_plain_dict(self):
+        dicts = []
+        for j in range(len(self.df[0])):
+            d = {}
+            for i in range(len(self.df)):
+                cell = self.df[i][j]
+                temp = cell.to_dict()
+                for k in temp:
+                    d[k] = temp[k]["value"]
+            dicts.append(d)
+        return dicts
+
     def cells(self):
         return self.df.copy()
-
-    def from_dict(self, source):
-        pass
 
     def get_col_num(self):
         return len(self.df)
@@ -70,67 +112,45 @@ class AnnotatedTable:
         return len(self.df[0])
 
 
-def check_function(actual, target):
-    """ check if the set of values stored in target table is a subset of the set
-    of values stored in this table, if the argument is contained by the trace of
-    tuple stored in target table is a subset of argument in the corresponding trace,
-    and check if operators match.
-    """
-    for target_cell in target.df:
-        exist = False
-        for actual_cell in actual.df:
-            # check if there is at least one cell in actual table
-            # that is a parent of the target tuple
-            if target_cell.contained_by(actual_cell):
-                exist = True
-        if not exist:
-            return False
-    return True
+"""
+from format of eg.
+[{"cust_country": "UK", "grade": 2, "outstanding_amt": 3600},
+{"cust_country": "USA", "grade": 2, "outstanding_amt": 5400}]
+"""
+def load_from_dict(source):
+    r = []
+    for t in source:
+        for attribute in t:
+            r.append({"value": t[attribute], "argument": None, "operator": None, "attribute": attribute})
+    return AnnotatedTable(r)
 
 
-def checker_function(actual, target):
-    # if not check_function(actual, target):
-    #   return False
-    #     # map each cell with its coordinate in the table
-    # actual_df = actual.extract_values()
+def select_columns(att, cols):
+    cell_list = []
+    for col in cols:
+        for i in range(att.get_row_num()):
+            cell_list.append(att.get_cell(col, i).to_dict())
+    return AnnotatedTable(cell_list)
+
+
+"""checker function for pruning annotated outputs
+actual: the table generated by synthesizer
+target: the annotated table generated based on user inputs
+"""
+def checker_function(actual, target, print_result=False):
+    if actual is None or target is None:
+        return None
 
     # find mappings from cells in target to actual for each cell
     # store for each cell with format: {(x, y): [(0,0), (1,2)]}
     # TODO: reduce time complexity
-    mapping = {}
-    for cid in range(target.get_col_num()):
-        for rid in range(target.get_row_num()):
-            #print(str(cid) + ", " + str(rid))
-            mapping[(cid, rid)] = search_values(actual, target.get_cell(cid, rid))
-            # let it fail here
-            if not check_mappings(mapping):
-                return None
+    mapping = find_mapping(target, actual)
+    if mapping is None:
+        return None
 
     # use column and row to remove infeasible mappings
     target_df = target.extract_values()
-    print("step1 mapping")
-    print(mapping)
-    # pruning each column
-    x = 0
-    for col in target_df.to_dict():
-        list = [mapping[(x,y)] for y in target_df.to_dict()[col]]
-        smallest = find_smallest_array(list)
-        x_list = [a for (a, b) in smallest]
-        # y_list = [b for (a, b) in smallest]
-        for y in target_df.to_dict()[col]:
-            mapping[(x,y)] = [t for t in mapping[(x,y)] if t[0] in x_list]
-        x += 1
-    print("prune by col")
-    print(mapping)
-    # pruning each row
-    for y in target_df.index.tolist():
-        list = [mapping[(x, y)] for x in range(len(target_df.columns))]
-        smallest = find_smallest_array(list)
-        y_list = [b for (a, b) in smallest]
-        for x in range(len(target_df.columns)):
-            mapping[(x, y)] = [t for t in mapping[(x, y)] if t[1] in y_list]
-    print("prune by row")
-    print(mapping)
+    prune_by_row_column(mapping, target_df, print_result)
 
     # search for possible mappings
     # stop whenever we find on feasible mapping, and return the mapping
@@ -139,55 +159,122 @@ def checker_function(actual, target):
 
     # extract mappings
     # use dfs to search for the valid mapping
+    # print(mapping)
     keys = [*mapping.keys()]
-    open = [(keys[0], coord) for coord in mapping[keys[0]]]
-    closed = []
+    return extract_mappings(mapping, keys)
+
+
+"""search for valid mapping for each cell in target table"""
+def find_mapping(target, actual):
+    mapping = {}
+    for cid in range(target.get_col_num()):
+        for rid in range(target.get_row_num()):
+            # print(str(cid) + ", " + str(rid))
+            mapping[(cid, rid)] = search_values(actual, target.get_cell(cid, rid))
+            # let it fail here
+            if not check_mappings(mapping):
+                return None
+    return mapping
+
+
+"""prune mapping by relative column and row positions"""
+def prune_by_row_column(mapping, target_df, print_result=False):
+    if print_result:
+        print(target_df)
+        print("step1 mapping")
+        print(mapping)
+    # pruning each column
+    # if two cells are in the same row in the output,
+    # then their source must be in the same row in actual
+    x = 0
+    for col in target_df.columns:
+        l = [mapping[(x, y)] for y in range(len(target_df))]
+        smallest = find_smallest_array(l)
+        # get list of x value in the smallest mapping
+        x_list = [a for (a, b) in smallest]
+        # y_list = [b for (a, b) in smallest]
+        for y in range(len(target_df)):
+            mapping[(x, y)] = [t for t in mapping[(x, y)] if t[0] in x_list]
+        x += 1
+    if print_result:
+        print("prune by col")
+        print(mapping)
+    # pruning each row
+    # same pruning law as column
+    for y in target_df.index.tolist():
+        l = [mapping[(x, y)] for x in range(len(target_df.columns))]
+        smallest = find_smallest_array(l)
+        y_list = [b for (a, b) in smallest]
+        for x in range(len(target_df.columns)):
+            mapping[(x, y)] = [t for t in mapping[(x, y)] if t[1] in y_list]
+    if print_result:
+        print("prune by row")
+        print(mapping)
+
+
+"""use dfs to search for the valid mapping"""
+def extract_mappings(mappings, keys):
     rlt = {}
-    while open:
-        curr = open.pop()
-        rlt[curr[0]] = curr[1]
-        #print(rlt)
-        if check_valid_mapping(rlt, keys):
-            print("result mappings:")
-            return rlt
-        # explore the state if have not
-        if curr[1] not in closed:
-            successor = get_successor(mapping, curr[0], keys)
-            open += successor
-            closed.append(curr[1])
-        else:
-            closed.remove(curr[1])
-    return None
+    closed = []
+    search_mappings(rlt, 0, mappings, keys, closed)
+    # print(mappings)
+    if check_valid_mapping(rlt, keys):
+        return rlt
+    else:
+        return None
 
-
-def get_successor(mapping, key, keys):
-    index = keys.index(key)
-    if index + 1 == len(keys):
-        return []
-    return [(keys[index + 1], coord) for coord in mapping[keys[index + 1]]]
+# helper function for search mappings
+def search_mappings(rlt, index, mappings, keys, closed):
+    if index == len(keys):
+        # we are done searching for mappings
+        # print(rlt)
+        return False
+    else:
+        # iterate over maps
+        coord = keys[index]
+        # fail if there is no choice for current key
+        # print([m for m in mappings[coord] if m not in closed])
+        if not [m for m in mappings[coord] if m not in closed]:
+            return True
+        # iterate over mappings[coord]
+        for i in range(len(mappings[coord])):
+            if coord not in rlt:
+                rlt[coord] = []
+            if mappings[coord][i] not in closed:
+                closed.append(mappings[coord][i])
+                rlt[coord].append(mappings[coord][i])
+                # print(rlt)
+                found = search_mappings(rlt, index + 1, mappings, keys, closed)
+                if found:
+                    return True
+                if check_mappings(rlt):
+                    # if we found a valid mapping
+                    return True
+                rlt[coord].pop()
+                closed.pop()
 
 
 def check_valid_mapping(mapping, keys):
     if [*mapping.keys()] != keys:
         return False
-    found = []
-    for key in mapping.keys():
-        if mapping[key] in found:
-            return False
-        found.append(mapping[key])
-    return True
+    return check_mappings(mapping)
 
 
 # check if there is no empty list in mappings
 def check_mappings(mapping):
-    return all([len(mapping[k]) > 0 for k in mapping.keys()])
+    if len(mapping) == 0:
+        return False
+    for k in mapping:
+        if len(mapping[k]) == 0:
+            return False
+    return True
 
 
 def search_values(table, cell):
     rlt = []
     for cid in range(table.get_col_num()):
         for rid in range(table.get_row_num()):
-            if cell.contained_by(table.get_cell(cid, rid)):
+            if cell.matches(table.get_cell(cid, rid)):
                 rlt.append((cid, rid))
     return rlt
 
@@ -195,7 +282,7 @@ def search_values(table, cell):
 def find_smallest_array(list):
     # choose the firstly found array if tie
     if len(list) == 0:
-        return None
+        return []
     rlt = list[0]
     for array in list:
         if len(array) < len(rlt):
@@ -203,44 +290,100 @@ def find_smallest_array(list):
     return rlt
 
 
+"""
+this class represents a cell stored in the data frame with its trace
+"""
 class TableCell:
-    """
-    this class represents a cell stored in the data frame with its trace
-    """
     def __init__(self, value, argument, operator, attribute):
         self.value = value
-        self.argument = argument  # a tuple of (value, coordinate_x, coordinate_y)
+        self.argument = argument  # a list of (note, coordinate_x, coordinate_y)
         self.operator = operator
         self.attribute = attribute
 
     def get_value(self):
         return self.value
 
-    def contained_by(self, other):
-        # check this argument is a subset of target argument
-        if self.argument is not None and \
-                not self.is_sublist(self.argument, other.argument):
-            return False
-        if self.operator is not None and self.operator != other.operator:
-            return False
-        if self.value is None or self.value != other.value:
-            return False
+    def matches(self, other):
+        # looser check if the target cell contain some uninstantiated parts
+        if other.operator == HOLE and other.argument == HOLE:
+            return True
+        elif other.operator == HOLE:
+            return self.is_sublist(self.argument, other.argument)
+        elif other.argument == HOLE:
+            return self.is_sublist(self.operator, other.operator)
+        # firstly, check this argument is a subset of other's argument
+        # we assume that if argument is not None then operator should not be None
+        if self.argument is not None and self.operator is not None:
+            if self.is_sublist(self.argument, other.argument) \
+                    and self.is_sublist(self.operator, other.operator):
+                return True
+        # if self.operator is not None and self.operator != other.operator:
+        #    return False
+        # next, if we do not have trace to do comparison
+        # we check if we can find some values that map
+        elif self.value is not None and self.value == other.value:
+            return True
+        return False
+
+    """check if everything in lst1 is contained by lst2"""
+    def is_sublist(self, lst1, lst2):
+        if not lst1:
+            return True
+        for i in range(len(lst1)):
+            # for each value in lst1
+            # check if it is exist in lst2
+            exist = False
+            for j in range(len(lst2)):
+                if isinstance(lst2[j], ArgOr):
+                    if lst2[j].contains(lst1[i]):
+                        exist = True
+                elif lst1[i] == lst2[j]:
+                    exist = True
+            # we did not find this value in lst2
+            # so return false
+            if not exist:
+                return False
         return True
 
-    def is_sublist(self, lst1, lst2):
-        ls = [element for element in lst1 if element not in lst2]
-        # ls2 = [element for element in lst2 if element in lst1]
-        return len(ls) == 0
-
     def to_dict(self):
-        return {self.attribute:
-                    {"value": self.value,
-                     "trace": {
-                         "operator": self.operator,
-                         "argument": self.argument.copy()
-                        }
-                     }
-                }
+        return {
+            "value": self.value,
+            "argument": self.argument,
+            "operator": self.operator,
+            "attribute": self.attribute
+        }
 
     def get_attribute(self):
         return self.attribute
+
+    def get_argument(self):
+        if self.argument == HOLE:
+            return [HOLE]
+        return self.argument.copy()
+
+    def get_operator(self):
+        if self.operator == HOLE:
+            return [HOLE]
+        return self.operator.copy()
+
+    def to_stmt(self):
+        return f"<{self.value}, {self.operator}, {self.argument}>"
+
+
+class ArgOr:
+    """this class represent some arguments that are alternatives to each other
+        used for comparing traces"""
+
+    def __init__(self, arguments):
+        self.arguments = arguments  # a list of (note, coordinate_x, coordinate_y)
+
+    def __eq__(self, other):
+        if not isinstance(other, ArgOr):
+            return False
+        return self.arguments == other.arguments
+
+    def __repr__(self):
+        return "ArgOr" + str(self.arguments)
+
+    def contains(self, val):
+        return val in self.arguments

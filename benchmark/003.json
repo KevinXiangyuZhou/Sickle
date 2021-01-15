@@ -1,0 +1,19 @@
+{
+  "input_data": [
+    {"name": "Smith", "job": "Clerk", "salary": 800},
+    {"name": "Allen", "job": "Salesman", "salary": 1600},
+    {"name": "Ward", "job": "Salesman", "salary": 1250},
+    {"name": "Jones", "job": "Manager", "salary": 800},
+    {"name": "Blake", "job": "Manager", "salary": 2975},
+    {"name": "Clark", "job": "Manager", "salary": 2850},
+    {"name": "Turner", "job": "Salesman", "salary": 2450}
+  ],
+  "output_data": [
+    {"name": "Allen", "job": "Salesman"},
+    {"name": "Ward", "job": "Salesman"},
+    {"name": "Blake", "job": "Manager"},
+    {"name": "Clark", "job": "Manager"},
+    {"name": "Turner", "job": "Salesman"}
+  ],
+  "url":"https://www.red-gate.com/simple-talk/sql/oracle/introduction-to-analytic-functions-part-1-2/"
+}
