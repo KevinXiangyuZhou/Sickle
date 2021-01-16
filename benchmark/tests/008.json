@@ -1,0 +1,25 @@
+{
+  "input_data":
+   [[
+      {"cust_country": "UK", "grade": 2, "outstanding_amt": 4000},
+      {"cust_country": "USA", "grade": 2, "outstanding_amt": 6000},
+      {"cust_country": "USA", "grade": 3, "outstanding_amt": 6000},
+      {"cust_country": "India", "grade": 2, "outstanding_amt": 8000},
+      {"cust_country": "UK", "grade": 2, "outstanding_amt": 6000},
+      {"cust_country": "UK", "grade": 1, "outstanding_amt": 11000},
+      {"cust_country": "USA", "grade": 3, "outstanding_amt": 3000}
+  ]],
+  "output_data":[
+    {"cust_country": "UK", "grade": 2, "outstanding_amt": 3600},
+    {"cust_country": "USA", "grade": 2, "outstanding_amt": 5400},
+    {"cust_country": "USA", "grade": 3, "outstanding_amt": 5400},
+    {"cust_country": "India", "grade": 2, "outstanding_amt": 7200},
+    {"cust_country": "UK", "grade": 2, "outstanding_amt": 5400},
+    {"cust_country": "UK", "grade": 1, "outstanding_amt": 9900},
+    {"cust_country": "USA", "grade": 3, "outstanding_amt": 2700}
+  ],
+  "annotated_output_data":"",
+  "url": "https://www.w3resource.com/sql/update-statement/update-columns-using-arithmetical-expression.php",
+  "correct_output": "t0 <- table_ref(0); t1 <- mutate_2(t0, lambda x: x - (x * 0.1), (2,))",
+  "run_time": {"pure": 0.4596}
+}

@@ -24,3 +24,13 @@ At development time, use `source venv/bin/activate` (venv) or `source activate f
 1. Install python dependencies: `pip install -r requirements.txt`
 
 2. Install Sickle in the development mode: `pip install -e .`
+
+#### Benchmarks
+
+See test_run function in file synthesizer_functionality_test.py to run individual test files.
+
+#### Structure
+
+operator nodes are in table_ast.py
+synthesizer is constructed in synthesizer.py
+Annotated table and util data structure are in table.py

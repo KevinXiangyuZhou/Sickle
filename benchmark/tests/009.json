@@ -1,0 +1,28 @@
+{
+  "input_data":
+   [
+     [
+        {"player": "E.Els", "rd": 1, "hole": 1, "distToPin": 525, "distShot": 367.6},
+        {"player": "E.Els", "rd": 1, "hole": 1, "distToPin": 157.4, "distShot": 130.8},
+        {"player": "E.Els", "rd": 1, "hole": 1, "distToPin": 27.5, "distShot": 27.4},
+        {"player": "E.Els", "rd": 1, "hole": 1, "distToPin": 1.2, "distShot": 1.2},
+        {"player": "E.Els", "rd": 1, "hole": 2, "distToPin": 222, "distShot": 216.6},
+        {"player": "E.Els", "rd": 1, "hole": 2, "distToPin": 6.8, "distShot": 6.6},
+        {"player": "E.Els", "rd": 1, "hole": 2, "distToPin": 0.3, "distShot": 0.3},
+        {"player": "E.Els", "rd": 2, "hole": 1, "distToPin": 378, "distShot": 244.4},
+        {"player": "E.Els", "rd": 2, "hole": 1, "distToPin": 135.9, "distShot": 141.6},
+        {"player": "E.Els", "rd": 2, "hole": 1, "distToPin": 6.7, "distShot": 6.0},
+        {"player": "E.Els", "rd": 2, "hole": 1, "distToPin": 0.1, "distShot": 0.1}
+    ]
+  ],
+  "output_data":
+  [
+    {"player": "E.Els", "rd": 1, "efficiency": 206.25},
+    {"player": "E.Els", "rd": 2, "efficiency": 27.81}
+  ],
+  "url": "https://stackoverflow.com/questions/31549958/using-dplyrsummarize-function-for-multi-step-arithmetical-process?r=SearchResults",
+  "correct_output": [
+    {"player": "E.Els", "rd": 1, "efficiency": 206.25},
+    {"player": "E.Els", "rd": 2, "efficiency": 27.81}
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "input_data":
+  [[
+    {"id": 1, "total": 24.78},
+    {"id": 2, "total": 28.54},
+    {"id": 3, "total": 48.69},
+    {"id": 4, "total": -16.39},
+    {"id": 5, "total": 29.92},
+    {"id": 6, "total": 12.5},
+    {"id": 7, "total": 10.2},
+    {"id": 8, "total": 5.22}
+  ]],
+  "output_data":
+  [
+    {"id": 1, "total": 24.78, "percentage": 0.17},
+    {"id": 2, "total": 28.54, "percentage": 0.20},
+    {"id": 3, "total": 48.69, "percentage": 0.34},
+    {"id": 4, "total": -16.39, "percentage": -0.11},
+    {"id": 5, "total": 29.92, "percentage": 0.21},
+    {"id": 6, "total": 12.5, "percentage": 0.09},
+    {"id": 7, "total": 10.2, "percentage": 0.07},
+    {"id": 8, "total": 5.22, "percentage": 0.04}
+  ],
+  "url": "https://stackoverflow.com/questions/62830593/sql-impala-aggregation-with-analytic-function-causes-group-by-analysisexception",
+  "correct_output": "t0 <- table_ref(0); t1 <- mutate(t0, sum, 1); t2 <- mutate_2(t1, lambda x, y: x / y, (1, 2))"
+}

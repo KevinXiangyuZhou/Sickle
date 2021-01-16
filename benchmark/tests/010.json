@@ -1,0 +1,33 @@
+{
+  "input_data":
+   [[
+      {"state": "Alabama", "count": 1667},
+      {"state": "Alaska", "count": 507},
+      {"state": "Alabama", "count": 930},
+      {"state": "Arizona", "count": 1352},
+      {"state": "California", "count": 1817},
+      {"state": "Colorado", "count": 2302},
+      {"state": "Connecticut", "count": 1488}
+  ]],
+  "output_data":
+  [
+      {"state": "Alabama", "count": 1667, "percentage": 0.5},
+      {"state": "Alaska", "count": 507, "percentage": 0.5},
+      {"state": "Alabama", "count": 930, "percentage": 0.5},
+      {"state": "Arizona", "count": 1352, "percentage": 0.5},
+      {"state": "California", "count": 1817, "percentage": 0.5},
+      {"state": "Colorado", "count": 2302, "percentage": 0.5},
+      {"state": "Connecticut", "count": 1488, "percentage": 0.5}
+  ],
+  "url": "https://stackoverflow.com/questions/60517090/is-there-a-way-to-divide-answers-of-group-by-summary-statistics-in-r",
+  "correct_output": [
+      {"state": "Alabama", "count": 1667, "percentage": 0.5},
+      {"state": "Alaska", "count": 507, "percentage": 0.5},
+      {"state": "Alabama", "count": 930, "percentage": 0.5},
+      {"state": "Arizona", "count": 1352, "percentage": 0.5},
+      {"state": "California", "count": 1817, "percentage": 0.5},
+      {"state": "Colorado", "count": 2302, "percentage": 0.5},
+      {"state": "Connecticut", "count": 1488, "percentage": 0.5}
+  ],
+  "run_time": {"annotated": 2.7493}
+}

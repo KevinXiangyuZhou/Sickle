@@ -1,0 +1,22 @@
+{
+  "input_data":
+   [
+     [
+        {"X": 1, "Y": 2, "Z": 3},
+        {"X": 2, "Y": 3, "Z": 4},
+        {"X": 3, "Y": 4, "Z": 5}
+    ]
+  ],
+  "annotated_output_data":
+  [
+    [{"value": None, "argument": [(0, 0), (1, 0), (2, 0)], "operator": "lambda x,y,z: x * y * z", "attribute": ""},
+     {"value": None, "argument": [(0, 1), (1, 1), (2, 1)], "operator": "lambda x,y,z: x * y * z", "attribute": ""},
+     {"value": None, "argument": [(0, 2), (1, 2), (2, 2)], "operator": "lambda x,y,z: x * y * z", "attribute": ""}]
+  ],
+  "url": "https://stackoverflow.com/questions/64236076/product-of-multiple-selected-columns-in-a-data-frame-in-r",
+  "correct_output": [
+    {"X": 1, "Y": 2, "Z": 3, "product": 6},
+    {"X": 2, "Y": 3, "Z": 4, "product": 24},
+    {"X": 3, "Y": 4, "Z": 5, "product": 60}
+  ]
+}
