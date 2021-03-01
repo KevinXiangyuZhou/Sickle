@@ -189,7 +189,7 @@ class AstTest(unittest.TestCase):
         print(rlt.extract_values())
         print()
 
-    #@unittest.skip
+    @unittest.skip
     def test_mutate_arith2(self):
         q = Table(data_id=2)
         q = Mutate_2(q, "lambda x, y: x * y - 0.2 * x", (1, 2))
@@ -200,7 +200,7 @@ class AstTest(unittest.TestCase):
         print(rlt.extract_values())
         print()
 
-    #@unittest.skip
+    @unittest.skip
     def test_checker_function1(self):
         """
         q = Table(data_id=2)

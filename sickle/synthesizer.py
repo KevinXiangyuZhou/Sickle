@@ -6,6 +6,7 @@ import pandas as pd
 from enum_strategies import *
 from table import *
 import time
+from table_cell import *
 
 from table_ast import (HOLE, Node, Table, Select, Filter, GroupSummary,
                        GroupMutate, Mutate_Arithmetic, Join)
@@ -245,7 +246,7 @@ class Synthesizer(object):
         return candidates
 
     def iteratively_instantiate(self, p, inputs, output, indent):
-        """iteratively instantiate abstract programs w/ promise check """
+        """iteratively instantiate abstract programs w/ promise check"""
         def instantiate(p, inputs, output, indent):
             """instantiate programs and then check each one of them against the premise """
             results = []
@@ -269,22 +270,30 @@ class Synthesizer(object):
                     for partial_prog in recent_candidates:
                         # print(indent + Node.load_from_dict(partial_prog).stmt_string())
                         instantiated_progs = self.instantiate(partial_prog, var_path, inputs)
-                        # Pruning 1:
                         # pruning with running checker function on abstract program
                         valid_progs = []
                         for partial_p in instantiated_progs:
                             pp = Node.load_from_dict(partial_p)
                             # print(indent + pp.stmt_string())
-                            if pp.is_abstract():
-                                # print("!!!")
+                            if not isinstance(pp, Join) and pp.is_abstract():
                                 print(indent + pp.stmt_string())
-                                print(indent + "computation check")
-                                # print(pp.infer_computation(inputs).to_dataframe())
-                                # print(checker_function(pp.infer_computation(inputs), output))
-                                if checker_function(pp.infer_computation(inputs), output) is None:
-                                    print(indent + "computation check failed!")
-                                    print(pp.infer_computation(inputs).to_dataframe())
-                                    continue
+                                check_one = True
+                                check_two = True
+                                # Prune 1
+                                if check_one:
+                                    print(indent + "cell trace check")
+                                    if not check_cell_trace(pp, inputs, output):
+                                        print(indent + "cell trace check failed!")
+                                        # print(pp.infer_computation(inputs).to_dataframe())
+                                        continue
+                                # Prune 2
+                                if check_two:
+                                    print(indent + "computation check")
+                                    if checker_function(pp.infer_computation(inputs), output) is None:
+                                        print(indent + "computation check failed!")
+                                        print("=====Computation Check Result=====")
+                                        print(pp.infer_computation(inputs).to_dataframe())
+                                        continue
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
                     recent_candidates = temp_candidates
@@ -293,7 +302,6 @@ class Synthesizer(object):
                 # next_level_programs, level = self.instantiate_one_level(ast, inputs)
                 for _ast in next_level_programs:
                     results.append(Node.load_from_dict(_ast))
-                print(indent + "checked!")
                 return results
             else:
                 return []

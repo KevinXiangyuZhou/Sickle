@@ -1,10 +1,11 @@
 from table import *
 import unittest
 import pandas as pd
+from table_cell import *
 
 HOLE = "_?_"
 
-
+"""
 a = AnnotatedTable([{"value": 3, "argument": [(1, 0, 0), (5, 0, 1)], "operator": "avg", "attribute": "a"},
      {"value": 5, "argument": [(5, 0, 1)], "operator": "sum", "attribute": "a"},
      {"value": 6, "argument": [(1, 0, 0), (5, 0, 1)], "operator": "sum", "attribute": "a"}])
@@ -24,8 +25,198 @@ h = AnnotatedTable([{"value": 3, "argument": [(1, 0, 0), (5, 0, 1)], "operator":
                     {"value": 4, "argument": [(1, 0, 0), (5, 0, 1)], "operator": "avg", "attribute": "b"},
                     {"value": 4, "argument": [(1, 0, 0), (5, 0, 1)], "operator": "avg", "attribute": "b"},
                     ])
+"""
 
 class TableTest(unittest.TestCase):
+    # @unittest.skip
+    def test_table_cell_argor(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=[ArgOr([(0, 1, 0), (0, 1, 2), (0, 1, 3)])],
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=[ArgOr([(0, 1, 0), (0, 1, 2), (0, 1, 3)])],
+            attribute="a")
+        print("---cell test 7---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    #@unittest.skip
+    def test_table_cell_different_level(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=[ExpNode(
+                op="lambda x, y: x + y",
+                children=[
+                    (0, 1, 0), (0, 1, 2), (0, 1, 3)
+                ])],
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                    op="lambda x, y: x + y",
+                    children=[
+                        (0, 1, 0), (0, 1, 2), (0, 1, 3)]
+                    ),
+            attribute="a")
+        print("---cell test 6---")
+        print(output_cell.get_exp().to_dict())
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    @unittest.skip
+    def test_table_cell_equiv_children_containment(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="lambda x, y: x + y",
+                children=[
+                    ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2)]),
+                    ExpNode(op="sum", children=[(0, 2, 1), (0, 2, 2)])
+                ]),
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="lambda x, y: x + y",
+                children=[
+                    ExpNode(op="sum", children=[(0, 3, 1), (0, 1, 1), (0, 1, 2)]),
+                    ExpNode(op="sum", children=[(0, 2, 1), (0, 2, 2)])
+                ]),
+            attribute="a")
+        print("---cell test 1---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    @unittest.skip
+    def test_table_cell_equiv_mixed_argument_type(self):
+        # f1(sum(1, 3), 2))
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="lambda x, y: x / y",
+                children=[
+                    ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2)]),
+                    (0, 2, 2)]),
+            attribute="a")
+
+        # f1(sum(1, 3, 4), 1, 2)
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="lambda x, y: x / y",
+                children=[
+                    ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2), (0, 1, 3)]),
+                    (0, 2, 1),
+                    (0, 2, 2)]),
+            attribute="a")
+
+        print("---cell test 2---")
+        print(target_cell.matches(output_cell))
+        print(output_cell.get_exp().to_dict())
+        print(output_cell.get_exp().to_flat_list())
+
+    #@unittest.skip
+    def test_table_cell_equiv_inconsistent_level(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
+                    (0, 3, 0)
+                ]),
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2),
+                                                               ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)])]),
+                    (0, 3, 0)
+                ]),
+            attribute="a")
+        print("---cell test 3---")
+        print(target_cell.matches(output_cell))
+        print(output_cell.get_exp().to_flat_list())
+
+    @unittest.skip
+    def test_table_cell_equiv_more_arguments(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
+                    (0, 3, 0)
+                ]),
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    (0, 4, 0),
+                    (0, 5, 0),
+                    ExpNode(op="sum", children=[(0, 2, 4), (0, 2, 5)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
+                    (0, 3, 0)
+                ]),
+            attribute="a")
+        print("---cell test 4---")
+        print(target_cell.matches(output_cell))
+
+    @unittest.skip
+    def test_table_cell_equiv_empty_lists(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
+                    ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
+                    (0, 3, 0)
+                ]),
+            attribute="a")
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[]),
+            attribute="a")
+        print("---cell test 5---")
+        print(target_cell.matches(output_cell))
+
+
+
+    @unittest.skip
     def test_checker_function_find_mapping(self):
         d1 = [{"cust_country": "UK", "grade": 2, "outstanding_amt": 4000},
               {"cust_country": "USA", "grade": 2, "outstanding_amt": 6000},
@@ -43,6 +234,7 @@ class TableTest(unittest.TestCase):
         print(actual.to_dataframe())
         print(find_mapping(target, actual))
 
+    @unittest.skip
     def test_checker_function_find_mapping_2(self):
         actual = AnnotatedTable(
             [{"value": HOLE, "argument": HOLE, "operator": HOLE, "attribute": "B"},
@@ -59,7 +251,7 @@ class TableTest(unittest.TestCase):
         print(find_mapping(target, actual))
 
     # test search mapping
-    # @unittest.skip
+    @unittest.skip
     def test_checker_function1(self):
         """
         q = Table(data_id=2)
@@ -77,7 +269,7 @@ class TableTest(unittest.TestCase):
         print(checker_function(rlt, a))
         print()
 
-    # @unittest.skip
+    @unittest.skip
     def test_checker_function2(self):
         q = Table(data_id=2)
         # print(q.eval(inputs).to_dict())
@@ -87,7 +279,7 @@ class TableTest(unittest.TestCase):
         print(checker_function(rlt, b))
         print()
 
-    # @unittest.skip
+    @unittest.skip
     def test_checker_function3(self):
         q = Table(data_id=2)
         # print(q.eval(inputs).to_dict())
@@ -99,7 +291,7 @@ class TableTest(unittest.TestCase):
         y = a.get_cell(1, 0)
         print()
 
-    # @unittest.skip
+    @unittest.skip
     def test_checker_function4(self):
         q = Table(data_id=2)
         # print(q.eval(inputs).to_dict())
@@ -113,14 +305,6 @@ class TableTest(unittest.TestCase):
         x = a.get_cell(0, 0)
         y = a.get_cell(1, 0)
         print()
-
-    def test_checker_function_row_columns_pruning(self):
-
-    def test_checker_function_pick_values(self):
-        pass
-    def test_checker_function_find_mappings(self):
-        pass
-
 
     @unittest.skip
     def testExtractValue(self):

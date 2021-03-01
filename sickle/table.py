@@ -2,6 +2,7 @@
 
 import json
 import pandas as pd
+from table_cell import *
 
 # two special symbols used in the language
 HOLE = "_?_"
@@ -26,10 +27,10 @@ class AnnotatedTable:
         col_cells = {}
         for cell in source:
             if cell["attribute"] not in col_cells.keys():
-                col_cells[cell["attribute"]] = []
+                col_cells[cell["attribute"]] = []\
+
             col_cells[cell["attribute"]].append(TableCell(cell["value"],
-                                                          cell["argument"],
-                                                          cell["operator"],
+                                                          cell["exp"],
                                                           cell["attribute"]))
         for key in col_cells:
             self.df.append(col_cells[key])
@@ -62,7 +63,7 @@ class AnnotatedTable:
                 attribute = cell.get_attribute()
                 if attribute not in data.keys():
                     data[attribute] = []
-                data[attribute].append((cell.get_argument(), cell.get_operator()))
+                data[attribute].append(cell.get_exp())
         return pd.DataFrame.from_dict(data)
 
     def to_dataframe(self):
@@ -121,7 +122,7 @@ def load_from_dict(source):
     r = []
     for t in source:
         for attribute in t:
-            r.append({"value": t[attribute], "argument": None, "operator": None, "attribute": attribute})
+            r.append({"value": t[attribute], "exp": None, "attribute": attribute})
     return AnnotatedTable(r)
 
 
@@ -129,7 +130,8 @@ def select_columns(att, cols):
     cell_list = []
     for col in cols:
         for i in range(att.get_row_num()):
-            cell_list.append(att.get_cell(col, i).to_dict())
+            cell = att.get_cell(col, i)
+            cell_list.append({"value": cell.get_value(), "exp": cell.get_exp(), "attribute": cell.get_attribute()})
     return AnnotatedTable(cell_list)
 
 
@@ -145,6 +147,7 @@ def checker_function(actual, target, print_result=False):
     # store for each cell with format: {(x, y): [(0,0), (1,2)]}
     # TODO: reduce time complexity
     mapping = find_mapping(target, actual)
+    #print(mapping)
     if mapping is None:
         return None
 
@@ -164,6 +167,72 @@ def checker_function(actual, target, print_result=False):
     return extract_mappings(mapping, keys)
 
 
+def check_cell_trace(prog, inputs, target_t):
+    for x in range(target_t.get_col_num()):
+        for y in range(target_t.get_row_num()):
+            # compress the expression, no need for structured trace in this test
+            exp = target_t.get_cell(x, y).get_flat_args()
+            # Cost: x * y * n_exp * n_loc
+            # print("checking cell at: " + str((x, y)))
+            # print("arguments: " + str(exp))
+            # print("-----")
+            for t in exp:
+                locs = infer_all_possible_loc(prog, inputs, t[1], t[2])
+                exist = False
+                # print("t: " + t + "locs: " + str(locs))
+                # print("check t: " + str(t) + "with possible locs: " + str(locs))
+                for loc in locs:
+                    if loc[0] == x and (loc[1] == y or loc[1] == "?"):
+                        exist = True
+                if not exist:
+                    # print out log on failure
+                    print("=====Cell Check Result=====")
+                    print("checking cell at: " + str((x, y)))
+                    print("arguments: " + str(exp))
+                    print("fail whenc check t: " + str(t) + "possible locs: " + str(locs))
+                    print("==========")
+                    return False
+    return True
+
+# compare two cells at a time
+# if two cells are in the same row in the
+def check_cell_trace_2(prog, inputs, target_t):
+    for x in range(target_t.get_col_num()):
+        for y in range(target_t.get_row_num()):
+            # compress the expression, no need for structured trace in this test
+            exp = target_t.get_cell(x, y).get_flat_args()
+            # Cost: x * y * n_exp * n_loc
+            # print("checking cell at: " + str((x, y)))
+            # print("arguments: " + str(exp))
+            # print("-----")
+            for t in exp:
+                locs = infer_all_possible_loc(prog, inputs, t[1], t[2])
+                exist = False
+                # print("t: " + t + "locs: " + str(locs))
+                # print("check t: " + str(t) + "with possible locs: " + str(locs))
+                for loc in locs:
+                    if loc[0] == x and (loc[1] == y or loc[1] == "?"):
+                        exist = True
+                if not exist:
+                    # print out log on failure
+                    print("=====Cell Check Result=====")
+                    print("checking cell at: " + str((x, y)))
+                    print("arguments: " + str(exp))
+                    print("fail whenc check t: " + str(t) + "possible locs: " + str(locs))
+                    print("==========")
+                    return False
+    return True
+
+def infer_all_possible_loc(prog, inputs, x, y):
+    # call check cell trace to
+    # get a map of each coord in input table with a list of all possible location it could be
+
+    # check for output table, the coordinate of each cell should be contained in the intersection
+    # of the lists of inferred location for all cells in the trace
+    return prog.infer_cell(inputs, (x, y))
+
+
+
 """search for valid mapping for each cell in target table"""
 def find_mapping(target, actual):
     mapping = {}
@@ -173,8 +242,17 @@ def find_mapping(target, actual):
             mapping[(cid, rid)] = search_values(actual, target.get_cell(cid, rid))
             # let it fail here
             if not check_mappings(mapping):
+                # print(mapping)
                 return None
     return mapping
+
+def search_values(table, cell):
+    rlt = []
+    for cid in range(table.get_col_num()):
+        for rid in range(table.get_row_num()):
+            if cell.matches(table.get_cell(cid, rid)):
+                rlt.append((cid, rid))
+    return rlt
 
 
 """prune mapping by relative column and row positions"""
@@ -270,15 +348,6 @@ def check_mappings(mapping):
     return True
 
 
-def search_values(table, cell):
-    rlt = []
-    for cid in range(table.get_col_num()):
-        for rid in range(table.get_row_num()):
-            if cell.matches(table.get_cell(cid, rid)):
-                rlt.append((cid, rid))
-    return rlt
-
-
 def find_smallest_array(list):
     # choose the firstly found array if tie
     if len(list) == 0:
@@ -288,102 +357,3 @@ def find_smallest_array(list):
         if len(array) < len(rlt):
             rlt = array
     return rlt
-
-
-"""
-this class represents a cell stored in the data frame with its trace
-"""
-class TableCell:
-    def __init__(self, value, argument, operator, attribute):
-        self.value = value
-        self.argument = argument  # a list of (note, coordinate_x, coordinate_y)
-        self.operator = operator
-        self.attribute = attribute
-
-    def get_value(self):
-        return self.value
-
-    def matches(self, other):
-        # looser check if the target cell contain some uninstantiated parts
-        if other.operator == HOLE and other.argument == HOLE:
-            return True
-        elif other.operator == HOLE:
-            return self.is_sublist(self.argument, other.argument)
-        elif other.argument == HOLE:
-            return self.is_sublist(self.operator, other.operator)
-        # firstly, check this argument is a subset of other's argument
-        # we assume that if argument is not None then operator should not be None
-        if self.argument is not None and self.operator is not None:
-            if self.is_sublist(self.argument, other.argument) \
-                    and self.is_sublist(self.operator, other.operator):
-                return True
-        # if self.operator is not None and self.operator != other.operator:
-        #    return False
-        # next, if we do not have trace to do comparison
-        # we check if we can find some values that map
-        elif self.value is not None and self.value == other.value:
-            return True
-        return False
-
-    """check if everything in lst1 is contained by lst2"""
-    def is_sublist(self, lst1, lst2):
-        if not lst1:
-            return True
-        for i in range(len(lst1)):
-            # for each value in lst1
-            # check if it is exist in lst2
-            exist = False
-            for j in range(len(lst2)):
-                if isinstance(lst2[j], ArgOr):
-                    if lst2[j].contains(lst1[i]):
-                        exist = True
-                elif lst1[i] == lst2[j]:
-                    exist = True
-            # we did not find this value in lst2
-            # so return false
-            if not exist:
-                return False
-        return True
-
-    def to_dict(self):
-        return {
-            "value": self.value,
-            "argument": self.argument,
-            "operator": self.operator,
-            "attribute": self.attribute
-        }
-
-    def get_attribute(self):
-        return self.attribute
-
-    def get_argument(self):
-        if self.argument == HOLE:
-            return [HOLE]
-        return self.argument.copy()
-
-    def get_operator(self):
-        if self.operator == HOLE:
-            return [HOLE]
-        return self.operator.copy()
-
-    def to_stmt(self):
-        return f"<{self.value}, {self.operator}, {self.argument}>"
-
-
-class ArgOr:
-    """this class represent some arguments that are alternatives to each other
-        used for comparing traces"""
-
-    def __init__(self, arguments):
-        self.arguments = arguments  # a list of (note, coordinate_x, coordinate_y)
-
-    def __eq__(self, other):
-        if not isinstance(other, ArgOr):
-            return False
-        return self.arguments == other.arguments
-
-    def __repr__(self):
-        return "ArgOr" + str(self.arguments)
-
-    def contains(self, val):
-        return val in self.arguments
