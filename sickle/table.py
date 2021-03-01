@@ -23,18 +23,13 @@ class AnnotatedTable:
         self.df = []  # stored as a two-level array with columns to be the inner level
         self.load_from_dict(source)
 
+    # source should be a two-level array [[{val, exp}], [{val, exp}]]
     def load_from_dict(self, source):
-        col_cells = {}
-        for cell in source:
-            if cell["attribute"] not in col_cells.keys():
-                col_cells[cell["attribute"]] = []\
-
-            col_cells[cell["attribute"]].append(TableCell(cell["value"],
-                                                          cell["exp"],
-                                                          cell["attribute"]))
-        # key-value structured result to store each table_cell contained column
-        for key in col_cells:
-            self.df.append(col_cells[key])
+        for col_id in range(len(source)):
+            self.df.append([])
+            for cell_id in range(len(source[col_id])):
+                cell = source[col_id][cell_id]
+                self.df[col_id].append(TableCell(cell["value"], cell["exp"]))
 
     def add_column(self, new_column):
         self.df.append(new_column.copy())
@@ -48,7 +43,6 @@ class AnnotatedTable:
             if len(new_row) != self.get_col_num():
                 print("[error] new row with inconsistent column number added")
             for i in range(len(self.df)):
-                #if
                 self.df[i].append(new_row[i])
 
     def get_cell(self, x, y):
@@ -63,9 +57,6 @@ class AnnotatedTable:
         for i in range(len(self.df)):
             rlt.append(self.df[i][row_index])
         return rlt
-
-    def get_col_name(self):
-        pass
 
     def get_col_num(self):
         if self.df is []:
@@ -85,24 +76,24 @@ class AnnotatedTable:
             (drop trace information and keep only values and store it as a dataframe)
         """
         data = {}
-        for i in range(len(self.df)):
-            for j in range(len(self.df[i])):
+        for i in range(self.get_col_num()):
+            attribute = "COL_" + str(i)  # COL_0, COL_1, ...
+            if attribute not in data.keys():
+                data[attribute] = []
+            for j in range(self.get_row_num()):
                 cell = self.df[i][j]
-                attribute = cell.get_attribute()
-                if attribute not in data.keys():
-                    data[attribute] = []
                 data[attribute].append(cell.get_value())
         return pd.DataFrame.from_dict(data)
 
     def extract_traces(self):
         """ version that only keeps trace info"""
         data = {}
-        for i in range(len(self.df)):
-            for j in range(len(self.df[i])):
+        for i in range(self.get_col_num()):
+            attribute = "COL_" + str(i)  # COL_0, COL_1, ...
+            if attribute not in data.keys():
+                data[attribute] = []
+            for j in range(self.get_row_num()):
                 cell = self.df[i][j]
-                attribute = cell.get_attribute()
-                if attribute not in data.keys():
-                    data[attribute] = []
                 data[attribute].append(cell.get_exp())
         return pd.DataFrame.from_dict(data)
 
@@ -111,12 +102,12 @@ class AnnotatedTable:
             cells in the dataframe are represented as <{self.value}, {self.operator}, {self.argument}>
         """
         data = {}
-        for i in range(len(self.df)):
-            for j in range(len(self.df[i])):
+        for i in range(self.get_col_num()):
+            attribute = "COL_" + str(i)  # COL_0, COL_1, ...
+            if attribute not in data.keys():
+                data[attribute] = []
+            for j in range(self.get_row_num()):
                 cell = self.df[i][j]
-                attribute = cell.get_attribute()
-                if attribute not in data.keys():
-                    data[attribute] = []
                 data[attribute].append(cell.to_stmt())
         return pd.DataFrame.from_dict(data)
 
@@ -153,7 +144,7 @@ from format of eg.
 def load_from_dict(source):
     r = []
     for t in source:
-        for attribute in t:
+        for col_i in range(len(t)):
             r.append({"value": t[attribute], "exp": None, "attribute": attribute})
     return AnnotatedTable(r)
 
@@ -161,9 +152,11 @@ def load_from_dict(source):
 def select_columns(att, cols):
     cell_list = []
     for col in cols:
+        temp = []
         for i in range(att.get_row_num()):
             cell = att.get_cell(col, i)
-            cell_list.append({"value": cell.get_value(), "exp": cell.get_exp(), "attribute": cell.get_attribute()})
+            temp.append({"value": cell.get_value(), "exp": cell.get_exp()})
+        cell_list.append(temp)
     return AnnotatedTable(cell_list)
 
 

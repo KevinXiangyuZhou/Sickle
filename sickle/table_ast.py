@@ -530,24 +530,24 @@ class GroupSummary(Node):
 		if self.group_cols == HOLE:
 			table = self.q.infer_computation(inputs)
 			df = table.extract_values()
-			target = get_fresh_col(df.columns)[0]
+			#target = get_fresh_col(df.columns)[0]
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE, target))
+				new_col.append(TableCell(HOLE, HOLE))
 			table.add_column(new_col)
 			return table
 		table = select_columns(self.q.infer_computation(inputs), self.group_cols)
 		df = table.extract_values()
-		target = get_fresh_col(df.columns)[0]
+		#target = get_fresh_col(df.columns)[0]
 		if self.aggr_func == HOLE:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE, target))
+				new_col.append(TableCell(HOLE, HOLE))
 			table.add_column(new_col)
 		else:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE]), target))
+				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
 			table.add_column(new_col)
 		return table
 
@@ -726,16 +726,16 @@ class GroupMutate(Node):
 			return self.eval(inputs)
 		table = self.q.infer_computation(inputs)
 		df = table.extract_values()
-		target = get_fresh_col(df.columns)[0]
+		#target = get_fresh_col(df.columns)[0]
 		if self.aggr_func == HOLE or self.group_cols == HOLE:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE, target))
+				new_col.append(TableCell(HOLE, HOLE))
 			table.add_column(new_col)
 		else:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE]), target))
+				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
 			table.add_column(new_col)
 		return table
 
@@ -837,16 +837,16 @@ class Mutate_Arithmetic(Node):
 			return self.eval(inputs)
 		table = self.q.infer_computation(inputs)
 		df = table.extract_values()
-		target = get_fresh_col(df.columns)[0]
+		#target = get_fresh_col(df.columns)[0]
 		if self.func == HOLE:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE, target))
+				new_col.append(TableCell(HOLE, HOLE))
 			table.add_column(new_col)
 		else:
 			new_col = []
 			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.func, [HOLE]), target))
+				new_col.append(TableCell(HOLE, ExpNode(self.func, [HOLE])))
 			table.add_column(new_col)
 		return table
 
@@ -960,8 +960,10 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 	# print(df)
 	# print(arguments)
 	# print(df.index.tolist())
-	for index in df.index.tolist():
-		for colName in df.columns.tolist():
+	for colName in df.columns.tolist():
+		cid = get_col_index_by_name(df, colName)
+		cell_list.append([])
+		for index in df.index.tolist():
 			# get full arguments for this level
 			this_arguments = arguments[index][colName]
 			# print(this_arguments)
@@ -981,9 +983,7 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 					exp = ExpNode(op, cell_arg)
 				else:
 					exp = cell_arg
-			cell_list.append({"value": df.to_dict()[colName][index],
-							  "exp": exp,
-							  "attribute": colName})
+			cell_list[cid].append({"value": df.to_dict()[colName][index], "exp": exp})
 	return AnnotatedTable(cell_list)
 
 
@@ -991,8 +991,10 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 def df_to_annotated_table_join(df, op, arguments, table1, table2):
 	"""special handler for join operation which include two tables"""
 	cell_list = []
-	for index in df.index.tolist():
-		for colName in df.columns.tolist():
+	for colName in df.columns.tolist():
+		cid = get_col_index_by_name(df, colName)
+		cell_list.append([])
+		for index in df.index.tolist():
 			# get full arguments for this level
 			this_arguments = arguments[index][colName]
 			args = []
@@ -1005,9 +1007,7 @@ def df_to_annotated_table_join(df, op, arguments, table1, table2):
 				if not isinstance(temp_exp, list):
 					temp_exp = [temp_exp]
 				args += temp_exp
-			cell_list.append({"value": df.to_dict()[colName][index],
-							  "exp": args,
-							  "attribute": colName})
+			cell_list[cid].append({"value": df.to_dict()[colName][index], "exp": args})
 	#print(cell_list)
 	return AnnotatedTable(cell_list)
 

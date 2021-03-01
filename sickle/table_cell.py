@@ -8,16 +8,14 @@ HOLE = "_?_"
 UNKNOWN = "_UNK_"
 
 class TableCell(object):
-    def __init__(self, value, exp, attribute):
+    def __init__(self, value, exp):
         self.value = value
         self.exp = exp
-        self.attribute = attribute
 
     def to_dict(self):
         return {
             "value": self.value,
-            "exp": self.exp.to_dict(),
-            "attribute": self.attribute
+            "exp": self.exp.to_dict()
         }
 
     def matches(self, other):
@@ -34,9 +32,6 @@ class TableCell(object):
 
     def get_value(self):
         return self.value
-
-    def get_attribute(self):
-        return self.attribute
 
     def get_exp(self):
         return copy.copy(self.exp)

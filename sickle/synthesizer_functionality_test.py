@@ -99,7 +99,6 @@ annotated_output_009 = AnnotatedTable([
     {"value": None, "exp": ExpNode("", [(0, 3, 0), (0, 4, 0)]), "operator": ["group_mean", "sum", "max", "lambda x, y: x / y - x "], "attribute": "efficiency"},
     {"value": None, "argument": [(0, 3, 0), (0, 4, 0)], "operator": ["group_mean", "sum", "max", "lambda x, y: x / y - x "], "attribute": "efficiency"}
     ])
-"""
 
 annotated_output_010 = AnnotatedTable([
     {"value": "Alabama", "exp": ExpNode("", [(0, 0, 0)]), "attribute": "state"},
@@ -110,7 +109,7 @@ annotated_output_010 = AnnotatedTable([
     {"value": None, "exp": ExpNode("lambda x, y: (x / y) * 100", [(0, 1, 1)]), "attribute": "percentage"}
     ])
 
-"""
+
 td = AnnotatedTable([
     {"value": 2916.67, "argument": [(2450, 2, 6)], "operator": "", "attribute": "mean_sal"},
     {"value": 2175.00, "argument": [(800, 2, 0)], "operator": "", "attribute": "mean_sal"},
@@ -119,7 +118,7 @@ td = AnnotatedTable([
 """
 
 class SynthesizerTest(unittest.TestCase):
-    #@unittest.skip
+    @unittest.skip
     def test_run_005(self):
         with open('test_prog.json', 'r') as filehandler:
             data = json.load(filehandler)
@@ -134,7 +133,7 @@ class SynthesizerTest(unittest.TestCase):
             #print(rlt)
 
 
-    @unittest.skip
+    #@unittest.skip
     def test_run(self):
         with open('../benchmark/tests/005.json', 'r') as filehandler:
         #with open('testbenches/005.json', 'r') as filehandler:
