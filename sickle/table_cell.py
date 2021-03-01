@@ -42,7 +42,7 @@ class TableCell(object):
         return copy.copy(self.exp)
 
     def to_stmt(self):
-        #if not isinstance(self.exp, ExpNode):
+        # if not isinstance(self.exp, ExpNode):
         #    return f"<{self.value}, {None}>"
         return f"<{self.value}, {self.exp}>"
 
@@ -69,6 +69,7 @@ def semantically_equiv(exp1, exp2):
     # looser check if the target cell contain some unsubstantiated parts
     if exp1 == HOLE:
         return True
+    # special case handler check for ArgOr objects
     if isinstance(exp1, ArgOr) and isinstance(exp2, tuple):
         return exp1.contains(exp2)
     elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
@@ -108,7 +109,7 @@ def semantically_equiv(exp1, exp2):
         return semantically_equiv([exp1], exp2)
     else:
         # we cannot do straight comparison if one of them is coord and the other is expnode
-        #print([exp1,exp2])
+        # print([exp1,exp2])
         return exp1 == exp2
 
 
@@ -121,7 +122,8 @@ class ExpNode(object):
         def exact_equiv(exp1, exp2):
             if isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
                 return (exp1.op == exp2.op and len(exp1.children) == len(exp2.children)
-                        and all([exact_equiv(exp1.children[i], exp2.children[i]) for i in range(len(exp1.children))]))
+                        and all([exact_equiv(exp1.children[i], exp2.children[i])
+                                 for i in range(len(exp1.children))]))
             else:
                 # then it's a leaf note, both exp are coordinates
                 return exp1 == exp2

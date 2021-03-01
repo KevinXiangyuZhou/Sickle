@@ -119,30 +119,22 @@ td = AnnotatedTable([
 """
 
 class SynthesizerTest(unittest.TestCase):
-    @unittest.skip
+    #@unittest.skip
     def test_run_005(self):
-        with open('../benchmark/tests/008.json', 'r') as filehandler:
+        with open('test_prog.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
             # description:
             inputs = data["input_data"]
-            output = data["output_data"]
-
-
-            p = dict_to_program(data["exp_out"])
+            p = dict_to_program(data["exp_out1"])
             print(p.eval(inputs).to_dataframe())
             annotated_output = p.eval(inputs)
-            q = Table(0)
-            q = GroupSummary(q, [1], "count", 0)
-            q = GroupMutate(q, HOLE, HOLE, HOLE)
-            computed_out = q.infer_computation(inputs)
-            print(q.infer_computation(inputs).to_dataframe())
 
-            rlt = checker_function(computed_out, annotated_output, print_result=True)
+            #rlt = checker_function(computed_out, annotated_output, print_result=True)
             #print(rlt)
 
 
-    #@unittest.skip
+    @unittest.skip
     def test_run(self):
         with open('../benchmark/tests/005.json', 'r') as filehandler:
         #with open('testbenches/005.json', 'r') as filehandler:

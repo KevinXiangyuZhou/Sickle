@@ -220,7 +220,6 @@ class Synthesizer(object):
             for s in sketches:
                 # print(s.stmt_string())
                 # ast = s.to_dict()
-                # TODO prune join
                 programs = self.iteratively_instantiate(s, inputs, output, "")
                 for p in programs:
                     try:
@@ -275,9 +274,9 @@ class Synthesizer(object):
                         for partial_p in instantiated_progs:
                             pp = Node.load_from_dict(partial_p)
                             # print(indent + pp.stmt_string())
-                            if not isinstance(pp, Join) and pp.is_abstract():
+                            if pp.is_abstract():
                                 print(indent + pp.stmt_string())
-                                check_one = True
+                                check_one = False
                                 check_two = True
                                 # Prune 1
                                 if check_one:

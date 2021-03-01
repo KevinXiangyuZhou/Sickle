@@ -32,14 +32,53 @@ class AnnotatedTable:
             col_cells[cell["attribute"]].append(TableCell(cell["value"],
                                                           cell["exp"],
                                                           cell["attribute"]))
+        # key-value structured result to store each table_cell contained column
         for key in col_cells:
             self.df.append(col_cells[key])
 
     def add_column(self, new_column):
         self.df.append(new_column.copy())
 
+    def add_row(self, new_row):
+        if self.is_empty():
+            # initialize then append when the current space is empty
+            for i in range(len(new_row)):
+                self.df.append([new_row[i]])
+        else:
+            if len(new_row) != self.get_col_num():
+                print("[error] new row with inconsistent column number added")
+            for i in range(len(self.df)):
+                #if
+                self.df[i].append(new_row[i])
+
     def get_cell(self, x, y):
         return self.df[x][y]
+
+    def get_column(self, col_index):
+        return self.df[col_index].copy()
+
+    def get_row(self, row_index):
+        # get a list of cells in the same row index
+        rlt = []
+        for i in range(len(self.df)):
+            rlt.append(self.df[i][row_index])
+        return rlt
+
+    def get_col_name(self):
+        pass
+
+    def get_col_num(self):
+        if self.df is []:
+            return 0
+        return len(self.df)
+
+    def get_row_num(self):
+        if self.df is []:
+            return 0
+        return len(self.df[0])
+
+    def is_empty(self):
+        return self.df == []
 
     def extract_values(self):
         """ convert annotated table to a dataframe 
@@ -56,6 +95,7 @@ class AnnotatedTable:
         return pd.DataFrame.from_dict(data)
 
     def extract_traces(self):
+        """ version that only keeps trace info"""
         data = {}
         for i in range(len(self.df)):
             for j in range(len(self.df[i])):
@@ -90,6 +130,7 @@ class AnnotatedTable:
         return dicts
 
     def to_plain_dict(self):
+        """for print use"""
         dicts = []
         for j in range(len(self.df[0])):
             d = {}
@@ -101,23 +142,14 @@ class AnnotatedTable:
             dicts.append(d)
         return dicts
 
-    def cells(self):
-        return self.df.copy()
-
-    def get_col_num(self):
-        return len(self.df)
-
-    def get_row_num(self):
-        if self.df is []:
-            return 0
-        return len(self.df[0])
-
 
 """
 from format of eg.
 [{"cust_country": "UK", "grade": 2, "outstanding_amt": 3600},
 {"cust_country": "USA", "grade": 2, "outstanding_amt": 5400}]
 """
+
+""" ----- annotated table util functions ----- """
 def load_from_dict(source):
     r = []
     for t in source:
@@ -147,7 +179,7 @@ def checker_function(actual, target, print_result=False):
     # store for each cell with format: {(x, y): [(0,0), (1,2)]}
     # TODO: reduce time complexity
     mapping = find_mapping(target, actual)
-    #print(mapping)
+    # print(mapping)
     if mapping is None:
         return None
 
@@ -232,7 +264,6 @@ def infer_all_possible_loc(prog, inputs, x, y):
     return prog.infer_cell(inputs, (x, y))
 
 
-
 """search for valid mapping for each cell in target table"""
 def find_mapping(target, actual):
     mapping = {}
@@ -245,6 +276,7 @@ def find_mapping(target, actual):
                 # print(mapping)
                 return None
     return mapping
+
 
 def search_values(table, cell):
     rlt = []
