@@ -1,5 +1,5 @@
 # Data Aggregator Synthesis
-
+We plan to develop a synthesizer that can generate programs for doing data aggregation work. 
 
 ## Set up
 
