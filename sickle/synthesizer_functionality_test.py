@@ -10,7 +10,7 @@ pd.set_option('expand_frame_repr', False)
 
 # small parameter config for tests
 test_config = {
-                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate"],
                 "filer_op": ["=="],
                 "constants": [3000],
                 "aggr_func": ["mean", "sum", "count", "max"],

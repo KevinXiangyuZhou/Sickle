@@ -168,6 +168,9 @@ class Table(Node):
 	def infer_computation(self, inputs):
 		return self.eval(inputs)
 
+	def infer_cell_2(self, inputs):
+		return self.eval(inputs)
+
 	def infer_cell(self, inputs, target):
 		return [target]
 
@@ -304,7 +307,7 @@ class Join(Node):
 			curr += infer_single_cell2(c)
 		return curr
 
-	def infer_cell_2(self, inputs, target):
+	def infer_cell_2(self, inputs):
 		pass
 
 
@@ -566,16 +569,12 @@ class GroupSummary(Node):
 			return self.eval(inputs)
 		if self.group_cols == HOLE:
 			table = self.q.infer_computation(inputs)
-			df = table.extract_values()
-			#target = get_fresh_col(df.columns)[0]
 			new_col = []
 			for i in range(table.get_row_num()):
 				new_col.append(TableCell(HOLE, HOLE))
 			table.add_column(new_col)
 			return table
 		table = select_columns(self.q.infer_computation(inputs), self.group_cols)
-		df = table.extract_values()
-		#target = get_fresh_col(df.columns)[0]
 		if self.aggr_func == HOLE:
 			new_col = []
 			for i in range(table.get_row_num()):
@@ -610,6 +609,76 @@ class GroupSummary(Node):
 		for c in pre_list:
 			curr += infer_single_cell(c, n)
 		return curr
+
+	def infer_cell_2(self, inputs):
+		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
+			# the program has all parameters
+			return self.eval(inputs)
+
+		table = self.q.infer_cell_2(inputs)
+		rownum = table.get_row_num()
+		colnum = table.get_col_num()
+		new_source = []
+		if self.group_cols == HOLE:
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:  # the new cell in new column can come from any cell
+						new_source[cid].append(TableCell(HOLE, HOLE))
+					else:  # other cells should remain in its previous pos
+						new_source[cid].append(table.get_cell(cid, rid))
+		elif self.aggr_func == HOLE:
+			for cid in range(colnum):  # group_cols + one new col
+				if cid not in self.group_cols and cid != colnum:
+					continue
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not be placed in group cols
+						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+					else:  # cid in self.group_cols:
+						# this column is group column
+						# its trace should be ArgOr of all cells in the column
+						trace = [(cid, y) for y in range(rownum)]
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					new_cell = TableCell(HOLE, args)
+					new_source[-1].append(new_cell)
+		else:
+			for cid in range(colnum):  # group_cols + one new col
+				if cid not in self.group_cols and cid != colnum:
+					continue
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not be placed in group cols
+						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
+					else:  # cid in self.group_cols:
+						# this column is group column
+						# its trace should be ArgOr of all cells in the column
+						trace = [(cid, y) for y in range(rownum)]
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, args)
+					new_source[-1].append(new_cell)
+		return AnnotatedTable(new_source, from_source=True)
 
 
 class GroupMutate(Node):
@@ -788,8 +857,8 @@ class GroupMutate(Node):
 				elif loc[0] in self.group_cols:
 					pre = [(loc[0], loc[1])]
 			if self.target_col != HOLE and loc[0] != self.target_col:
-				if self.group_cols is []:
-					pre = [(loc[0], loc[1])]
+				# should only be placed in its original position anyway
+				pre = [(loc[0], loc[1])]
 			return pre
 		n = self.q.infer_colnum(inputs)
 		# get a list of possible positions the target cell could be placed
@@ -807,27 +876,84 @@ class GroupMutate(Node):
 	# for each cell, infer a list of cell it could come from
 	# so traverse input cells infer positions for each cell, and accumulate the result into a list
 	# (not quite reasonable)
-	#
+	# whether the pruning described above effective (create intermediate table with cell trace)
 
-	def infer_cell_2(self, inputs, target):
+	def infer_cell_2(self, inputs):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.target_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
 
 		table = self.q.infer_cell_2(inputs)
+		rownum = table.get_row_num()
+		colnum = table.get_col_num()
+		new_source = []
 		if self.group_cols == HOLE:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE))
-			table.add_column(new_col)
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:  # the new cell in new column can come from any cell
+						new_source[cid].append(TableCell(HOLE, HOLE))
+					else:  # other cells should remain in its previous pos
+						new_source[cid].append(table.get_cell(cid, rid))
 		elif self.aggr_func == HOLE:
-			pass
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not come from cells in group cols
+						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+					elif cid in self.group_cols:
+						# this column is group column
+						# its trace should be ArgOr of all cells in the column
+						# trace = [(cid, y) for y in range(rownum)]
+						trace = [(cid, rid)]
+					else:
+						# other cells can only come from its previous pos
+						trace = [(cid, rid)]
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					new_cell = TableCell(HOLE, args)
+					new_source[cid].append(new_cell)
 		else:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
-			table.add_column(new_col)
-		return table
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not be placed in group cols
+						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+					elif cid in self.group_cols:
+						# this column is group column
+						# its trace should be ArgOr of all cells in the column
+						# trace = [(cid, y) for y in range(rownum)]
+						trace = [(cid, rid)]
+					else:
+						# other cells can only come from its previous pos
+						trace = [(cid, rid)]
+
+					if cid == colnum:
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
+					else:
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, args)
+					new_source[cid].append(new_cell)
+		return AnnotatedTable(new_source, from_source=True)
 
 
 class Mutate_Arithmetic(Node):
@@ -934,19 +1060,61 @@ class Mutate_Arithmetic(Node):
 			curr += infer_single_cell(c, n)
 		return curr
 
-	# do not know the column of the cell
-	def infer_cell_2(self, inputs, target):
-		def infer_single_cell(loc, n):
-			pre = [(loc[0], loc[1]), (n, loc[1])]
-			if self.cols != HOLE and loc[0] not in self.cols:
-					pre = [pre[0]]
-			return pre
-		pre_list = self.q.infer_cell(inputs, target)
-		curr = []
-		n = self.q.infer_colnum(inputs)
-		for c in pre_list:
-			curr += infer_single_cell(c, n)
-		return curr
+	def infer_cell_2(self, inputs):
+		if self.func != HOLE and self.cols != HOLE:
+			# the program has all parameters
+			return self.eval(inputs)
+
+		table = self.q.infer_cell_2(inputs)
+		rownum = table.get_row_num()
+		colnum = table.get_col_num()
+		new_source = []
+		if self.func == HOLE:
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not be placed in group cols
+						trace = [(x, rid) for x in range(colnum)]
+					else:
+						# other cells can only come from its previous pos
+						trace = [(cid, rid)]
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					new_cell = TableCell(HOLE, args)
+					new_source[-1].append(new_cell)
+		else:
+			for cid in range(colnum + 1):  # include new column
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						# but it should not be placed in group cols
+						trace = [(x, rid) for x in range(colnum)]
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, ExpNode(self.func, args))
+					else:
+						# other cells can only come from its previous pos
+						trace = [(cid, rid)]
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						new_cell = TableCell(HOLE, args)
+					new_source[-1].append(new_cell)
+		return AnnotatedTable(new_source, from_source=True)
 
 	def infer_colnum(self, inputs):
 		return self.q.infer_colnum(inputs) + 1

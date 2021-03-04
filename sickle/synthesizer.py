@@ -276,8 +276,18 @@ class Synthesizer(object):
                             # print(indent + pp.stmt_string())
                             if pp.is_abstract():
                                 print(indent + pp.stmt_string())
-                                check_one = True
-                                check_two = True
+                                check_zero = True
+                                check_one = False
+                                check_two = False
+                                # Prune 0
+                                if check_zero:
+                                    print(indent + "cell trace check 2")
+                                    if checker_function(pp.infer_cell_2(inputs), output) is None:
+                                        print(indent + "cell trace check 2 failed!")
+                                        print("=====Cell Trace 2 Check Result=====")
+                                        print(pp.infer_cell_2(inputs).to_dataframe())
+                                        continue
+
                                 # Prune 1
                                 if check_one:
                                     print(indent + "cell trace check")

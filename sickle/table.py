@@ -18,10 +18,16 @@ class AnnotatedTable:
     construct the table with the given dataset.
     """
 
-    def __init__(self, source):
+    def __init__(self, source, from_source=False):
         """load from a dictionary represented annotated table"""
         self.df = []  # stored as a two-level array with columns to be the inner level
-        self.load_from_dict(source)
+        if not from_source:
+            self.load_from_dict(source)
+        else:
+            self.load_from_source(source)
+
+    def load_from_source(self, source):
+        self.df = source.copy()
 
     # source should be a two-level array [[{val, exp}], [{val, exp}]]
     def load_from_dict(self, source):
@@ -141,14 +147,6 @@ from format of eg.
 """
 
 """ ----- annotated table util functions ----- """
-def load_from_dict(source):
-    r = []
-    for t in source:
-        for col_i in range(len(t)):
-            r.append({"value": t[attribute], "exp": None, "attribute": attribute})
-    return AnnotatedTable(r)
-
-
 def select_columns(att, cols):
     cell_list = []
     for col in cols:
@@ -288,7 +286,7 @@ def prune_by_row_column(mapping, target_df, print_result=False):
         print(mapping)
     # pruning each column
     # if two cells are in the same row in the output,
-    # then their source must be in the same row in actual
+    # then their source (mappings in actual table) must be in the same row in actual
     x = 0
     for col in target_df.columns:
         l = [mapping[(x, y)] for y in range(len(target_df))]

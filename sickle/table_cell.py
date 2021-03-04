@@ -196,6 +196,7 @@ class ArgOr:
         self.arguments = arguments  # a list of (note, coordinate_x, coordinate_y)
 
     def __eq__(self, other):
+        #TODO: chang eq logic to contains
         if not isinstance(other, ArgOr):
             return False
         return self.arguments == other.arguments
