@@ -135,7 +135,7 @@ class SynthesizerTest(unittest.TestCase):
 
     #@unittest.skip
     def test_run(self):
-        with open('../benchmark/tests/005.json', 'r') as filehandler:
+        with open('testbenches/005.json', 'r') as filehandler:
         #with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic

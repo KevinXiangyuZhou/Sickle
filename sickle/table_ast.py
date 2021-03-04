@@ -89,6 +89,8 @@ class Node(ABC):
 	def infer_colnum(self, inputs):
 		pass
 
+	def infer_rownum(self, inputs):
+		pass
 
 	def is_abstract(self):
 		"""Check if the subtree is abstract (contains any holes)"""
@@ -171,6 +173,9 @@ class Table(Node):
 
 	def infer_colnum(self, inputs):
 		return len(inputs[self.data_id][0])
+
+	def infer_rownum(self, inputs):
+		return len(inputs[self.data_id])
 
 
 class Join(Node):
@@ -272,13 +277,41 @@ class Join(Node):
 		return empty_table1
 
 	def infer_cell(self, inputs, target):
-		pass
+		# if loc[0] in [0, n1 - 1] (in table 1)
+		# next loc is (loc[0], row(t2) * loc[1] + i) for i in range(row(t2))
+		# if loc[0] in [n1, n2 - 1] (in table 2)
+		# next loc is (loc[0], row(t2) * i + loc[1]) for i in range(row(t1))
+		def infer_single_cell1(loc):
+			if loc[1] == "?":
+				return [(loc[0], loc[1])]
+			else:
+				return [(loc[0], r2 * loc[1] + i) for i in range(r2)]
 
-	# do not know the column of the cell
+		def infer_single_cell2(loc):
+			if loc[1] == "?":
+				return [(loc[0] + n1, loc[1])]
+			else:
+				return [(loc[0] + n1, r2 * i + loc[1]) for i in range(r1)]
+		n1 = self.q1.infer_colnum(inputs)
+		# n2 = self.q2.infer_colnum(inputs)
+		r1 = self.q1.infer_rownum(inputs)
+		r2 = self.q2.infer_rownum(inputs)
+		curr = []
+		for c in self.q1.infer_cell(inputs, target):
+			curr += infer_single_cell1(c)
+
+		for c in self.q2.infer_cell(inputs, target):
+			curr += infer_single_cell2(c)
+		return curr
+
 	def infer_cell_2(self, inputs, target):
 		pass
 
+
 	def infer_colnum(self, inputs):
+		return self.q1.infer_colnum(inputs) + self.q2.infer_column(inputs)
+
+	def infer_rownum(self, inputs):
 		return self.q1.infer_colnum(inputs) * self.q2.infer_column(inputs)
 
 
@@ -523,6 +556,10 @@ class GroupSummary(Node):
 		else:
 			return len(self.group_cols) + 1
 
+	# there is some inaccuracy in inferring the rownum of groupsum program
+	def infer_rownum(self, inputs):
+		return self.q.infer_rownum(inputs)
+
 	def infer_computation(self, inputs):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
 			# the program has all parameters
@@ -720,6 +757,9 @@ class GroupMutate(Node):
 	def infer_colnum(self, inputs):
 		return self.q.infer_colnum(inputs) + 1
 
+	def infer_rownum(self, inputs):
+		return self.q.infer_rownum(inputs)
+
 	def infer_computation(self, inputs):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.target_col != HOLE:
 			# the program has all parameters
@@ -752,11 +792,42 @@ class GroupMutate(Node):
 					pre = [(loc[0], loc[1])]
 			return pre
 		n = self.q.infer_colnum(inputs)
+		# get a list of possible positions the target cell could be placed
 		pre_list = self.q.infer_cell(inputs, target)
 		curr = []
 		for c in pre_list:
 			curr += infer_single_cell(c, n)
 		return curr
+
+	# a with-trace version of infer computation
+	# we infer the trace for each cell in the intermediate table
+	# the column should be stored in some key-value format where keys are unique within tables (no "?")
+	# 1. all holes. then
+	# 2. group_col = hole.
+	# for each cell, infer a list of cell it could come from
+	# so traverse input cells infer positions for each cell, and accumulate the result into a list
+	# (not quite reasonable)
+	#
+
+	def infer_cell_2(self, inputs, target):
+		if self.group_cols != HOLE and self.aggr_func != HOLE and self.target_col != HOLE:
+			# the program has all parameters
+			return self.eval(inputs)
+
+		table = self.q.infer_cell_2(inputs)
+		if self.group_cols == HOLE:
+			new_col = []
+			for i in range(table.get_row_num()):
+				new_col.append(TableCell(HOLE, HOLE))
+			table.add_column(new_col)
+		elif self.aggr_func == HOLE:
+			pass
+		else:
+			new_col = []
+			for i in range(table.get_row_num()):
+				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
+			table.add_column(new_col)
+		return table
 
 
 class Mutate_Arithmetic(Node):
@@ -880,6 +951,8 @@ class Mutate_Arithmetic(Node):
 	def infer_colnum(self, inputs):
 		return self.q.infer_colnum(inputs) + 1
 
+	def infer_rownum(self, inputs):
+		return self.q.infer_rownum(inputs)
 
 """ ----- utility functions -----"""
 def get_fresh_col(used_columns, n=1):

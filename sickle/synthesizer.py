@@ -276,7 +276,7 @@ class Synthesizer(object):
                             # print(indent + pp.stmt_string())
                             if pp.is_abstract():
                                 print(indent + pp.stmt_string())
-                                check_one = False
+                                check_one = True
                                 check_two = True
                                 # Prune 1
                                 if check_one:
