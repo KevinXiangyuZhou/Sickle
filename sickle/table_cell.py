@@ -21,8 +21,6 @@ class TableCell(object):
     def matches(self, other):
         # firstly, check this argument is a subset of other's argument
         # we assume that if argument is not None then operator should not be None
-        if self.exp == HOLE:
-            return True
         if self.exp is not None and other.exp is not None:
             if semantically_equiv(other.exp, self.exp):
                 return True
@@ -70,7 +68,7 @@ def semantically_equiv(exp1, exp2):
     elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
         return exp2.contains(exp1)
     elif isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
-        if exp1.op != exp2.op:
+        if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
             return False
         if HOLE in exp1.children:
             return True

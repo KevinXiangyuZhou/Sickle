@@ -33,5 +33,5 @@
     {"op": "group_mutate", "0": [0], "1": "sum", "2": 1},
     {"op": "group_mutate", "0": [], "1": "sum", "2": 1},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [2,3]}],
-  "run_time": {"annotated": 2.7493}
+  "run_time": {"annotated": 21.84}
 }
