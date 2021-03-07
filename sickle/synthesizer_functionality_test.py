@@ -151,7 +151,7 @@ class SynthesizerTest(unittest.TestCase):
                 # annotated_output = load_from_dict(output)
                 print("load error")
             candidates = []
-            for i in range(1, 6):
+            for i in range(1, 5):
                 candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, i)
                 if len(candidates) > 0:
                     break
@@ -162,6 +162,42 @@ class SynthesizerTest(unittest.TestCase):
                 print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
                 print()
             print(f"number of programs: {len(candidates)}")
+
+    @unittest.skip
+    def test_computation(self):
+        with open('testbenches/005.json', 'r') as filehandler:
+            # with open('testbenches/005.json', 'r') as filehandler:
+            data = json.load(filehandler)
+            # join with arithmetic
+            # description:
+            inputs = data["input_data"]
+            # output = data["output_data"]
+            compute1 = [{"0": 0},
+                {"op": "group_mutate", "0": [1, 2], "1": HOLE, "2": HOLE}
+              ]
+
+            compute2 = [{"0": 0},
+                        {"op": "group_sum", "0": [1], "1": HOLE, "2": HOLE},
+                        {"op": "group_mutate", "0": HOLE, "1": HOLE, "2": HOLE }
+                       ]
+
+            compute3 = [{"0": 0},
+                        {"op": "group_mutate", "0": [0], "1": HOLE, "2": HOLE},
+                        {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE}
+                        ]
+
+
+            p = dict_to_program(compute2)  # select computation
+            print(p.stmt_string())
+            compute_rlt = p.infer_cell_2(inputs)
+            print(p.infer_cell_2(inputs).to_dataframe())
+            expp = dict_to_program(data["exp_out"])
+            print(expp.eval(inputs).to_dataframe())
+            annotated_output = expp.eval(inputs)
+            # annotated_output = p.eval(inputs)
+
+            print(checker_function(compute_rlt, annotated_output))
+
 
 
     @unittest.skip

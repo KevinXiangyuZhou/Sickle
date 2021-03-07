@@ -63,36 +63,40 @@ def semantically_equiv(exp1, exp2):
     if exp1 == HOLE:
         return True
     # special case handler check for ArgOr objects
-    if isinstance(exp1, ArgOr) and isinstance(exp2, tuple):
-        return exp1.contains(exp2)
-    elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
-        return exp2.contains(exp1)
+    #if isinstance(exp1, ArgOr) and isinstance(exp2, tuple):
+    #    return exp1.contains(exp2)
+    #elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
+    #    return exp2.contains(exp1)
     elif isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
             return False
-        if HOLE in exp1.children:
-            return True
-        if len(exp1.children) < len(exp2.children):
-            return False
-        if exp2.children is []:
-            return True
+        # if HOLE in exp1.children:
+        #    return True
+        # if len(exp1.children) < len(exp2.children):
+        #     return False
+        # if exp2.children is []:
+        #     return True
+        used = []
         for child2 in exp2.children:
             # search through the children of exp1 and try to find some ExpNode
             # that has children that contains the child of exp2
-            # TODO: handle duplicate cases
             exist = False
-            for child1 in exp1.children:
-                if semantically_equiv(child1, child2):
+            for i in range(len(exp1.children)):
+                if semantically_equiv(exp1.children[i], child2) and i not in used:
                     exist = True
+                    used.append(i)
+                    break
             if not exist:
                 return False
         return True
     elif isinstance(exp1, list) and isinstance(exp2, list):
+        used = []
         for c2 in exp2:
             exist = False
-            for c1 in exp1:
-                if semantically_equiv(c1, c2):
+            for i in range(len(exp1)):
+                if semantically_equiv(exp1[i], c2) and i not in used:
                     exist = True
+                    used.append(i)
             if not exist:
                 return False
         return True
@@ -196,8 +200,9 @@ class ArgOr:
     def __eq__(self, other):
         #TODO: chang eq logic to contains
         if not isinstance(other, ArgOr):
-            return False
-        return self.arguments == other.arguments
+            return other in self.arguments
+        return [1 for i in self.arguments for j in other.arguments if i == j] != []
+        #return self.contains(other) or other.contains()
 
     def __repr__(self):
         return "ArgOr" + str(self.arguments)

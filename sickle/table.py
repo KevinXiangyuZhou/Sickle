@@ -195,10 +195,6 @@ def check_cell_trace(prog, inputs, target_t):
         for y in range(target_t.get_row_num()):
             # compress the expression, no need for structured trace in this test
             exp = target_t.get_cell(x, y).get_flat_args()
-            # Cost: x * y * n_exp * n_loc
-            # print("checking cell at: " + str((x, y)))
-            # print("arguments: " + str(exp))
-            # print("-----")
             for t in exp:
                 locs = infer_all_possible_loc(prog, inputs, t[1], t[2])
                 exist = False
@@ -264,7 +260,7 @@ def find_mapping(target, actual):
             mapping[(cid, rid)] = search_values(actual, target.get_cell(cid, rid))
             # let it fail here
             if not check_mappings(mapping):
-                # print(mapping)
+                print(mapping)
                 return None
     return mapping
 

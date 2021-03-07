@@ -620,15 +620,9 @@ class GroupSummary(Node):
 		colnum = table.get_col_num()
 		new_source = []
 		if self.group_cols == HOLE:
-			for cid in range(colnum + 1):  # include new column
-				new_source.append([])
-				for rid in range(rownum):
-					if cid == colnum:  # the new cell in new column can come from any cell
-						new_source[cid].append(TableCell(HOLE, HOLE))
-					else:  # other cells should remain in its previous pos
-						new_source[cid].append(table.get_cell(cid, rid))
+			return table
 		else:
-			for cid in range(colnum):  # group_cols + one new col
+			for cid in range(colnum + 1):  # group_cols + one new col
 				if cid not in self.group_cols and cid != colnum:
 					continue
 				new_source.append([])
@@ -677,6 +671,9 @@ class GroupMutate(Node):
 			except Exception as e:
 				print(f"[eval error in infer_domain] {e}")
 				return []
+			# special handler for cumsum
+			if aggr_func == "cumsum":
+				return [[]]
 			# use this list to store primitive table keys,
 			# use them to elimiate column combinations that contain no duplicates
 			table_keys = []
@@ -861,36 +858,31 @@ class GroupMutate(Node):
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
-		if self.group_cols == HOLE:
-			for cid in range(colnum + 1):  # include new column
-				new_source.append([])
-				for rid in range(rownum):
-					if cid == colnum:  # the new cell in new column can come from any cell
-						new_source[cid].append(TableCell(HOLE, HOLE))
-					else:  # other cells should remain in its previous pos
-						new_source[cid].append(table.get_cell(cid, rid))
-		else:
-			for cid in range(colnum + 1):  # include new column
-				new_source.append([])
-				for rid in range(rownum):
-					if cid == colnum:
-						# the new cell in new column can come from any cell
-						# but it should not be placed in group cols
+
+		for cid in range(colnum + 1):  # include new column
+			new_source.append([])
+			for rid in range(rownum):
+				if cid == colnum:
+					# the new cell in new column can come from any cell
+					# but it should not be placed in group cols
+					if self.group_cols == HOLE:
+						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+					else:
 						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+				else:
+					# # this column is group column or other cells can only come from its previous pos
+					trace = [(cid, rid)]
+				args = []
+				for c in trace:
+					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+						args += table.get_cell(c[0], c[1]).get_exp()
 					else:
-						# # this column is group column or other cells can only come from its previous pos
-						trace = [(cid, rid)]
-					args = []
-					for c in trace:
-						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-							args += table.get_cell(c[0], c[1]).get_exp()
-						else:
-							args += [table.get_cell(c[0], c[1]).get_exp()]
-					if cid == colnum:
-						new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
-					else:
-						new_cell = TableCell(HOLE, args)
-					new_source[cid].append(new_cell)
+						args += [table.get_cell(c[0], c[1]).get_exp()]
+				if cid == colnum:
+					new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
+				else:
+					new_cell = TableCell(HOLE, args)
+				new_source[cid].append(new_cell)
 		return AnnotatedTable(new_source, from_source=True)
 
 

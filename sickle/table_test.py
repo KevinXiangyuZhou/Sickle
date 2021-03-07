@@ -29,25 +29,135 @@ h = AnnotatedTable([{"value": 3, "argument": [(1, 0, 0), (5, 0, 1)], "operator":
 
 class TableTest(unittest.TestCase):
     # @unittest.skip
-    def test_table_cell_argor(self):
+    def test_table_cell_11(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        # assert false
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode("f1", [1, 2]),
+                    ExpNode("f1", [3, 4, 5])
+                ]))
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op=HOLE,
+                children=[
+                    ExpNode(HOLE, [1, 2, 3, 4, 5]),
+                    ExpNode(HOLE, [1, 2, 3, 4, 5])
+                ]))
+        print("---cell test 11---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+
+    # @unittest.skip
+    def test_table_cell_10(self):
+        # sum(f1(1, f2(3, 4)), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        # assert false
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode("f1", [1, ExpNode("f2", [3, 4])]),
+                    ExpNode("f1", [2, 3])
+                ]))
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op=HOLE,
+                children=[
+                    ExpNode(HOLE, [HOLE]),
+                    ExpNode("f1", [2, 3])
+                ]
+            ))
+        print("---cell test 10---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    # @unittest.skip
+    def test_table_cell_09(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        # assert false
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode("f1", [1, 3]),
+                    ExpNode("f1", [2, 3])
+                ]))
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op=HOLE,
+                children=[
+                    ExpNode("f1", [1, 2, 3]),
+                    ExpNode("sum", [2, 3])
+                ]
+            ))
+        print("---cell test 9---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    # @unittest.skip
+    def test_table_cell_08(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        # assert false
+        target_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="sum",
+                children=[
+                    ExpNode("f1", [1, 3]),
+                    ExpNode("f1", [2, 3])
+                ]))
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op="f1",
+                children=[
+                    ExpNode("sum", [1, 3]),
+                    ExpNode("sum", [2, 3])
+                    ]
+            ))
+        print("---cell test 8---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    # @unittest.skip
+    def test_table_cell_07argor(self):
         # sum(f1(1, 3), f1(2, 3))
         # f1(sum(1, 3), sum(2, 3))
         target_cell = TableCell(
             value=9,
-            exp=[ArgOr([(0, 1, 0), (0, 1, 2), (0, 1, 3)])],
-            attribute="a")
+            exp=[ArgOr([(0, 1, 0), (0, 1, 2), (0, 1, 3)])])
 
         output_cell = TableCell(
             value=9,
-            exp=[ArgOr([(0, 1, 0), (0, 1, 2), (0, 1, 3)])],
-            attribute="a")
+            exp=[ArgOr([(0, 1, 0), (0, 1, 3)])])
         print("---cell test 7---")
         print(output_cell.to_stmt())
         print(target_cell.to_stmt())
         print(target_cell.matches(output_cell))
 
     #@unittest.skip
-    def test_table_cell_different_level(self):
+    def test_table_cell_06different_level(self):
         # sum(f1(1, 3), f1(2, 3))
         # f1(sum(1, 3), sum(2, 3))
         target_cell = TableCell(
@@ -56,8 +166,7 @@ class TableTest(unittest.TestCase):
                 op="lambda x, y: x + y",
                 children=[
                     (0, 1, 0), (0, 1, 2), (0, 1, 3)
-                ])],
-            attribute="a")
+                ])])
 
         output_cell = TableCell(
             value=9,
@@ -65,16 +174,15 @@ class TableTest(unittest.TestCase):
                     op="lambda x, y: x + y",
                     children=[
                         (0, 1, 0), (0, 1, 2), (0, 1, 3)]
-                    ),
-            attribute="a")
+                    ))
         print("---cell test 6---")
         print(output_cell.get_exp().to_dict())
         print(output_cell.to_stmt())
         print(target_cell.to_stmt())
         print(target_cell.matches(output_cell))
 
-    @unittest.skip
-    def test_table_cell_equiv_children_containment(self):
+    #@unittest.skip
+    def test_table_cell_01equiv_children_containment(self):
         # sum(f1(1, 3), f1(2, 3))
         # f1(sum(1, 3), sum(2, 3))
         target_cell = TableCell(
@@ -84,8 +192,7 @@ class TableTest(unittest.TestCase):
                 children=[
                     ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2)]),
                     ExpNode(op="sum", children=[(0, 2, 1), (0, 2, 2)])
-                ]),
-            attribute="a")
+                ]))
 
         output_cell = TableCell(
             value=9,
@@ -94,15 +201,14 @@ class TableTest(unittest.TestCase):
                 children=[
                     ExpNode(op="sum", children=[(0, 3, 1), (0, 1, 1), (0, 1, 2)]),
                     ExpNode(op="sum", children=[(0, 2, 1), (0, 2, 2)])
-                ]),
-            attribute="a")
+                ]))
         print("---cell test 1---")
         print(output_cell.to_stmt())
         print(target_cell.to_stmt())
         print(target_cell.matches(output_cell))
 
-    @unittest.skip
-    def test_table_cell_equiv_mixed_argument_type(self):
+    #@unittest.skip
+    def test_table_cell_02equiv_mixed_argument_type(self):
         # f1(sum(1, 3), 2))
         target_cell = TableCell(
             value=9,
@@ -110,8 +216,7 @@ class TableTest(unittest.TestCase):
                 op="lambda x, y: x / y",
                 children=[
                     ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2)]),
-                    (0, 2, 2)]),
-            attribute="a")
+                    (0, 2, 2)]))
 
         # f1(sum(1, 3, 4), 1, 2)
         output_cell = TableCell(
@@ -121,8 +226,7 @@ class TableTest(unittest.TestCase):
                 children=[
                     ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2), (0, 1, 3)]),
                     (0, 2, 1),
-                    (0, 2, 2)]),
-            attribute="a")
+                    (0, 2, 2)]))
 
         print("---cell test 2---")
         print(target_cell.matches(output_cell))
@@ -130,9 +234,8 @@ class TableTest(unittest.TestCase):
         print(output_cell.get_exp().to_flat_list())
 
     #@unittest.skip
-    def test_table_cell_equiv_inconsistent_level(self):
+    def test_table_cell_03equiv_inconsistent_level(self):
         # sum(f1(1, 3), f1(2, 3))
-        # f1(sum(1, 3), sum(2, 3))
         target_cell = TableCell(
             value=9,
             exp=ExpNode(
@@ -141,8 +244,7 @@ class TableTest(unittest.TestCase):
                     ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
                     ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
                     (0, 3, 0)
-                ]),
-            attribute="a")
+                ]))
 
         output_cell = TableCell(
             value=9,
@@ -153,16 +255,14 @@ class TableTest(unittest.TestCase):
                     ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2),
                                                                ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)])]),
                     (0, 3, 0)
-                ]),
-            attribute="a")
+                ]))
         print("---cell test 3---")
         print(target_cell.matches(output_cell))
         print(output_cell.get_exp().to_flat_list())
 
-    @unittest.skip
-    def test_table_cell_equiv_more_arguments(self):
+    #@unittest.skip
+    def test_table_cell_04equiv_more_arguments(self):
         # sum(f1(1, 3), f1(2, 3))
-        # f1(sum(1, 3), sum(2, 3))
         target_cell = TableCell(
             value=9,
             exp=ExpNode(
@@ -171,8 +271,7 @@ class TableTest(unittest.TestCase):
                     ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
                     ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
                     (0, 3, 0)
-                ]),
-            attribute="a")
+                ]))
 
         output_cell = TableCell(
             value=9,
@@ -185,15 +284,14 @@ class TableTest(unittest.TestCase):
                     ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
                     ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
                     (0, 3, 0)
-                ]),
-            attribute="a")
+                ]))
         print("---cell test 4---")
         print(target_cell.matches(output_cell))
 
-    @unittest.skip
-    def test_table_cell_equiv_empty_lists(self):
+    #@unittest.skip
+    def test_table_cell_05equiv_empty_lists(self):
         # sum(f1(1, 3), f1(2, 3))
-        # f1(sum(1, 3), sum(2, 3))
+        # assert false
         target_cell = TableCell(
             value=9,
             exp=ExpNode(
@@ -202,15 +300,13 @@ class TableTest(unittest.TestCase):
                     ExpNode(op="lambda x, y: x + y", children=[(0, 1, 1), (0, 1, 2)]),
                     ExpNode(op="lambda x, y: x + y", children=[(0, 2, 1), (0, 2, 2)]),
                     (0, 3, 0)
-                ]),
-            attribute="a")
+                ]))
 
         output_cell = TableCell(
             value=9,
             exp=ExpNode(
                 op="sum",
-                children=[]),
-            attribute="a")
+                children=[]))
         print("---cell test 5---")
         print(target_cell.matches(output_cell))
 
