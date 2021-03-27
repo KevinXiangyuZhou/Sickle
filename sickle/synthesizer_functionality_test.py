@@ -133,9 +133,9 @@ class SynthesizerTest(unittest.TestCase):
             #print(rlt)
 
 
-    #@unittest.skip
+    # @unittest.skip
     def test_run(self):
-        with open('testbenches/009.json', 'r') as filehandler:
+        with open('testbenches/010.json', 'r') as filehandler:
         #with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
@@ -150,22 +150,56 @@ class SynthesizerTest(unittest.TestCase):
             else:
                 # annotated_output = load_from_dict(output)
                 print("load error")
-            candidates = []
-            for i in range(1, 5):
-                candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, i)
-                if len(candidates) > 0:
-                    break
-            for p in candidates:
-                # print(alignment_result)
-                print(p.stmt_string())
-                print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
-                print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
-                print()
-            print(f"number of programs: {len(candidates)}")
+
+            permutation_test = True  # edit this for permute user outputs
+            columns = [i for i in range(annotated_output.get_col_num())]
+            permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
+            print(permutation_list)  # verify permutations of column ids
+            output_candidates = [select_columns(annotated_output, selected) for selected in permutation_list]
+            for i in range(len(output_candidates)):
+                att_out = output_candidates[i]
+                print("=======output candidates " + str(i) + "==========")
+                print(att_out.to_dataframe())
+            print("\n\n\n")
+            if permutation_test:
+                i = 4
+                att_out = output_candidates[i]
+                print("=======output candidates " + str(i) + "==========")
+                print(att_out.to_dataframe())
+                print("===============================")
+                candidates = []
+                for i in range(1, 5):
+                    candidates = Synthesizer(test_config).enumerative_synthesis(inputs, att_out, i)
+                    if len(candidates) > 0:
+                        break
+                print("=======output candidates " + str(i) + "==========")
+                print(att_out.to_dataframe())
+                for p in candidates:
+                    # print(alignment_result)
+                    print(p.stmt_string())
+                    print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
+                    print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
+                    print()
+                print(f"number of programs: {len(candidates)}")
+                print("\n\n\n\n\n\n")
+                print("------------------------------------------------------------------------------------------")
+            else:
+                candidates = []
+                for i in range(1, 5):
+                    candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, i)
+                    if len(candidates) > 0:
+                        break
+                for p in candidates:
+                    # print(alignment_result)
+                    print(p.stmt_string())
+                    print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
+                    print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
+                    print()
+                print(f"number of programs: {len(candidates)}")
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/005.json', 'r') as filehandler:
+        with open('testbenches/006.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
@@ -186,8 +220,15 @@ class SynthesizerTest(unittest.TestCase):
                         {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE}
                         ]
 
+            compute09 = [{"0": 0},
+                         {"op": "group_mutate", "0": [1, 2], "1": HOLE, "2": HOLE},
+                         {"op": "group_mutate", "0": HOLE, "1": HOLE, "2": HOLE},
+                         {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE},
+                         {"op": "group_sum", "0": HOLE, "1": HOLE, "2": HOLE}
+                        ]
 
-            p = dict_to_program(compute2)  # select computation
+
+            p = dict_to_program(compute09)  # select computation
             print(p.stmt_string())
             compute_rlt = p.infer_cell_2(inputs)
             print(p.infer_cell_2(inputs).to_dataframe())

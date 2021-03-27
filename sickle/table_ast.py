@@ -7,6 +7,7 @@ from table import *
 from tabulate import tabulate
 from table_cell import *
 from table_cell_structureless import *
+from configuration import config
 
 
 # two special symbols used in the language
@@ -308,14 +309,35 @@ class Join(Node):
 		return curr
 
 	def infer_cell_2(self, inputs):
-		pass
+		# a cross product of computed intermediate of the two joined programs
+		table1 = self.q1.infer_cell_2(inputs)
+		table2 = self.q2.infer_cell_2(inputs)
+
+		# two empty table we will build and merge together
+		empty_table1 = AnnotatedTable([])
+		empty_table2 = AnnotatedTable([])
+		# build the table by first replicating table2 by row(table1) times
+		# (add the result as new rows; also added one by one due to implementation decision)
+		for i in range(table1.get_row_num()):
+			# repeat all rows
+			for j in range(table2.get_row_num()):
+				empty_table2.add_row(table2.get_row(j))
+
+		# then replicate each row of table1 by row(table2) times
+		for i in range(table1.get_row_num()):
+			# each row is repeated by row(table2) times
+			for j in range(table2.get_row_num()):
+				empty_table1.add_row(table1.get_row(i))
+		for i in range(empty_table2.get_col_num()):
+			empty_table1.add_column(empty_table2.get_column(i))
+		return empty_table1
 
 
 	def infer_colnum(self, inputs):
-		return self.q1.infer_colnum(inputs) + self.q2.infer_column(inputs)
+		return self.q1.infer_colnum(inputs) + self.q2.infer_colnum(inputs)
 
 	def infer_rownum(self, inputs):
-		return self.q1.infer_colnum(inputs) * self.q2.infer_column(inputs)
+		return self.q1.infer_colnum(inputs) * self.q2.infer_colnum(inputs)
 
 
 class Select(Node):
@@ -620,7 +642,30 @@ class GroupSummary(Node):
 		colnum = table.get_col_num()
 		new_source = []
 		if self.group_cols == HOLE:
-			return table
+			for cid in range(colnum + 1):  # group_cols + one new col
+				new_source.append([])
+				for rid in range(rownum):
+					if cid == colnum:
+						# the new cell in new column can come from any cell
+						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+					else:  # cid in self.group_cols:
+						# this column is group column
+						# its trace should be ArgOr of all cells in the column
+						trace = [(cid, y) for y in range(rownum)]
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					if cid == colnum:
+						func = self.aggr_func
+						# if self.aggr_func == HOLE:
+						#	 func = ArgOr(config["aggr_func"])
+						new_cell = TableCell(HOLE, HOLE)
+					else:
+						new_cell = TableCell(HOLE, args)
+					new_source[-1].append(new_cell)
 		else:
 			for cid in range(colnum + 1):  # group_cols + one new col
 				if cid not in self.group_cols and cid != colnum:
@@ -642,7 +687,10 @@ class GroupSummary(Node):
 						else:
 							args += [table.get_cell(c[0], c[1]).get_exp()]
 					if cid == colnum:
-						new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
+						func = self.aggr_func
+						# if self.aggr_func == HOLE:
+						# 	func = ArgOr(config["aggr_func"])
+						new_cell = TableCell(HOLE, ExpNode(func, args))
 					else:
 						new_cell = TableCell(HOLE, args)
 					new_source[-1].append(new_cell)
@@ -671,9 +719,6 @@ class GroupMutate(Node):
 			except Exception as e:
 				print(f"[eval error in infer_domain] {e}")
 				return []
-			# special handler for cumsum
-			if aggr_func == "cumsum":
-				return [[]]
 			# use this list to store primitive table keys,
 			# use them to elimiate column combinations that contain no duplicates
 			table_keys = []
@@ -879,7 +924,13 @@ class GroupMutate(Node):
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
 				if cid == colnum:
-					new_cell = TableCell(HOLE, ExpNode(self.aggr_func, args))
+					func = self.aggr_func
+					# if self.aggr_func == HOLE:
+					# 	func = ArgOr(config["mutate_func"])
+					if self.group_cols == HOLE:
+						new_cell = TableCell(HOLE, HOLE)
+					else:
+						new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
 				new_source[cid].append(new_cell)
@@ -1005,7 +1056,6 @@ class Mutate_Arithmetic(Node):
 			for rid in range(rownum):
 				if cid == colnum:
 					# the new cell in new column can come from any cell
-					# but it should not be placed in group cols
 					trace = [(x, rid) for x in range(colnum)]
 				else:
 					# other cells can only come from its previous pos
@@ -1017,7 +1067,10 @@ class Mutate_Arithmetic(Node):
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
 				if cid == colnum:
-					new_cell = TableCell(HOLE, ExpNode(self.func, args))
+					func = self.func
+					#if self.func == HOLE:
+					#	func = ArgOr(config["mutate_function"])
+					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
 				new_source[-1].append(new_cell)
@@ -1088,16 +1141,16 @@ def round_df(res):
 
 def generate_direct_arguments(df, data_id=None):
 	"""generate direct argument mapping for the given df
-	returned argument format eg. {0: {'COL1':[(0,1,0), (0,1,1)]}}"""
+	returned argument format eg. {0: {'COL1':[(0,1,0), (0,1,1)]}}
+	3/25 update format eg.{0: {'COL1':['0_a0', 'COL2_0']}}"""
 	arguments = {}
 	for index in df.index.tolist():
 		arguments[index] = {}
 		for col_name in df.to_dict().keys():
 			arguments[index][col_name] = []
 			if data_id is not None:
-				arguments[index][col_name].append((data_id,
-												   get_col_index_by_name(df, col_name),
-												   index))
+				arguments[index][col_name]\
+					.append(f"{data_id}_{get_alphabet(get_col_index_by_name(df, col_name))}{index}")
 			else:
 				arguments[index][col_name].append((get_col_index_by_name(df, col_name), index))  # only coordinate
 	return arguments
@@ -1171,6 +1224,13 @@ def get_index_by_rownum(df, rid):
 
 def get_value_by_row_col(df, rid, cid):
 	return df.iloc[rid][df.columns[cid]]
+
+def get_alphabet(i):
+	alphabet_list = ['a', 'b', 'c', 'd', 'e', 'f',
+					 'g', 'h', 'i', 'j', 'k', 'l',
+					 'm', 'n', 'o', 'p', 'q', 'r',
+					 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+	return alphabet_list[i]
 
 
 def dict_to_program(l):

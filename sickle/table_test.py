@@ -29,6 +29,28 @@ h = AnnotatedTable([{"value": 3, "argument": [(1, 0, 0), (5, 0, 1)], "operator":
 
 class TableTest(unittest.TestCase):
     # @unittest.skip
+    def test_table_cell_12(self):
+        # sum(f1(1, 3), f1(2, 3))
+        # f1(sum(1, 3), sum(2, 3))
+        # assert false
+        target_cell = TableCell(
+            value=9,
+            exp=[ArgOr[1, 2, 3]])
+
+        output_cell = TableCell(
+            value=9,
+            exp=ExpNode(
+                op=HOLE,
+                children=[
+                    ExpNode(HOLE, [1, 2, 3, 4, 5]),
+                    ExpNode(HOLE, [1, 2, 3, 4, 5])
+                ]))
+        print("---cell test 12---")
+        print(output_cell.to_stmt())
+        print(target_cell.to_stmt())
+        print(target_cell.matches(output_cell))
+
+    # @unittest.skip
     def test_table_cell_11(self):
         # sum(f1(1, 3), f1(2, 3))
         # f1(sum(1, 3), sum(2, 3))

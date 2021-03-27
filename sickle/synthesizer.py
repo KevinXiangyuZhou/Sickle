@@ -6,7 +6,7 @@ import pandas as pd
 from enum_strategies import *
 from table import *
 import time
-from table_cell import *
+# from table_cell import *
 
 from table_ast import (HOLE, Node, Table, Select, Filter, GroupSummary,
                        GroupMutate, Mutate_Arithmetic, Join)
@@ -280,7 +280,7 @@ class Synthesizer(object):
                                 check_one = False
                                 check_two = False
 
-                                # Prune 1
+                                # Check 1
                                 if check_one:
                                     print(indent + "cell trace check")
                                     if not check_cell_trace(pp, inputs, output):
@@ -288,18 +288,19 @@ class Synthesizer(object):
                                         # print(pp.infer_computation(inputs).to_dataframe())
                                         continue
 
-                                # Prune 0
+                                # Check 0
                                 if check_zero:
                                     print(indent + "cell trace check 2")
                                     if checker_function(pp.infer_cell_2(inputs), output) is None:
                                         print(indent + "cell trace check 2 failed!")
                                         print("=====Cell Trace 2 Check Result=====")
-                                        # print(pp.infer_cell_2(inputs).to_dataframe())
+                                        print(pp.infer_cell_2(inputs).to_dataframe())
+                                        print("\n\n")
                                         continue
                                     else:
                                         print("***************passed******************************************")
-                                        # print(pp.infer_cell_2(inputs).to_dataframe())
-                                # Prune 2
+                                        #print(pp.infer_cell_2(inputs).to_dataframe())
+                                # Check 2
                                 if check_two:
                                     print(indent + "computation check")
                                     if checker_function(pp.infer_computation(inputs), output) is None:

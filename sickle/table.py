@@ -172,14 +172,17 @@ def checker_function(actual, target, print_result=False):
     mapping = find_mapping(target, actual)
     # print(mapping)
     if mapping is None:
+        # print("##########PRUNED BY MAPPING################")
         return None
 
+    s1_mapping = mapping
     # use column and row to remove infeasible mappings
     target_df = target.extract_values()
-    prune_by_row_column(mapping, target_df, print_result)
+    prune_by_row_column(mapping, target_df, print_result=True)
 
     # search for possible mappings
     # stop whenever we find on feasible mapping, and return the mapping
+    # if s1_mapping != mapping:
     if not check_mappings(mapping):
         return None
 
@@ -187,7 +190,12 @@ def checker_function(actual, target, print_result=False):
     # use dfs to search for the valid mapping
     # print(mapping)
     keys = [*mapping.keys()]
-    return extract_mappings(mapping, keys)
+    final_mapping = extract_mappings(mapping, keys)
+    if final_mapping is None:
+        print("########PRUNED BY RELATIONS####################################################")
+        print("failed mapping: ")
+        print(mapping)
+    return final_mapping
 
 
 def check_cell_trace(prog, inputs, target_t):
@@ -196,13 +204,25 @@ def check_cell_trace(prog, inputs, target_t):
             # compress the expression, no need for structured trace in this test
             exp = target_t.get_cell(x, y).get_flat_args()
             for t in exp:
-                locs = infer_all_possible_loc(prog, inputs, t[1], t[2])
+                # if exp is argor
+                # then if there is a coord in argor argument could be placed at (x,y), we pass
                 exist = False
-                # print("t: " + t + "locs: " + str(locs))
-                # print("check t: " + str(t) + "with possible locs: " + str(locs))
-                for loc in locs:
-                    if loc[0] == x and (loc[1] == y or loc[1] == "?"):
-                        exist = True
+                locs = []
+                if isinstance(t, ArgOr):
+                    for c in t.to_flat_list():
+                        locs += infer_all_possible_loc(prog, inputs, c[1], c[2])
+                    for loc in locs:
+                        if loc[0] == x and (loc[1] == y or loc[1] == "?"):
+                            exist = True
+                            break
+                else:
+                    locs = infer_all_possible_loc(prog, inputs, t[1], t[2])
+                    # print("t: " + t + "locs: " + str(locs))
+                    # print("check t: " + str(t) + "with possible locs: " + str(locs))
+                    for loc in locs:
+                        if loc[0] == x and (loc[1] == y or loc[1] == "?"):
+                            exist = True
+                            break
                 if not exist:
                     # print out log on failure
                     print("=====Cell Check Result=====")
@@ -260,7 +280,9 @@ def find_mapping(target, actual):
             mapping[(cid, rid)] = search_values(actual, target.get_cell(cid, rid))
             # let it fail here
             if not check_mappings(mapping):
-                print(mapping)
+                print("##########PRUNED BY MAPPING################")
+                print("failed to find mapping for:")
+                print([k for k in mapping.keys() if mapping[k] == []])
                 return None
     return mapping
 
@@ -282,9 +304,8 @@ def prune_by_row_column(mapping, target_df, print_result=False):
         print(mapping)
     # pruning each column
     # if two cells are in the same row in the output,
-    # then their source (mappings in actual table) must be in the same row in actual
-    x = 0
-    for col in target_df.columns:
+    # then their source (matching cells in actual table) must be in the same row in actual
+    for x in range(len(target_df.columns)):
         l = [mapping[(x, y)] for y in range(len(target_df))]
         smallest = find_smallest_array(l)
         # get list of x value in the smallest mapping
@@ -292,7 +313,6 @@ def prune_by_row_column(mapping, target_df, print_result=False):
         # y_list = [b for (a, b) in smallest]
         for y in range(len(target_df)):
             mapping[(x, y)] = [t for t in mapping[(x, y)] if t[0] in x_list]
-        x += 1
     if print_result:
         print("prune by col")
         print(mapping)
@@ -313,26 +333,41 @@ def prune_by_row_column(mapping, target_df, print_result=False):
 def extract_mappings(mappings, keys):
     rlt = {}
     closed = []
-    search_mappings(rlt, 0, mappings, keys, closed)
+    open = []
+    search_mappings(rlt, 0, mappings, keys, closed, open)
     # print(mappings)
     if check_valid_mapping(rlt, keys):
         return rlt
     else:
+        print("failed extracted mapping result:")
+        print(rlt)
         return None
 
 # helper function for search mappings
-def search_mappings(rlt, index, mappings, keys, closed):
+def search_mappings(rlt, index, mappings, keys, closed, open):
     if index == len(keys):
         # we are done searching for mappings
         # print(rlt)
-        return False
+        return True
     else:
         # iterate over maps
         coord = keys[index]
         # fail if there is no choice for current key
         # print([m for m in mappings[coord] if m not in closed])
+        open += mappings[coord]
+        #open.union(set(mappings[coord]))
+        #print(open)
         if not [m for m in mappings[coord] if m not in closed]:
-            return True
+            # we cannot find any possible mappings for keys[index]
+            #print(coord)
+            if not [v for v in closed if v not in open]:
+            # if not [m for m in mappings[coord] if m not in open]:
+                # there is no possibility for this coord to find a valid mapping
+                #print(open)
+                #print("!")
+                return True
+            return False
+
         # iterate over mappings[coord]
         for i in range(len(mappings[coord])):
             if coord not in rlt:
@@ -340,19 +375,22 @@ def search_mappings(rlt, index, mappings, keys, closed):
             if mappings[coord][i] not in closed:
                 closed.append(mappings[coord][i])
                 rlt[coord].append(mappings[coord][i])
-                # print(rlt)
-                found = search_mappings(rlt, index + 1, mappings, keys, closed)
-                if found:
-                    return True
-                if check_mappings(rlt):
+                #print(rlt)
+                if check_valid_mapping(rlt, keys):
                     # if we found a valid mapping
+                    return True
+                found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+                if found:
                     return True
                 rlt[coord].pop()
                 closed.pop()
+        return False
 
 
 def check_valid_mapping(mapping, keys):
-    if [*mapping.keys()] != keys:
+    if list(mapping.keys()) != keys:
+        # print(list(mapping.keys()))
+        # print(keys)
         return False
     return check_mappings(mapping)
 
@@ -360,9 +398,11 @@ def check_valid_mapping(mapping, keys):
 # check if there is no empty list in mappings
 def check_mappings(mapping):
     if len(mapping) == 0:
+        #print("!!")
         return False
     for k in mapping:
         if len(mapping[k]) == 0:
+            #print("!!!")
             return False
     return True
 

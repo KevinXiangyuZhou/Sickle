@@ -2,6 +2,7 @@
 this class represents a cell stored in the data frame with its trace
 """
 import copy
+from configuration import config
 
 # two special symbols used in the language
 HOLE = "_?_"
@@ -37,20 +38,20 @@ class TableCell(object):
     def to_stmt(self):
         # if not isinstance(self.exp, ExpNode):
         #    return f"<{self.value}, {None}>"
-        return f"<{self.value}, {self.exp}>"
+        return f"{self.exp}"
 
     def get_flat_args(self):
         res = []
         if isinstance(self.exp, list):
             for e in self.exp:
-                if isinstance(e, ExpNode) or isinstance(e, ArgOr):
+                if isinstance(e, ExpNode):
                     res += e.to_flat_list()
                 else:
                     res += [e]
         else:
             # print(self.exp)
             res = self.exp.to_flat_list()
-        return set(res)
+        return res
 
 
 EXP_OPS = ["sum", "average", "cumsum", "or"]
@@ -68,12 +69,12 @@ def semantically_equiv(exp1, exp2):
     #elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
     #    return exp2.contains(exp1)
     elif isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
+        #if exp1.op != exp2.op:
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
+            #TODO: config
             return False
-        # if HOLE in exp1.children:
-        #    return True
-        # if len(exp1.children) < len(exp2.children):
-        #     return False
+        if HOLE in exp1.children:
+            return True
         # if exp2.children is []:
         #     return True
         used = []
@@ -149,8 +150,8 @@ class ExpNode(object):
             for e in children:
                 if isinstance(e, ExpNode):
                     add_leaves(e.children, out)
-                elif isinstance(e, ArgOr):
-                    out += e.to_flat_list()
+                # isinstance(e, ArgOr):
+                #    out += e.to_flat_list()
                 else:
                     out += [e]
         res = self.children
@@ -185,8 +186,7 @@ if __name__ == '__main__':
                     children=[
                         ExpNode(op="sum", children=[(0, 1, 1), (0, 1, 2)]),
                         ExpNode(op="sum", children=[(0, 2, 1), (0, 2, 2)])
-                    ]),
-            attribute="a")
+                    ]))
     print(cell.to_dict())
 
 
