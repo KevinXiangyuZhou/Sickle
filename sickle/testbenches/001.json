@@ -25,10 +25,5 @@
     {"depno": 30, "mean_sal": 1566.67}
   ],
   "url": "https://oracle-base.com/articles/misc/analytic-functions",
-  "correct_output": [
-    {"depno": 10, "mean_sal": 2916.67},
-    {"depno": 20, "mean_sal": 2175.00},
-    {"depno": 30, "mean_sal": 1566.67}
-  ],
   "exp_out": [{"0": 0}, {"op": "group_sum", "0": [1], "1": "mean", "2": 2}]
 }

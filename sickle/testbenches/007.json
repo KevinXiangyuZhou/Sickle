@@ -24,6 +24,4 @@
     {"amount": 1450, "circle_id": 3, "cumsum_amount": 5950}
   ],
   "exp_out": [{"0": 0}, {"op": "group_mutate", "0": [], "1": "cumsum", "2": 0}]
-
-
 }
