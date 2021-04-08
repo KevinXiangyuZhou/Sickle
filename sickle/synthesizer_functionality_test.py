@@ -117,6 +117,11 @@ td = AnnotatedTable([
     {"value": 1566.67, "argument": [(1600, 2, 1)], "operator": "", "attribute": "mean_sal"}
     ])
 """
+permutation_test = True  # edit this for permute user outputs
+level_limit = 4
+time_limit = 1200
+solution_limit = 1
+random_test = False
 
 class SynthesizerTest(unittest.TestCase):
     @unittest.skip
@@ -136,26 +141,21 @@ class SynthesizerTest(unittest.TestCase):
 
     # @unittest.skip
     def test_run(self):
-        with open('testbenches/010.json', 'r') as filehandler:
-        #with open('testbenches/005.json', 'r') as filehandler:
+        with open('testbenches/009.json', 'r') as filehandler:
             data = json.load(filehandler)
-            # join with arithmetic
             # description:
             inputs = data["input_data"]
-            #output = data["output_data"]
 
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
                 print(p.eval(inputs).to_dataframe())
                 annotated_output = p.eval(inputs)
             else:
-                # annotated_output = load_from_dict(output)
                 print("load error")
 
-            permutation_test = True  # edit this for permute user outputs
             columns = [i for i in range(annotated_output.get_col_num())]
             permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
-            print(permutation_list)  # verify permutations of column ids
+            #print(permutation_list)  # verify permutations of column ids
             output_candidates = [select_columns(annotated_output, selected) for selected in permutation_list]
             for i in range(len(output_candidates)):
                 att_out = output_candidates[i]
@@ -163,44 +163,28 @@ class SynthesizerTest(unittest.TestCase):
                 print(att_out.to_dataframe())
             print("\n\n\n")
             if permutation_test:
-                i = 4
-                att_out = output_candidates[i]
-                print("=======output candidates " + str(i) + "==========")
-                print(att_out.to_dataframe())
+                sample_id = 4
+                annotated_output = output_candidates[sample_id]
+                print("=======output candidates " + str(sample_id) + "==========")
+                print(annotated_output.to_dataframe())
                 print("===============================")
-                candidates = []
-                for i in range(1, 5):
-                    candidates = Synthesizer(test_config).enumerative_synthesis(inputs, att_out, i)
-                    if len(candidates) > 0:
-                        break
-                print("=======output candidates " + str(i) + "==========")
-                print(att_out.to_dataframe())
-                for p in candidates:
-                    # print(alignment_result)
-                    print(p.stmt_string())
-                    print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
-                    print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
-                    print()
-                print(f"number of programs: {len(candidates)}")
-                print("\n\n\n\n\n\n")
-                print("------------------------------------------------------------------------------------------")
-            else:
-                candidates = []
-                for i in range(1, 5):
-                    candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, i)
-                    if len(candidates) > 0:
-                        break
-                for p in candidates:
-                    # print(alignment_result)
-                    print(p.stmt_string())
-                    print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
-                    print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
-                    print()
-                print(f"number of programs: {len(candidates)}")
+            candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, level_limit, solution_limit=1)
+
+            print("=======output candidates " + str(i) + "==========")
+            print(annotated_output.to_dataframe())
+            for p in candidates:
+                # print(alignment_result)
+                print(p.stmt_string())
+                print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
+                print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
+                print()
+            print(f"number of programs: {len(candidates)}")
+            print("\n\n\n\n\n\n")
+            print("------------------------------------------------------------------------------------------")
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/006.json', 'r') as filehandler:
+        with open('testbenches/002.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic

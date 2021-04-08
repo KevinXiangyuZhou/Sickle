@@ -42,16 +42,29 @@ class TableCell(object):
 
     def get_flat_args(self):
         res = []
+        #print("!!!")
+        #print(self.exp)
         if isinstance(self.exp, list):
             for e in self.exp:
-                if isinstance(e, ExpNode):
+                if isinstance(e, ExpNode) or isinstance(e, ArgOr):
                     res += e.to_flat_list()
+                    #print(res)
                 else:
                     res += [e]
         else:
             # print(self.exp)
             res = self.exp.to_flat_list()
-        return res
+        return set(res)
+
+    def get_flat_ops(self):
+        res = []
+        if isinstance(self.exp, list):
+            for e in self.exp:
+                if isinstance(e, ExpNode):
+                    res += e.get_flat_ops()
+        elif isinstance(self.exp, ExpNode):
+            res += self.exp.get_flat_ops()
+        return set(res)
 
 
 EXP_OPS = ["sum", "average", "cumsum", "or"]
@@ -60,18 +73,11 @@ EXP_OPS = ["sum", "average", "cumsum", "or"]
 def semantically_equiv(exp1, exp2):
     # check for containment
     # exp2 is our target expression and exp1 is the output expression
-    # looser check if the target cell contain some unsubstantiated parts
+    # looser check if the target cell contain some unknown parts
     if exp1 == HOLE:
         return True
-    # special case handler check for ArgOr objects
-    #if isinstance(exp1, ArgOr) and isinstance(exp2, tuple):
-    #    return exp1.contains(exp2)
-    #elif isinstance(exp2, ArgOr) and isinstance(exp1, tuple):
-    #    return exp2.contains(exp1)
     elif isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
-        #if exp1.op != exp2.op:
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
-            #TODO: config
             return False
         if HOLE in exp1.children:
             return True
@@ -150,14 +156,24 @@ class ExpNode(object):
             for e in children:
                 if isinstance(e, ExpNode):
                     add_leaves(e.children, out)
-                # isinstance(e, ArgOr):
-                #    out += e.to_flat_list()
+                elif isinstance(e, ArgOr):
+                    out += e.to_flat_list()
                 else:
                     out += [e]
         res = self.children
         output = []
         add_leaves(res, output)
         return output
+
+    def get_flat_ops(self):
+        if isinstance(self.op, ArgOr):
+            res = self.op.to_flat_list()
+        else:
+            res = [self.op]
+        for e in self.children:
+            if isinstance(e, ExpNode):
+                res += e.get_flat_ops()
+        return res
 
 
 def dict_to_exp(source):
@@ -217,6 +233,12 @@ class ArgOr:
         return "ArgOr" + str(self.arguments)
 
     def to_flat_list(self):
-        return self.arguments.copy()
+        res = []
+        for e in self.arguments:
+            if isinstance(e, ExpNode) or isinstance(e, ArgOr):
+                res += e.to_flat_list()
+            else:
+                res += [e]
+        return res
 
 

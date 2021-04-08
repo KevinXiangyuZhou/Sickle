@@ -641,59 +641,38 @@ class GroupSummary(Node):
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
-		if self.group_cols == HOLE:
-			for cid in range(colnum + 1):  # group_cols + one new col
-				new_source.append([])
-				for rid in range(rownum):
-					if cid == colnum:
-						# the new cell in new column can come from any cell
+		for cid in range(colnum + 1):  # group_cols + one new col
+			if self.group_cols != HOLE and cid not in self.group_cols and cid != colnum:
+				continue
+			new_source.append([])
+			for rid in range(rownum):
+				if cid == colnum:
+					if self.group_cols == HOLE:
 						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-					else:  # cid in self.group_cols:
-						# this column is group column
-						# its trace should be ArgOr of all cells in the column
-						trace = [(cid, y) for y in range(rownum)]
-					args = []
-					for c in trace:
-						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-							args += table.get_cell(c[0], c[1]).get_exp()
-						else:
-							args += [table.get_cell(c[0], c[1]).get_exp()]
-					if cid == colnum:
-						func = self.aggr_func
-						# if self.aggr_func == HOLE:
-						#	 func = ArgOr(config["aggr_func"])
-						new_cell = TableCell(HOLE, HOLE)
 					else:
-						new_cell = TableCell(HOLE, args)
-					new_source[-1].append(new_cell)
-		else:
-			for cid in range(colnum + 1):  # group_cols + one new col
-				if cid not in self.group_cols and cid != colnum:
-					continue
-				new_source.append([])
-				for rid in range(rownum):
-					if cid == colnum:
 						# the new cell in new column can come from any cell
 						# but it should not be placed in group cols
 						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
-					else:  # cid in self.group_cols:
-						# this column is group column
-						# its trace should be ArgOr of all cells in the column
-						trace = [(cid, y) for y in range(rownum)]
-					args = []
-					for c in trace:
-						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-							args += table.get_cell(c[0], c[1]).get_exp()
-						else:
-							args += [table.get_cell(c[0], c[1]).get_exp()]
-					if cid == colnum:
-						func = self.aggr_func
-						# if self.aggr_func == HOLE:
-						# 	func = ArgOr(config["aggr_func"])
-						new_cell = TableCell(HOLE, ExpNode(func, args))
+				else:
+					# this column is group column
+					# its trace should be ArgOr of all cells in the column
+					trace = [(cid, y) for y in range(rownum)]
+				args = []
+				for c in trace:
+					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+						args += table.get_cell(c[0], c[1]).get_exp()
 					else:
-						new_cell = TableCell(HOLE, args)
-					new_source[-1].append(new_cell)
+						args += [table.get_cell(c[0], c[1]).get_exp()]
+				args = remove_duplicates(args)
+				if cid == colnum:
+					func = self.aggr_func
+					if self.aggr_func == HOLE:
+						func = ArgOr(config["aggr_func"])
+					# print(set(args))
+					new_cell = TableCell(HOLE, ExpNode(func, args))
+				else:
+					new_cell = TableCell(HOLE, args)
+				new_source[-1].append(new_cell)
 		return AnnotatedTable(new_source, from_source=True)
 
 
@@ -923,14 +902,12 @@ class GroupMutate(Node):
 						args += table.get_cell(c[0], c[1]).get_exp()
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
+				args = remove_duplicates(args)
 				if cid == colnum:
 					func = self.aggr_func
-					# if self.aggr_func == HOLE:
-					# 	func = ArgOr(config["mutate_func"])
-					if self.group_cols == HOLE:
-						new_cell = TableCell(HOLE, HOLE)
-					else:
-						new_cell = TableCell(HOLE, ExpNode(func, args))
+					if self.aggr_func == HOLE:
+						func = ArgOr(config["mutate_func"])
+					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
 				new_source[cid].append(new_cell)
@@ -1066,10 +1043,11 @@ class Mutate_Arithmetic(Node):
 						args += table.get_cell(c[0], c[1]).get_exp()
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
+				#args = remove_duplicates(args)
 				if cid == colnum:
 					func = self.func
-					#if self.func == HOLE:
-					#	func = ArgOr(config["mutate_function"])
+					if self.func == HOLE:
+						func = ArgOr(config["mutate_function"])
 					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
@@ -1181,6 +1159,8 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 						if not isinstance(temp_exp, list):
 							temp_exp = [temp_exp]
 						cell_arg += temp_exp
+				# there might be duplicate coord representing the same source
+				args = remove_duplicates(cell_arg)
 				if colName in target_cols:
 					exp = ExpNode(op, cell_arg)
 				else:
@@ -1209,6 +1189,7 @@ def df_to_annotated_table_join(df, op, arguments, table1, table2):
 				if not isinstance(temp_exp, list):
 					temp_exp = [temp_exp]
 				args += temp_exp
+			args = remove_duplicates(args)
 			cell_list[cid].append({"value": df.to_dict()[colName][index], "exp": args})
 	#print(cell_list)
 	return AnnotatedTable(cell_list)
@@ -1231,6 +1212,13 @@ def get_alphabet(i):
 					 'm', 'n', 'o', 'p', 'q', 'r',
 					 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 	return alphabet_list[i]
+
+def remove_duplicates(x):
+	final = []
+	for e in x:
+		if e not in final or isinstance(e, ExpNode):
+			final.append(e)
+	return final
 
 
 def dict_to_program(l):

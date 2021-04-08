@@ -210,17 +210,18 @@ class Synthesizer(object):
         print(f"number of programs: {len(candidates)}")
         return candidates
 
-    def enumerative_synthesis(self, inputs, output, max_prog_size, time_limit_sec=None, solution_limit=None):
+    def enumerative_synthesis(self, inputs, output, max_prog_size, time_limit_sec=None, solution_limit=None, print_trace=False):
         """Given inputs and output, enumerate all programs with premise check until
             find a solution p such that output ⊆ subseteq p(inputs) """
         all_sketches = self.enum_sketches(inputs, output, size=max_prog_size)
         candidates = []
         start_time = time.time()
+        flat_out = get_flat_table(output)
         for level, sketches in all_sketches.items():
             for s in sketches:
                 # print(s.stmt_string())
                 # ast = s.to_dict()
-                programs = self.iteratively_instantiate(s, inputs, output, "")
+                programs = self.iteratively_instantiate(s, inputs, output, flat_out, "", print_trace)
                 for p in programs:
                     try:
                         # print(p.stmt_string())
@@ -232,6 +233,13 @@ class Synthesizer(object):
                         if checker_function(t, output) is not None:
                             # print the result of annotated table
                             candidates.append(p)
+                        if solution_limit is not None and len(candidates) >= solution_limit: # stop when enough progs found
+                            finsh_time = time.time() - start_time
+                            print("----")
+                            print(f"number of programs: {len(candidates)}")
+                            print("time cost: " + str(finsh_time))
+                            print()
+                            return candidates
                     except Exception as e:
                         print(f"[error] {sys.exc_info()[0]} {e}")
                         tb = sys.exc_info()[2]
@@ -244,11 +252,12 @@ class Synthesizer(object):
         print()
         return candidates
 
-    def iteratively_instantiate(self, p, inputs, output, indent):
+    def iteratively_instantiate(self, p, inputs, output, flat_out, indent, print_trace):
         """iteratively instantiate abstract programs w/ promise check"""
-        def instantiate(p, inputs, output, indent):
+        def instantiate(p, inputs, output, flat_out, indent):
             """instantiate programs and then check each one of them against the premise """
             results = []
+            # get a flat version of output table for cheap check
             if p.is_abstract():
                 print(indent + p.stmt_string())
 
@@ -279,7 +288,36 @@ class Synthesizer(object):
                                 check_zero = True
                                 check_one = False
                                 check_two = False
+                                check_three = True
+                                infer_rlt = pp.infer_cell_2(inputs)
+                                # Cheap Check
+                                if check_three:
+                                    # print(indent + "cheap check")
+                                    flat_rlt = get_flat_table(infer_rlt)
+                                    if checker_function(flat_rlt,
+                                                        flat_out, check_relations=False) is None:
+                                        if print_trace:
+                                            print(indent + "cheap check failed!")
+                                            print("=====Cheap Check Result=====")
+                                            print(flat_rlt.to_dataframe())
+                                            print("\n\n")
+                                        continue
+                                # Check 0
+                                if check_zero:
+                                    # print(indent + "cell trace check 2")
+                                    if checker_function(infer_rlt, output) is None:
+                                        if print_trace:
+                                            print(indent + "cell trace check 2 failed!")
+                                            print("=====Cell Trace 2 Check Result=====")
+                                            print(infer_rlt.to_dataframe())
+                                            print("\n\n")
 
+                                        continue
+                                    else:
+                                        if print_trace:
+                                            print("***************passed******************************************")
+                                        # print(pp.infer_cell_2(inputs).to_dataframe())
+                                """
                                 # Check 1
                                 if check_one:
                                     print(indent + "cell trace check")
@@ -287,19 +325,6 @@ class Synthesizer(object):
                                         print(indent + "cell trace check failed!")
                                         # print(pp.infer_computation(inputs).to_dataframe())
                                         continue
-
-                                # Check 0
-                                if check_zero:
-                                    print(indent + "cell trace check 2")
-                                    if checker_function(pp.infer_cell_2(inputs), output) is None:
-                                        print(indent + "cell trace check 2 failed!")
-                                        print("=====Cell Trace 2 Check Result=====")
-                                        print(pp.infer_cell_2(inputs).to_dataframe())
-                                        print("\n\n")
-                                        continue
-                                    else:
-                                        print("***************passed******************************************")
-                                        #print(pp.infer_cell_2(inputs).to_dataframe())
                                 # Check 2
                                 if check_two:
                                     print(indent + "computation check")
@@ -308,8 +333,11 @@ class Synthesizer(object):
                                         print("=====Computation Check Result=====")
                                         print(pp.infer_computation(inputs).to_dataframe())
                                         continue
+                                """
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
+                        # number of candidate restriction
+
                     recent_candidates = temp_candidates
                 # level = innermost_level - 1
                 next_level_programs = recent_candidates
@@ -319,12 +347,11 @@ class Synthesizer(object):
                 return results
             else:
                 return []
-
         results = []
         if p.is_abstract():
-            candidates = instantiate(p, inputs, output, indent)
+            candidates = instantiate(p, inputs, output, flat_out, indent)
             for _p in candidates:
-                results += self.iteratively_instantiate(_p, inputs, output, indent + "   ")
+                results += self.iteratively_instantiate(_p, inputs, output, flat_out, indent + "   ", print_trace)
             return results
         else:
             # handling concrete programs won't take long, allow them to proceed

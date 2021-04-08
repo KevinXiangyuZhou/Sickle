@@ -4,7 +4,7 @@ config = {
             "filer_op": ["=="],
             "constants": [3000],
             "aggr_func": ["mean", "sum", "count", "max"],
-            "mutate_func": ["mean", "sum", "max", "cumsum"],
+            "mutate_func": ["mean", "sum", "max", "count", "cumsum"],
             "mutate_op": ["sum"],
             "mutate_function": ["lambda x, y: x - y",
                                 "lambda x, y: x + y",
