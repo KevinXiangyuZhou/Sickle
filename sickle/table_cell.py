@@ -2,6 +2,7 @@
 this class represents a cell stored in the data frame with its trace
 """
 import copy
+import random
 from configuration import config
 
 # two special symbols used in the language
@@ -41,30 +42,43 @@ class TableCell(object):
         return f"{self.exp}"
 
     def get_flat_args(self):
-        res = []
+        res = set()
         #print("!!!")
         #print(self.exp)
         if isinstance(self.exp, list):
             for e in self.exp:
                 if isinstance(e, ExpNode) or isinstance(e, ArgOr):
-                    res += e.to_flat_list()
+                    res.update(e.to_flat_list())
                     #print(res)
                 else:
-                    res += [e]
+                    res.add(e)
         else:
             # print(self.exp)
-            res = self.exp.to_flat_list()
-        return set(res)
+            res.update(self.exp.to_flat_list())
+        return res
 
     def get_flat_ops(self):
-        res = []
+        res = set()
         if isinstance(self.exp, list):
             for e in self.exp:
                 if isinstance(e, ExpNode):
-                    res += e.get_flat_ops()
+                    res |= e.get_flat_ops()
         elif isinstance(self.exp, ExpNode):
-            res += self.exp.get_flat_ops()
-        return set(res)
+            res |= self.exp.get_flat_ops()
+        return res
+
+    def randomize(self):
+        if isinstance(self.exp, list):
+            rand_exp = []
+            for e in self.exp:
+                if isinstance(e, ExpNode):
+                    rand_exp += [e.randomize()]
+                else:
+                    rand_exp += [e]
+        else:
+            rand_exp = self.exp.randomize()
+        return TableCell(self.value, rand_exp)
+
 
 
 EXP_OPS = ["sum", "average", "cumsum", "or"]
@@ -157,23 +171,44 @@ class ExpNode(object):
                 if isinstance(e, ExpNode):
                     add_leaves(e.children, out)
                 elif isinstance(e, ArgOr):
-                    out += e.to_flat_list()
+                    out.update(e.to_flat_list())
                 else:
-                    out += [e]
+                    out.add(e)
         res = self.children
-        output = []
+        output = set()
         add_leaves(res, output)
         return output
 
     def get_flat_ops(self):
+        res = set()
         if isinstance(self.op, ArgOr):
-            res = self.op.to_flat_list()
+            res.update(self.op.to_flat_list())
+        elif isinstance(self.op, list):
+            res.update(self.op)
         else:
-            res = [self.op]
+            res.add(self.op)
         for e in self.children:
             if isinstance(e, ExpNode):
-                res += e.get_flat_ops()
+                res |= e.get_flat_ops()
+        # print(res)
         return res
+
+    def randomize(self):
+        # with_operator = random.randrange(3)
+        new_op = self.op
+        new_exp = []
+        # if with_operator == 0:
+        #     new_op = HOLE
+        for e in self.children:
+            partial_trace = random.randrange(2)
+            if isinstance(e, ExpNode):
+                new_exp += [e.randomize()]
+            elif partial_trace == 0:
+                new_exp += [e]
+
+        return ExpNode(new_op, new_exp)
+
+
 
 
 def dict_to_exp(source):
@@ -213,6 +248,12 @@ class ArgOr:
     def __init__(self, arguments):
         self.arguments = arguments  # a list of (note, coordinate_x, coordinate_y)
 
+    def __hash__(self):
+        total_hash = 0
+        for e in self.arguments:
+            total_hash += hash(e)
+        return total_hash
+
     def __eq__(self, other):
         #TODO: chang eq logic to contains
         if not isinstance(other, ArgOr):
@@ -233,12 +274,12 @@ class ArgOr:
         return "ArgOr" + str(self.arguments)
 
     def to_flat_list(self):
-        res = []
+        res = set()
         for e in self.arguments:
             if isinstance(e, ExpNode) or isinstance(e, ArgOr):
-                res += e.to_flat_list()
+                res.update(e.to_flat_list())
             else:
-                res += [e]
+                res.add(e)
         return res
 
 

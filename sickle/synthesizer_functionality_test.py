@@ -1,4 +1,3 @@
-
 from table import *
 import unittest
 from table_ast import *
@@ -6,8 +5,11 @@ from synthesizer import *
 from tabulate import tabulate
 import json
 from table_cell import *
+import random
 
 pd.set_option('expand_frame_repr', False)
+
+HOLE = "_?_"
 
 # small parameter config for tests
 test_config = {
@@ -16,7 +18,6 @@ test_config = {
                 "constants": [3000],
                 "aggr_func": ["mean", "sum", "count", "max"],
                 "mutate_func": ["mean", "sum", "max", "cumsum"],
-                "mutate_op": ["sum"],
                 "mutate_function": ["lambda x, y: x - y",
                                     "lambda x, y: x + y",
                                     "lambda x, y: x * y",
@@ -117,11 +118,15 @@ td = AnnotatedTable([
     {"value": 1566.67, "argument": [(1600, 2, 1)], "operator": "", "attribute": "mean_sal"}
     ])
 """
-permutation_test = True  # edit this for permute user outputs
+permutation_test = False  # edit this for permute user outputs
+partial_table = True  # select random region of the table as demonstration
+partial_trace = True  # trace info could be incomplete
 level_limit = 4
-time_limit = 1200
+time_limit = 900
 solution_limit = 1
 random_test = False
+
+random.seed(7)
 
 class SynthesizerTest(unittest.TestCase):
     @unittest.skip
@@ -134,13 +139,29 @@ class SynthesizerTest(unittest.TestCase):
             p = dict_to_program(data["exp_out1"])
             print(p.eval(inputs).to_dataframe())
             annotated_output = p.eval(inputs)
-
             #rlt = checker_function(computed_out, annotated_output, print_result=True)
             #print(rlt)
 
 
     # @unittest.skip
     def test_run(self):
+        print({ArgOr(["a", "b"])}.issubset({"a", "b"}))
+        print({ArgOr(["a", "b"]), "a"})
+        print([e for e in {ArgOr(["a", "b"])} if e not in {"a", "b"}] == [])
+        print({"a"}.issubset({ArgOr(["a", "b"])}))
+        print([e for e in list({ArgOr(["a", "b", "c"])}) if e not in list({"a"})] == [])
+        print([e for e in {"a"} if e not in {ArgOr(["a", "b", "c"])}] == [])
+        """
+        p = dict_to_program([{"0": 0},
+                            {"op": "group_mutate", "0": [1,2], "1": "max", "2": 3},
+                            {"op": "group_mutate", "0": [1,2], "1": "sum", "2": 4},
+                            {"op": "mutate_arithmetic", "0": "lambda x, y: y / (x - y)", "1": [6,5]},
+                            {"op": "group_sum", "0": [0,1], "1": "mean", "2": 7}
+                            ])
+        print(p.infer_cell_2(inputs).to_dataframe())
+        annotated_output = p.eval(inputs)
+        print("-----")
+        """
         with open('testbenches/009.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
@@ -149,28 +170,65 @@ class SynthesizerTest(unittest.TestCase):
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
                 print(p.eval(inputs).to_dataframe())
+                p_temp = dict_to_program([{"0": 0},
+                                     {"op": "group_mutate", "0": [1], "1": HOLE, "2": HOLE},
+                                     {"op": "group_mutate", "0": HOLE, "1": HOLE, "2": HOLE},
+                                     {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE},
+                                     {"op": "group_sum", "0": HOLE, "1": HOLE, "2": HOLE}
+                                     ])
+                print(p.infer_cell_2(inputs).to_dataframe())
+                print(checker_function(p_temp.infer_cell_2(inputs), p.eval(inputs), print_result=True))
+                # annotated_output = p.eval(inputs)
+                print("-----")
                 annotated_output = p.eval(inputs)
             else:
                 print("load error")
 
-            columns = [i for i in range(annotated_output.get_col_num())]
-            permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
-            #print(permutation_list)  # verify permutations of column ids
-            output_candidates = [select_columns(annotated_output, selected) for selected in permutation_list]
-            for i in range(len(output_candidates)):
-                att_out = output_candidates[i]
-                print("=======output candidates " + str(i) + "==========")
-                print(att_out.to_dataframe())
-            print("\n\n\n")
             if permutation_test:
-                sample_id = 4
+                columns = [i for i in range(annotated_output.get_col_num())]
+                permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
+                # print(permutation_list)  # verify permutations of column ids
+                output_candidates = [select_columns(annotated_output, selected)
+                                     for selected in permutation_list]
+                for i in range(len(output_candidates)):
+                    att_out = output_candidates[i]
+                    print("=======output candidates " + str(i) + "==========")
+                    print(att_out.to_dataframe())
+                print("\n\n\n")
+                if random_test:
+                    sample_id = random.randrange(len(output_candidates))
+                else:
+                    sample_id = 4
                 annotated_output = output_candidates[sample_id]
                 print("=======output candidates " + str(sample_id) + "==========")
                 print(annotated_output.to_dataframe())
                 print("===============================")
-            candidates = Synthesizer(test_config).enumerative_synthesis(inputs, annotated_output, level_limit, solution_limit=1)
+            if partial_table:
+                if random_test:
+                    x_start = random.randrange(annotated_output.get_col_num() / 2)
+                    y_start = random.randrange(annotated_output.get_row_num() / 2)
+                    x_end = random.randrange(annotated_output.get_col_num() / 2, annotated_output.get_col_num())
+                    y_end = random.randrange(annotated_output.get_row_num() / 2, annotated_output.get_row_num())
+                else:
+                    x_end = annotated_output.get_col_num()
+                    x_start = int(annotated_output.get_col_num() / 2)
+                    y_end = annotated_output.get_row_num()
+                    y_start = int(annotated_output.get_row_num() / 2)
+                annotated_output = annotated_output.select_region((x_start, x_end), (y_start, y_end))
 
-            print("=======output candidates " + str(i) + "==========")
+                print(annotated_output.to_dataframe())
+            if partial_trace:
+                annotated_output = annotated_output.randomize()
+                print("=======with randomized trace==========")
+                print(annotated_output.to_dataframe())
+            candidates = []
+            for i in range(4, level_limit + 1):
+                candidates += Synthesizer(test_config)\
+                    .enumerative_synthesis(inputs, annotated_output, i,
+                                           solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False)
+                if len(candidates) > 0:
+                    break
+            print("=======target output==========")
             print(annotated_output.to_dataframe())
             for p in candidates:
                 # print(alignment_result)

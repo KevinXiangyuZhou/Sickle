@@ -6,10 +6,13 @@ import pandas as pd
 from enum_strategies import *
 from table import *
 import time
+import logging
 # from table_cell import *
 
 from table_ast import (HOLE, Node, Table, Select, Filter, GroupSummary,
                        GroupMutate, Mutate_Arithmetic, Join)
+# from eval_main import cheap_check_sw
+
 abstract_combinators = {
     "select": lambda q: Select(q, cols=HOLE),
     "filter": lambda q: Filter(q, col_index=HOLE, op=HOLE, const=HOLE),
@@ -210,18 +213,92 @@ class Synthesizer(object):
         print(f"number of programs: {len(candidates)}")
         return candidates
 
-    def enumerative_synthesis(self, inputs, output, max_prog_size, time_limit_sec=None, solution_limit=None, print_trace=False):
+    def run_synthesis(self, inputs, output, level_limit, logger, with_cheap,
+                      time_limit_sec=None, solution_limit=None, print_trace=False):
+        """Given inputs and output, enumerate all programs with premise check until
+            find a solution p such that output ⊆ subseteq p(inputs) """
+        all_sketches = self.enum_sketches(inputs, output, size=level_limit)
+        candidates = []
+        start_time = time.time()
+        searched = []
+        flat_out = get_flat_table(output)
+        log_s = logging.getLogger("summary")
+        for level, sketches in all_sketches.items():
+            for s in sketches:
+                logger.info(s.stmt_string() + f"   (program searched: {len(searched)})")
+                # programs = []
+                try:
+                    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+                                                        solution_limit, time_limit_sec, "", print_trace, with_cheap,
+                                                        print_stmts=False)
+                    # candidates += programs
+                    if stop:
+                        finsh_time = time.time() - start_time
+                        logger.info("----")
+                        logger.info(f"number of programs searched: {len(searched)}")
+                        logger.info(f"number of solutions: {len(candidates)}")
+                        logger.info("time cost: " + str(finsh_time))
+                        # log the statistics into summary file
+                        log_s.info(f"number of programs searched: {len(searched)}")
+                        log_s.info(f"number of solutions: {len(candidates)}")
+                        log_s.info("time cost: " + str(finsh_time))
+                        return candidates
+                except Exception as e:
+                    logger.info(f"[error] {sys.exc_info()[0]} {e}")
+                    tb = sys.exc_info()[2]
+                    tb_info = ''.join(traceback.format_tb(tb))
+                    logger.info(tb_info)
+        finish_time = time.time() - start_time
+        if finish_time >= time_limit_sec or len(candidates) > 0:
+            logger.info("----")
+            logger.info(f"number of programs searched: {len(searched)}")
+            logger.info(f"number of solutions: {len(candidates)}")
+            logger.info("time cost: " + str(finish_time))
+            # log the statistics into summary file
+            log_s.info(f"number of programs searched: {len(searched)}")
+            log_s.info(f"number of solutions: {len(candidates)}")
+            log_s.info("time cost: " + str(finish_time))
+            if finish_time >= time_limit_sec:
+                log_s.info("[TIME OUT]")
+            #log_s.info("\n")
+        return candidates
+
+    def enumerative_synthesis(self, inputs, output, max_prog_size,
+                              time_limit_sec=None, solution_limit=None, print_trace=False):
         """Given inputs and output, enumerate all programs with premise check until
             find a solution p such that output ⊆ subseteq p(inputs) """
         all_sketches = self.enum_sketches(inputs, output, size=max_prog_size)
         candidates = []
         start_time = time.time()
+        searched = []
         flat_out = get_flat_table(output)
+        print(flat_out.to_dataframe())
+        # turn on cheap analysis
+        with_cheap = True
         for level, sketches in all_sketches.items():
             for s in sketches:
                 # print(s.stmt_string())
                 # ast = s.to_dict()
-                programs = self.iteratively_instantiate(s, inputs, output, flat_out, "", print_trace)
+                # programs = []
+                try:
+                    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+                                                        solution_limit, time_limit_sec, "", print_trace, with_cheap,
+                                                        print_stmts=True)
+                    # candidates += programs
+                    if stop:
+                        finsh_time = time.time() - start_time
+                        print("----")
+                        print(f"number of programs searched: {len(searched)}")
+                        print(f"number of solutions: {len(candidates)}")
+                        print("time cost: " + str(finsh_time))
+                        print()
+                        return candidates
+                except Exception as e:
+                    print(f"[error] {sys.exc_info()[0]} {e}")
+                    tb = sys.exc_info()[2]
+                    tb_info = ''.join(traceback.format_tb(tb))
+                    print(tb_info)
+                """
                 for p in programs:
                     try:
                         # print(p.stmt_string())
@@ -245,6 +322,7 @@ class Synthesizer(object):
                         tb = sys.exc_info()[2]
                         tb_info = ''.join(traceback.format_tb(tb))
                         print(tb_info)
+                """
         finsh_time = time.time() - start_time
         print("----")
         print(f"number of programs: {len(candidates)}")
@@ -252,14 +330,17 @@ class Synthesizer(object):
         print()
         return candidates
 
-    def iteratively_instantiate(self, p, inputs, output, flat_out, indent, print_trace):
+    def iteratively_instantiate(self, p, inputs, output, flat_out, results, searched, start_time,
+                                solution_limit, time_limit_sec, indent, print_trace, with_cheap, print_stmts=False):
         """iteratively instantiate abstract programs w/ promise check"""
         def instantiate(p, inputs, output, flat_out, indent):
             """instantiate programs and then check each one of them against the premise """
             results = []
             # get a flat version of output table for cheap check
             if p.is_abstract():
-                print(indent + p.stmt_string())
+                if print_stmts:
+                    print(indent + p.stmt_string())
+                searched.append(p)
 
                 ast = p.to_dict()
                 """generate program instantitated from the most recent level
@@ -284,26 +365,31 @@ class Synthesizer(object):
                             pp = Node.load_from_dict(partial_p)
                             # print(indent + pp.stmt_string())
                             if pp.is_abstract():
-                                print(indent + pp.stmt_string())
-                                check_zero = True
+                                if print_stmts:
+                                    print(indent + pp.stmt_string())
+                                searched.append(pp)
+                                expensive_check = True
                                 check_one = False
                                 check_two = False
-                                check_three = True
                                 infer_rlt = pp.infer_cell_2(inputs)
-                                # Cheap Check
-                                if check_three:
+                                # print(with_cheap)
+                                cheap_check = with_cheap
+                                # cheap_check
+                                if True:
                                     # print(indent + "cheap check")
                                     flat_rlt = get_flat_table(infer_rlt)
                                     if checker_function(flat_rlt,
-                                                        flat_out, check_relations=False) is None:
+                                                        flat_out, check_relations=False,
+                                                        print_result=print_trace) is None:
                                         if print_trace:
                                             print(indent + "cheap check failed!")
                                             print("=====Cheap Check Result=====")
                                             print(flat_rlt.to_dataframe())
                                             print("\n\n")
                                         continue
-                                # Check 0
-                                if check_zero:
+                                    # print("cheap_check passed!!!!!!!")
+                                # expensive_check
+                                if expensive_check:
                                     # print(indent + "cell trace check 2")
                                     if checker_function(infer_rlt, output) is None:
                                         if print_trace:
@@ -311,7 +397,6 @@ class Synthesizer(object):
                                             print("=====Cell Trace 2 Check Result=====")
                                             print(infer_rlt.to_dataframe())
                                             print("\n\n")
-
                                         continue
                                     else:
                                         if print_trace:
@@ -347,17 +432,33 @@ class Synthesizer(object):
                 return results
             else:
                 return []
-        results = []
+
+        if time_limit_sec is not None and time.time() - start_time > time_limit_sec:
+            return True
         if p.is_abstract():
             candidates = instantiate(p, inputs, output, flat_out, indent)
             for _p in candidates:
-                results += self.iteratively_instantiate(_p, inputs, output, flat_out, indent + "   ", print_trace)
-            return results
+                stop = self.iteratively_instantiate(_p, inputs, output, flat_out, results, searched, start_time,
+                                                    solution_limit, time_limit_sec, indent + "     ", print_trace,
+                                                    with_cheap, print_stmts)
+                if stop:
+                    return True
+            return False
         else:
-            # handling concrete programs won't take long, allow them to proceed
-            print(indent + p.stmt_string())
-            print(indent + "run checker_function!")
-            return [p]
+            # handling concrete programs
+            searched.append(p)
+            curr_time = time.time()
+            if print_stmts:
+                print(indent + p.stmt_string())
+            if print_trace:
+                print(indent + "run checker_function!")
+            if checker_function(p.eval(inputs), output, print_result=True) is not None:
+                results.append(p)
+            if (solution_limit is not None and len(results) >= solution_limit) \
+                    or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
+                # stop when enough progs being found
+                return True
+            return False
 
     # ---reference---
     def xiteratively_instantiate_with_premises_check(self, p, inputs, premise_chains, time_limit_sec=None):

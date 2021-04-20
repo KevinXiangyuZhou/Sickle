@@ -1,0 +1,961 @@
+<==============evaluation of 001.json================>
+------config_0-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.18934106826782227
+------with cheap check-------
+------config_0-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 18
+number of solutions: 1
+time cost: 0.16911101341247559
+
+
+------config_1-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+[Error] examining 001.json
+------with cheap check-------
+------config_1-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+[Error] examining 001.json
+
+
+------config_2-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+[Error] examining 001.json
+------with cheap check-------
+------config_2-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+[Error] examining 001.json
+
+
+------config_3-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.17954373359680176
+------with cheap check-------
+------config_3-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 18
+number of solutions: 1
+time cost: 0.207442045211792
+
+
+------config_4-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 66
+number of solutions: 4
+time cost: 4.309557914733887
+------with cheap check-------
+------config_4-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+number of programs searched: 52
+number of solutions: 2
+time cost: 2.755916118621826
+
+
+<==============evaluation of 002.json================>
+------config_0-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.3285961151123047
+------with cheap check-------
+------config_0-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.3200364112854004
+
+
+------config_1-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.3640925884246826
+------with cheap check-------
+------config_1-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.36497974395751953
+
+
+------config_2-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 66
+number of solutions: 4
+time cost: 8.358959674835205
+------with cheap check-------
+------config_2-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 66
+number of solutions: 4
+time cost: 9.505557537078857
+
+
+------config_3-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.3388791084289551
+------with cheap check-------
+------config_3-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 22
+number of solutions: 1
+time cost: 0.628319263458252
+
+
+------config_4-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 66
+number of solutions: 4
+time cost: 10.068005323410034
+------with cheap check-------
+------config_4-------
+---input info:['3x14']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+number of programs searched: 66
+number of solutions: 4
+time cost: 10.072837114334106
+
+
+<==============evaluation of 003.json================>
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.1366589069366455
+------with cheap check-------
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.11868143081665039
+
+
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.12868309020996094
+------with cheap check-------
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.10571479797363281
+
+
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 44
+number of solutions: 2
+time cost: 0.8587076663970947
+------with cheap check-------
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 44
+number of solutions: 2
+time cost: 0.7142446041107178
+
+
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.11668777465820312
+------with cheap check-------
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.11248183250427246
+
+
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 44
+number of solutions: 2
+time cost: 0.8171722888946533
+------with cheap check-------
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+number of programs searched: 44
+number of solutions: 2
+time cost: 1.0716493129730225
+
+
+<==============evaluation of 004.json================>
+------config_0-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 1.3100106716156006
+------with cheap check-------
+------config_0-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 0.7757651805877686
+
+
+------config_1-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 0.5735116004943848
+------with cheap check-------
+------config_1-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 0.7402095794677734
+
+
+------config_2-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 122
+number of solutions: 2
+time cost: 3.467712163925171
+------with cheap check-------
+------config_2-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 122
+number of solutions: 2
+time cost: 1.1451518535614014
+
+
+------config_3-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 0.573279619216919
+------with cheap check-------
+------config_3-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 57
+number of solutions: 1
+time cost: 0.44583964347839355
+
+
+------config_4-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 122
+number of solutions: 2
+time cost: 2.840578317642212
+------with cheap check-------
+------config_4-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+number of programs searched: 122
+number of solutions: 2
+time cost: 1.537358045578003
+
+
+<==============evaluation of 005.json================>
+------config_0-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.277801513671875
+------with cheap check-------
+------config_0-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.3789858818054199
+
+
+------config_1-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.2715950012207031
+------with cheap check-------
+------config_1-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.2822692394256592
+
+
+------config_2-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 161
+number of solutions: 2
+time cost: 1.289602518081665
+------with cheap check-------
+------config_2-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 161
+number of solutions: 2
+time cost: 1.8106153011322021
+
+
+------config_3-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.26033592224121094
+------with cheap check-------
+------config_3-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 43
+number of solutions: 1
+time cost: 0.2872309684753418
+
+
+------config_4-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 161
+number of solutions: 2
+time cost: 1.8739840984344482
+------with cheap check-------
+------config_4-------
+---input info:['2x8']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+number of programs searched: 161
+number of solutions: 2
+time cost: 1.7495968341827393
+
+
+<==============evaluation of 006.json================>
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------with cheap check-------
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+
+
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------with cheap check-------
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+
+
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------with cheap check-------
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+
+
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------with cheap check-------
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+
+
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------with cheap check-------
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, [0, 1], count, 2); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+
+
+<==============evaluation of 007.json================>
+------config_0-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08353829383850098
+------with cheap check-------
+------config_0-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08577299118041992
+
+
+------config_1-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08377671241760254
+------with cheap check-------
+------config_1-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08251047134399414
+
+
+------config_2-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 46
+number of solutions: 2
+time cost: 0.8487265110015869
+------with cheap check-------
+------config_2-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 46
+number of solutions: 2
+time cost: 0.7006497383117676
+
+
+------config_3-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08965253829956055
+------with cheap check-------
+------config_3-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 14
+number of solutions: 1
+time cost: 0.08595561981201172
+
+
+------config_4-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 46
+number of solutions: 2
+time cost: 0.8619287014007568
+------with cheap check-------
+------config_4-------
+---input info:['2x9']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+number of programs searched: 46
+number of solutions: 2
+time cost: 0.7040808200836182
+
+
+<==============evaluation of 008.json================>
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.1705183982849121
+------with cheap check-------
+------config_0-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.15050530433654785
+
+
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.19129133224487305
+------with cheap check-------
+------config_1-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.1595752239227295
+
+
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 52
+number of solutions: 2
+time cost: 0.9145572185516357
+------with cheap check-------
+------config_2-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 52
+number of solutions: 2
+time cost: 0.7210571765899658
+
+
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.16510272026062012
+------with cheap check-------
+------config_3-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 26
+number of solutions: 1
+time cost: 0.1633434295654297
+
+
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 52
+number of solutions: 2
+time cost: 0.9455099105834961
+------with cheap check-------
+------config_4-------
+---input info:['3x7']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+number of programs searched: 52
+number of solutions: 2
+time cost: 0.6901524066925049
+
+
+<==============evaluation of 009.json================>
+------config_0-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 2919
+number of solutions: 1
+time cost: 558.1089124679565
+------with cheap check-------
+------config_0-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 3677
+number of solutions: 1
+time cost: 892.1564655303955
+
+
+------config_1-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 2919
+number of solutions: 1
+time cost: 598.9370348453522
+------with cheap check-------
+------config_1-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 3671
+number of solutions: 0
+time cost: 903.7534837722778
+
+
+------config_2-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 3059
+number of solutions: 5
+time cost: 545.7599725723267
+------with cheap check-------
+------config_2-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 4213
+number of solutions: 5
+time cost: 853.1586616039276
+
+
+------config_3-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 2919
+number of solutions: 1
+time cost: 516.8009712696075
+------with cheap check-------
+------config_3-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 3677
+number of solutions: 1
+time cost: 761.440598487854
+
+
+------config_4-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 3059
+number of solutions: 5
+time cost: 535.3153250217438
+------with cheap check-------
+------config_4-------
+---input info:['5x11']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+number of programs searched: 4213
+number of solutions: 5
+time cost: 835.5708727836609
+
+
+<==============evaluation of 010.json================>
+------config_0-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------with cheap check-------
+------config_0-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+
+
+------config_1-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------with cheap check-------
+------config_1-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+
+
+------config_2-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------with cheap check-------
+------config_2-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+
+
+------config_3-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------with cheap check-------
+------config_3-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+
+
+------config_4-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------with cheap check-------
+------config_4-------
+---input info:['4x6']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+
+
+<==============evaluation of 011.json================>
+------config_0-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.3556022644042969
+------with cheap check-------
+------config_0-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.41219282150268555
+
+
+------config_1-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.3898155689239502
+------with cheap check-------
+------config_1-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.40811681747436523
+
+
+------config_2-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 147
+number of solutions: 4
+time cost: 0.8946659564971924
+------with cheap check-------
+------config_2-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 147
+number of solutions: 4
+time cost: 1.001810073852539
+
+
+------config_3-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.39348721504211426
+------with cheap check-------
+------config_3-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 69
+number of solutions: 1
+time cost: 0.38895606994628906
+
+
+------config_4-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 147
+number of solutions: 4
+time cost: 1.0771653652191162
+------with cheap check-------
+------config_4-------
+---input info:['3x3']
+---target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+number of programs searched: 147
+number of solutions: 4
+time cost: 1.0970842838287354
+
+
+<==============evaluation of 012.json================>
+------config_0-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.7636849880218506
+------with cheap check-------
+------config_0-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.686140775680542
+
+
+------config_1-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.7608213424682617
+------with cheap check-------
+------config_1-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.6745665073394775
+
+
+------config_2-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 117
+number of solutions: 2
+time cost: 5.228424310684204
+------with cheap check-------
+------config_2-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 117
+number of solutions: 2
+time cost: 2.446728229522705
+
+
+------config_3-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.7924585342407227
+------with cheap check-------
+------config_3-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 53
+number of solutions: 1
+time cost: 0.958890438079834
+
+
+------config_4-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 117
+number of solutions: 2
+time cost: 5.246287822723389
+------with cheap check-------
+------config_4-------
+---input info:['2x13']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+number of programs searched: 117
+number of solutions: 2
+time cost: 2.5134496688842773
+
+
+<==============evaluation of 013.json================>
+------config_0-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.41440296173095703
+------with cheap check-------
+------config_0-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.48168373107910156
+
+
+------config_1-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.4478261470794678
+------with cheap check-------
+------config_1-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.4347684383392334
+
+
+------config_2-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 65
+number of solutions: 5
+time cost: 0.6233294010162354
+------with cheap check-------
+------config_2-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 65
+number of solutions: 5
+time cost: 0.5780446529388428
+
+
+------config_3-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.4457705020904541
+------with cheap check-------
+------config_3-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 55
+number of solutions: 1
+time cost: 0.43084192276000977
+
+
+------config_4-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 65
+number of solutions: 5
+time cost: 0.6542468070983887
+------with cheap check-------
+------config_4-------
+---input info:['5x5']
+---target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+number of programs searched: 65
+number of solutions: 5
+time cost: 0.5902523994445801
+
+
+<==============evaluation of 014.json================>
+------config_0-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+number of programs searched: 76
+number of solutions: 1
+time cost: 154.46694707870483
+------with cheap check-------
+------config_0-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+number of programs searched: 46
+number of solutions: 1
+time cost: 111.90318536758423
+
+
+------config_1-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+number of programs searched: 76
+number of solutions: 1
+time cost: 154.2163712978363
+------with cheap check-------
+------config_1-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+number of programs searched: 46
+number of solutions: 1
+time cost: 112.50150227546692
+
+
+------config_2-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+number of programs searched: 84
+number of solutions: 5
+time cost: 172.3347887992859
+------with cheap check-------
+------config_2-------
+---input info:['6x213']
+---target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)

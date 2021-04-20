@@ -141,6 +141,27 @@ class AnnotatedTable:
             dicts.append(d)
         return dicts
 
+    def select_region(self, x_range, y_range):
+        if x_range[0] < 0 or x_range[1] > self.get_col_num()\
+           or y_range[0] < 0 or y_range[1] > self.get_row_num():
+            return None
+        selected = []
+        for x in range(x_range[0], x_range[1]):
+            selected.append([])
+            for y in range(y_range[0], y_range[1]):
+                selected[-1].append(self.get_cell(x, y))
+        return AnnotatedTable(selected, from_source=True)
+
+    def randomize(self):
+        rand_table = []
+        for x in range(self.get_col_num()):
+            rand_table.append([])
+            for y in range(self.get_row_num()):
+                rand_table[-1].append(self.get_cell(x,y).randomize())
+        return AnnotatedTable(rand_table, from_source=True)
+
+
+
 
 """
 from format of eg.
@@ -158,6 +179,20 @@ def select_columns(att, cols):
             temp.append({"value": cell.get_value(), "exp": cell.get_exp()})
         cell_list.append(temp)
     return AnnotatedTable(cell_list)
+
+
+def get_flat_table(t):
+    table = copy.deepcopy(t)
+    rownum = table.get_row_num()
+    colnum = table.get_col_num()
+    new_source = []
+    for cid in range(colnum):
+        new_source.append([])
+        for rid in range(rownum):
+            curr_cell = table.get_cell(cid, rid)
+            new_cell = SimpleCell(curr_cell.get_value(), curr_cell.get_flat_args(), curr_cell.get_flat_ops())
+            new_source[cid].append(new_cell)
+    return AnnotatedTable(new_source, from_source=True)
 
 
 """checker function for pruning annotated outputs
@@ -217,6 +252,8 @@ def find_mapping(target, actual, print_result):
     return mapping
 
 
+# the given table is the actual table we generated
+# cell is a cell from target table
 def search_values(table, cell):
     rlt = []
     for cid in range(table.get_col_num()):
@@ -343,18 +380,6 @@ def find_smallest_array(list):
         if len(array) < len(rlt):
             rlt = array
     return rlt
-
-def get_flat_table(table):
-    rownum = table.get_row_num()
-    colnum = table.get_col_num()
-    new_source = []
-    for cid in range(colnum):
-        new_source.append([])
-        for rid in range(rownum):
-            curr_cell = table.get_cell(cid, rid)
-            new_cell = SimpleCell(curr_cell.get_value(), curr_cell.get_flat_args(), curr_cell.get_flat_ops())
-            new_source[cid].append(new_cell)
-    return AnnotatedTable(new_source, from_source=True)
 
 
 """

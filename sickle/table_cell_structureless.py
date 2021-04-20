@@ -22,7 +22,14 @@ class SimpleCell:
         # we assume that if argument is not None then operator should not be None
         if self.argument is not None and self.operator is not None:
             return self.argument.issubset(other.argument) and self.operator.issubset(other.operator)
+            # return self.is_subset(other) and self.is_subset_op(other)
         return False
+
+    def is_subset(self, other):
+        return [e for e in self.argument if e not in other.argument] == []
+
+    def is_subset_op(self, other):
+        return [e for e in self.operator if e not in other.operator] == []
 
     def to_dict(self):
         return {

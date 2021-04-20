@@ -486,8 +486,8 @@ class GroupSummary(Node):
 						table_keys.append(gb_keys)
 						continue
 					col_list_candidates += [gb_keys]
-			if not col_list_candidates:
-				print("pruned by group keys")
+			# if not col_list_candidates:
+			#	 print("pruned by group keys")
 			return col_list_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]
@@ -641,22 +641,52 @@ class GroupSummary(Node):
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
-		for cid in range(colnum + 1):  # group_cols + one new col
-			if self.group_cols != HOLE and cid not in self.group_cols and cid != colnum:
-				continue
-			new_source.append([])
-			for rid in range(rownum):
-				if cid == colnum:
-					if self.group_cols == HOLE:
+		if self.group_cols == HOLE:  # we know nothing about parameters
+			for cid in range(colnum + 1):
+				temp = []
+				for rid in range(rownum):
+					if cid == colnum:
 						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
 					else:
-						# the new cell in new column can come from any cell
-						# but it should not be placed in group cols
-						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+						trace = [(cid, y) for y in range(rownum)]
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					args = remove_duplicates(args)
+					if cid == colnum:
+						func = ArgOr(config["aggr_func"])
+						new_cell = TableCell(HOLE, ExpNode(func, args))
+					else:
+						new_cell = TableCell(HOLE, args)
+					# print(set(args))
+					temp.append(new_cell)
+				new_source.append(temp)
+			# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
+			return AnnotatedTable(new_source, from_source=True)
+
+		df = table.extract_values()
+		group_keys = [df.columns[idx] for idx in self.group_cols]
+		df = df.groupby(group_keys)
+		new_cols = [e for e in self.group_cols] + [colnum]
+		start_row = 0
+		for (key, group) in df:
+			for cid in range(colnum + 1):  # group_cols + one new col
+				if cid not in self.group_cols and cid != colnum:
+					continue
+				if new_cols.index(cid) >= len(new_source):
+					new_source.append([])
+				if cid == colnum:
+					# the new cell in new column can come from any cell
+					# but it should not be placed in group cols
+					trace = [(x, y) for x in range(colnum)
+							 for y in range(start_row, start_row + len(group)) if x not in self.group_cols]
 				else:
 					# this column is group column
 					# its trace should be ArgOr of all cells in the column
-					trace = [(cid, y) for y in range(rownum)]
+					trace = [(cid, y) for y in range(start_row, start_row + len(group))]
 				args = []
 				for c in trace:
 					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
@@ -672,7 +702,9 @@ class GroupSummary(Node):
 					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
-				new_source[-1].append(new_cell)
+				new_source[new_cols.index(cid)].append(new_cell)
+			start_row += len(group)
+		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 		return AnnotatedTable(new_source, from_source=True)
 
 
@@ -882,17 +914,46 @@ class GroupMutate(Node):
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
-
+		if self.group_cols == HOLE:  # we know nothing about parameters
+			for rid in range(rownum):
+				trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+				args = []
+				for c in trace:
+					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+						args += table.get_cell(c[0], c[1]).get_exp()
+					else:
+						args += [table.get_cell(c[0], c[1]).get_exp()]
+				func = ArgOr(config["mutate_func"])
+				# print(set(args))
+				new_cell = TableCell(HOLE, ExpNode(func, args))
+				new_source.append(new_cell)
+			table.add_column(new_source)
+			return table
+		df = table.extract_values()
+		if not self.group_cols:
+			df = [('', df)]
+		else:
+			group_keys = [df.columns[idx] for idx in self.group_cols]
+			df = df.groupby(group_keys)
+		start_row = 0
+		new_cols = [i for i in range(colnum)] + [colnum]
+		group_arg = {}  # gid: args
+		member_gid = {}  # member1 : gid
+		gid = 0
+		for (key, group) in df:
+			group_arg[gid] = [(x, y) for x in range(colnum)
+					for y in group.index.values.tolist() if x not in self.group_cols]
+			for m in group.index.values.tolist():
+				member_gid[m] = gid
+			start_row += len(group)
+			gid += 1
 		for cid in range(colnum + 1):  # include new column
 			new_source.append([])
 			for rid in range(rownum):
 				if cid == colnum:
 					# the new cell in new column can come from any cell
 					# but it should not be placed in group cols
-					if self.group_cols == HOLE:
-						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-					else:
-						trace = [(x, y) for x in range(colnum) for y in range(rownum) if x not in self.group_cols]
+					trace = group_arg[member_gid[rid]]
 				else:
 					# # this column is group column or other cells can only come from its previous pos
 					trace = [(cid, rid)]
@@ -910,7 +971,8 @@ class GroupMutate(Node):
 					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
 					new_cell = TableCell(HOLE, args)
-				new_source[cid].append(new_cell)
+				new_source[new_cols.index(cid)].append(new_cell)
+		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 		return AnnotatedTable(new_source, from_source=True)
 
 
@@ -1160,7 +1222,7 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 							temp_exp = [temp_exp]
 						cell_arg += temp_exp
 				# there might be duplicate coord representing the same source
-				args = remove_duplicates(cell_arg)
+				cell_arg = remove_duplicates(cell_arg)
 				if colName in target_cols:
 					exp = ExpNode(op, cell_arg)
 				else:
@@ -1207,6 +1269,7 @@ def get_value_by_row_col(df, rid, cid):
 	return df.iloc[rid][df.columns[cid]]
 
 def get_alphabet(i):
+
 	alphabet_list = ['a', 'b', 'c', 'd', 'e', 'f',
 					 'g', 'h', 'i', 'j', 'k', 'l',
 					 'm', 'n', 'o', 'p', 'q', 'r',
@@ -1216,7 +1279,7 @@ def get_alphabet(i):
 def remove_duplicates(x):
 	final = []
 	for e in x:
-		if e not in final or isinstance(e, ExpNode):
+		if e not in final:
 			final.append(e)
 	return final
 
