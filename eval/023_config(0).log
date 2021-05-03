@@ -1,0 +1,62 @@
+------evaluate 023.json on config_0-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_cheap': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 900, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 4)
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 4)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 11)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 12)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 14)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 24)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 31)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 32)
+----
+number of programs searched: 60
+time cost: 1.5309441089630127
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, (2, 5))
++----+---------+------------+---------+---------+---------+-------------+-----------+
+|    | COL_0   | COL_1      |   COL_2 |   COL_3 |   COL_4 |       COL_5 |     COL_6 |
+|----+---------+------------+---------+---------+---------+-------------+-----------|
+|  0 | A       | Alabama    | 1296530 | 1317711 | 1118631 | 1.4236e+06  | -127068   |
+|  1 | A       | Alaska     | 1170302 | 1960378 | 1818085 | 1.4236e+06  | -253296   |
+|  2 | A       | Arizona    | 1742027 | 1968140 | 1377583 | 1.4236e+06  |  318430   |
+|  3 | A       | Arkansas   | 1485531 | 1994927 | 1119299 | 1.4236e+06  |   61933.5 |
+|  4 | C       | California | 1685349 | 1675807 | 1889570 | 1.51459e+06 |  170762   |
+|  5 | C       | Colorado   | 1343824 | 1878473 | 1886149 | 1.51459e+06 | -170762   |
++----+---------+------------+---------+---------+---------+-------------+-----------+
++----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4    | COL_5                                        | COL_6                                                                        |
+|----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | ['0_e0'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | ['0_e1'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | ['0_e2'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | ['0_e3'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | ['0_e4'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])                 |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | ['0_e5'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])                 |
++----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

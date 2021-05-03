@@ -1,0 +1,28 @@
+{
+  "input_data": [
+    [
+      {"trip_id": 944732, "date": "2015-09-24"},
+      {"trip_id": 984595, "date": "2015-09-24"},
+      {"trip_id": 984596, "date": "2015-09-24"},
+      {"trip_id": 1129385, "date": "2015-09-24"},
+      {"trip_id": 1030383, "date": "2015-09-30"},
+      {"trip_id": 969490, "date": "2015-09-30"},
+      {"trip_id": 947105, "date": "2015-09-30"},
+      {"trip_id": 1011650, "date": "2015-11-16"}
+    ],
+    [
+      {"trip_id": 944732, "cost": 1200},
+      {"trip_id": 944732, "cost": 1700},
+      {"trip_id": 984595, "cost": 2400},
+      {"trip_id": 984596, "cost": 1500},
+      {"trip_id": 947105, "cost": 1500},
+      {"trip_id": 1011650, "cost": 1600}
+    ]
+  ],
+  "url": "https://stackoverflow.com/questions/61640526/sql-query-to-calculate-the-cumulative-number-of-trips-for-each-date",
+  "correct_output": "t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- cumsum(t1, 1)",
+  "exp_out": [{"0": 0},
+    {"op": "join", "0": 1, "1": "(0, 0)"},
+    {"op": "group_sum", "0": [1], "1": "sum", "2": 3},
+    {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
+}

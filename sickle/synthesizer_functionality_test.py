@@ -6,6 +6,7 @@ from tabulate import tabulate
 import json
 from table_cell import *
 import random
+import math
 
 pd.set_option('expand_frame_repr', False)
 
@@ -13,18 +14,20 @@ HOLE = "_?_"
 
 # small parameter config for tests
 test_config = {
-                "operators": ["group_sum", "mutate_arithmetic", "group_mutate"],
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
                 "filer_op": ["=="],
                 "constants": [3000],
                 "aggr_func": ["mean", "sum", "count", "max"],
                 "mutate_func": ["mean", "sum", "max", "cumsum"],
+                "join_predicates": ["(0, 0)", "(1, 0)", "(0, 1)"],
                 "mutate_function": ["lambda x, y: x - y",
                                     "lambda x, y: x + y",
                                     "lambda x, y: x * y",
                                     "lambda x, y: x / y",
                                     "lambda x: x - (x * 0.1)",
                                     "lambda x, y: y / (x - y)",
-                                    "lambda x: 1"]
+                                    "lambda x: 1",
+                                    "lambda x, y, z: x - y / z"]
             }
 
 test_config_10 = {
@@ -119,8 +122,8 @@ td = AnnotatedTable([
     ])
 """
 permutation_test = False  # edit this for permute user outputs
-partial_table = True  # select random region of the table as demonstration
-partial_trace = True  # trace info could be incomplete
+partial_table = False  # select random region of the table as demonstration
+partial_trace = False  # trace info could be incomplete
 level_limit = 4
 time_limit = 900
 solution_limit = 1
@@ -130,7 +133,7 @@ random.seed(7)
 
 class SynthesizerTest(unittest.TestCase):
     @unittest.skip
-    def test_run_005(self):
+    def test_run_single(self):
         with open('test_prog.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
@@ -143,8 +146,10 @@ class SynthesizerTest(unittest.TestCase):
             #print(rlt)
 
 
-    # @unittest.skip
+    #@unittest.skip
     def test_run(self):
+        print(ArgOr([('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b1']), ('(0, 0)', ['0_b2'])])
+                    == ('(0, 0)', ['0_b0']))
         print({ArgOr(["a", "b"])}.issubset({"a", "b"}))
         print({ArgOr(["a", "b"]), "a"})
         print([e for e in {ArgOr(["a", "b"])} if e not in {"a", "b"}] == [])
@@ -162,14 +167,14 @@ class SynthesizerTest(unittest.TestCase):
         annotated_output = p.eval(inputs)
         print("-----")
         """
-        with open('testbenches/009.json', 'r') as filehandler:
+        with open('testbenches/026.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
-
+            correct_out = None
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
-                print(p.eval(inputs).to_dataframe())
+                """
                 p_temp = dict_to_program([{"0": 0},
                                      {"op": "group_mutate", "0": [1], "1": HOLE, "2": HOLE},
                                      {"op": "group_mutate", "0": HOLE, "1": HOLE, "2": HOLE},
@@ -180,7 +185,10 @@ class SynthesizerTest(unittest.TestCase):
                 print(checker_function(p_temp.infer_cell_2(inputs), p.eval(inputs), print_result=True))
                 # annotated_output = p.eval(inputs)
                 print("-----")
+                """
                 annotated_output = p.eval(inputs)
+                print(annotated_output.to_dataframe())
+                correct_out = copy.copy(annotated_output)
             else:
                 print("load error")
 
@@ -221,15 +229,18 @@ class SynthesizerTest(unittest.TestCase):
                 annotated_output = annotated_output.randomize()
                 print("=======with randomized trace==========")
                 print(annotated_output.to_dataframe())
+
             candidates = []
             for i in range(4, level_limit + 1):
                 candidates += Synthesizer(test_config)\
-                    .enumerative_synthesis(inputs, annotated_output, i,
+                    .enumerative_synthesis(inputs, annotated_output, correct_out, i,
                                            solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False)
                 if len(candidates) > 0:
                     break
-            print("=======target output==========")
+            print("=======user sample==========")
             print(annotated_output.to_dataframe())
+            print("=======correct output==========")
+            print(correct_out.to_dataframe())
             for p in candidates:
                 # print(alignment_result)
                 print(p.stmt_string())
@@ -242,7 +253,7 @@ class SynthesizerTest(unittest.TestCase):
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/002.json', 'r') as filehandler:
+        with open('testbenches/026.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
@@ -269,18 +280,24 @@ class SynthesizerTest(unittest.TestCase):
                          {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE},
                          {"op": "group_sum", "0": HOLE, "1": HOLE, "2": HOLE}
                         ]
+            compute26 = [{"0": 0},
+                        {"op": "join", "0": 1, "1": "(0, 0)"},
+                        {"op": "group_sum", "0": [1], "1": "count", "2": 0},
+                        {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
 
-
-            p = dict_to_program(compute09)  # select computation
+            p = dict_to_program(compute26)  # select computation
             print(p.stmt_string())
             compute_rlt = p.infer_cell_2(inputs)
-            print(p.infer_cell_2(inputs).to_dataframe())
+            # print(p.infer_cell_2(inputs).to_dataframe())
+
+            # labeled expected output
             expp = dict_to_program(data["exp_out"])
             print(expp.eval(inputs).to_dataframe())
-            annotated_output = expp.eval(inputs)
+            print(expp.eval(inputs).extract_values())
+            # annotated_output = expp.eval(inputs)
             # annotated_output = p.eval(inputs)
 
-            print(checker_function(compute_rlt, annotated_output))
+            # print(checker_function(compute_rlt, annotated_output))
 
 
 

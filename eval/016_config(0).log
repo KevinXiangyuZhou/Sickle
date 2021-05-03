@@ -1,0 +1,153 @@
+------evaluate 016.json on config_0-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_cheap': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 900, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+[error] <class 'RecursionError'> maximum recursion depth exceeded in comparison
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 231, in run_synthesis
+    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 440, in iteratively_instantiate
+    candidates = instantiate(p, inputs, output, flat_out, indent)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 396, in instantiate
+    if checker_function(infer_rlt, output) is None:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 231, in checker_function
+    final_mapping = extract_mappings(mapping, keys)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 304, in extract_mappings
+    search_mappings(rlt, 0, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  [Previous line repeated 987 more times]
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in search_mappings
+    if not [m for m in mappings[coord] if m not in closed]:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in <listcomp>
+    if not [m for m in mappings[coord] if m not in closed]:
+
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 16)
+----
+number of programs searched: 23
+time cost: 1128.4024007320404
+number of solutions: 0
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+[error] <class 'RecursionError'> maximum recursion depth exceeded in comparison
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 231, in run_synthesis
+    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 440, in iteratively_instantiate
+    candidates = instantiate(p, inputs, output, flat_out, indent)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 396, in instantiate
+    if checker_function(infer_rlt, output) is None:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 231, in checker_function
+    final_mapping = extract_mappings(mapping, keys)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 304, in extract_mappings
+    search_mappings(rlt, 0, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  [Previous line repeated 987 more times]
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in search_mappings
+    if not [m for m in mappings[coord] if m not in closed]:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in <listcomp>
+    if not [m for m in mappings[coord] if m not in closed]:
+
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 16)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 23)
+----
+number of programs searched: 23
+time cost: 1107.9818177223206
+number of solutions: 0
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+[error] <class 'RecursionError'> maximum recursion depth exceeded in comparison
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 231, in run_synthesis
+    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 440, in iteratively_instantiate
+    candidates = instantiate(p, inputs, output, flat_out, indent)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 396, in instantiate
+    if checker_function(infer_rlt, output) is None:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 231, in checker_function
+    final_mapping = extract_mappings(mapping, keys)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 304, in extract_mappings
+    search_mappings(rlt, 0, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  [Previous line repeated 987 more times]
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in search_mappings
+    if not [m for m in mappings[coord] if m not in closed]:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in <listcomp>
+    if not [m for m in mappings[coord] if m not in closed]:
+
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 16)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 23)
+----
+number of programs searched: 23
+time cost: 1099.5140850543976
+number of solutions: 0
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+[error] <class 'RecursionError'> maximum recursion depth exceeded in comparison
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 231, in run_synthesis
+    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 440, in iteratively_instantiate
+    candidates = instantiate(p, inputs, output, flat_out, indent)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 396, in instantiate
+    if checker_function(infer_rlt, output) is None:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 231, in checker_function
+    final_mapping = extract_mappings(mapping, keys)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 304, in extract_mappings
+    search_mappings(rlt, 0, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  [Previous line repeated 987 more times]
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in search_mappings
+    if not [m for m in mappings[coord] if m not in closed]:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in <listcomp>
+    if not [m for m in mappings[coord] if m not in closed]:
+
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 16)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 23)
+----
+number of programs searched: 23
+time cost: 1092.0579977035522
+number of solutions: 0
+=======target output==========
+                                                               COL_0                                                            COL_1                                                              COL_2
+0      [ArgOr['0_a0', '0_a1', '0_a96', '0_a97', '0_a192', '0_a193']]    [ArgOr['0_b0', '0_b1', '0_b96', '0_b97', '0_b192', '0_b193']]    ('sum', ['0_d0', '0_d1', '0_d96', '0_d97', '0_d192', '0_d193'])
+1      [ArgOr['0_a2', '0_a3', '0_a98', '0_a99', '0_a194', '0_a195']]    [ArgOr['0_b2', '0_b3', '0_b98', '0_b99', '0_b194', '0_b195']]    ('sum', ['0_d2', '0_d3', '0_d98', '0_d99', '0_d194', '0_d195'])
+2    [ArgOr['0_a4', '0_a5', '0_a100', '0_a101', '0_a196', '0_a197']]  [ArgOr['0_b4', '0_b5', '0_b100', '0_b101', '0_b196', '0_b197']]  ('sum', ['0_d4', '0_d5', '0_d100', '0_d101', '0_d196', '0_d197'])
+3    [ArgOr['0_a6', '0_a7', '0_a102', '0_a103', '0_a198', '0_a199']]  [ArgOr['0_b6', '0_b7', '0_b102', '0_b103', '0_b198', '0_b199']]  ('sum', ['0_d6', '0_d7', '0_d102', '0_d103', '0_d198', '0_d199'])
+4    [ArgOr['0_a8', '0_a9', '0_a104', '0_a105', '0_a200', '0_a201']]  [ArgOr['0_b8', '0_b9', '0_b104', '0_b105', '0_b200', '0_b201']]  ('sum', ['0_d8', '0_d9', '0_d104', '0_d105', '0_d200', '0_d201'])
+..                                                               ...                                                              ...                                                                ...
+892                                    [ArgOr['0_a1976', '0_a1977']]                                    [ArgOr['0_b1976', '0_b1977']]                                    ('sum', ['0_d1976', '0_d1977'])
+893                                    [ArgOr['0_a1978', '0_a1979']]                                    [ArgOr['0_b1978', '0_b1979']]                                    ('sum', ['0_d1978', '0_d1979'])
+894                                    [ArgOr['0_a1980', '0_a1981']]                                    [ArgOr['0_b1980', '0_b1981']]                                    ('sum', ['0_d1980', '0_d1981'])
+895                                    [ArgOr['0_a1982', '0_a1983']]                                    [ArgOr['0_b1982', '0_b1983']]                                    ('sum', ['0_d1982', '0_d1983'])
+896                                    [ArgOr['0_a1984', '0_a1985']]                                    [ArgOr['0_b1984', '0_b1985']]                                    ('sum', ['0_d1984', '0_d1985'])
+
+[897 rows x 3 columns]
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

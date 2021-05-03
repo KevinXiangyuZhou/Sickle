@@ -1,0 +1,53 @@
+------evaluate 008.json on config_9-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['(0, 0)', '(1, 0)', '(0, 1)'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 600, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.1740880012512207
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

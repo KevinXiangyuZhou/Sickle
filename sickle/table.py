@@ -54,7 +54,7 @@ class AnnotatedTable:
                 self.df[i].append(new_row[i])
 
     def get_cell(self, x, y):
-        return self.df[x][y]
+        return copy.copy(self.df[x][y])
 
     def get_column(self, col_index):
         return self.df[col_index].copy()
@@ -67,17 +67,17 @@ class AnnotatedTable:
         return rlt
 
     def get_col_num(self):
-        if self.df is []:
+        if self.is_empty():
             return 0
         return len(self.df)
 
     def get_row_num(self):
-        if self.df is []:
+        if self.is_empty():
             return 0
         return len(self.df[0])
 
     def is_empty(self):
-        return self.df == []
+        return self.df == [] or [e for e in self.df if e != []] == []
 
     def extract_values(self):
         """ convert annotated table to a dataframe 

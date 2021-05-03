@@ -1,0 +1,2811 @@
+<==============evaluation of 001.json================>
+---input info:['3x14']
+target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.09247398376464844
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.25667357444763184
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 672
+time cost: 6.987692594528198
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 153
+time cost: 4.530489921569824
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.0641775131225586
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.2291569709777832
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 672
+time cost: 5.785635709762573
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 153
+time cost: 4.8060302734375
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.06301283836364746
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.24798583984375
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 672
+time cost: 6.489410877227783
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 153
+time cost: 5.046868562698364
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 002.json================>
+---input info:['3x14']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.4854888916015625
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.5026233196258545
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 12674
+time cost: 191.13698601722717
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 709
+time cost: 31.73585557937622
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.5800433158874512
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.5626358985900879
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 12674
+time cost: 187.40391278266907
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 709
+time cost: 30.1483097076416
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.3943512439727783
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.6155662536621094
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 12674
+time cost: 184.46707725524902
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 709
+time cost: 36.69322872161865
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 003.json================>
+---input info:['3x7']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.21841001510620117
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 13
+time cost: 0.1482679843902588
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 1433
+time cost: 15.791703462600708
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 204
+time cost: 3.9537670612335205
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.20845365524291992
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 13
+time cost: 0.1431262493133545
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 1433
+time cost: 13.331481218338013
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 204
+time cost: 5.119797945022583
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.24932646751403809
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 13
+time cost: 0.15358757972717285
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 1433
+time cost: 15.899118423461914
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 204
+time cost: 5.290555000305176
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 004.json================>
+---input info:['2x8']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], sum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x / y, [1, 2])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 1846
+time cost: 18.701669692993164
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 62
+time cost: 0.9470782279968262
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 32587
+time cost: 600.0167603492737
+number of solutions: 2
+number of correct solutions: 2
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 231
+time cost: 5.5039873123168945
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 1846
+time cost: 20.68061327934265
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 62
+time cost: 1.4655952453613281
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 34933
+time cost: 600.0033304691315
+number of solutions: 2
+number of correct solutions: 2
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 231
+time cost: 5.12593674659729
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 1846
+time cost: 16.472038745880127
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 62
+time cost: 0.7982382774353027
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 36052
+time cost: 600.009664773941
+number of solutions: 2
+number of correct solutions: 2
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 231
+time cost: 5.006189346313477
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 005.json================>
+---input info:['2x8']
+target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 712
+time cost: 4.499558448791504
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 44
+time cost: 0.38173890113830566
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 34875
+time cost: 600.0285089015961
+number of solutions: 2
+number of correct solutions: 2
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 270
+time cost: 4.781921863555908
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 712
+time cost: 4.489475965499878
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 44
+time cost: 0.38038110733032227
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 35036
+time cost: 600.001458644867
+number of solutions: 2
+number of correct solutions: 2
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 270
+time cost: 4.883367300033569
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 712
+time cost: 4.473242998123169
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 44
+time cost: 0.37511467933654785
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 35011
+time cost: 600.0178925991058
+number of solutions: 2
+number of correct solutions: 2
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 270
+time cost: 5.581576824188232
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 006.json================>
+---input info:['3x7']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- mutate_arithmetic(t1, lambda x: 1, [2]); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 23073
+time cost: 600.0506746768951
+number of solutions: 0
+number of correct solutions: 0
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 651
+time cost: 24.659886598587036
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 23649
+time cost: 600.0516028404236
+number of solutions: 0
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 748
+time cost: 30.0905601978302
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 23648
+time cost: 600.0269932746887
+number of solutions: 0
+number of correct solutions: 0
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 651
+time cost: 24.636354446411133
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 23210
+time cost: 600.0256640911102
+number of solutions: 0
+number of correct solutions: 0
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 748
+time cost: 30.814531564712524
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 22884
+time cost: 600.0473122596741
+number of solutions: 0
+number of correct solutions: 0
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 651
+time cost: 26.32765793800354
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 22915
+time cost: 600.0563979148865
+number of solutions: 0
+number of correct solutions: 0
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 748
+time cost: 31.097825527191162
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 007.json================>
+---input info:['2x9']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 84
+time cost: 0.3410654067993164
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 14
+time cost: 0.09711956977844238
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 4898
+time cost: 37.221616983413696
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 163
+time cost: 2.749238967895508
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 84
+time cost: 0.30237507820129395
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 14
+time cost: 0.5507397651672363
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 4898
+time cost: 37.78045105934143
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 163
+time cost: 2.640162944793701
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 84
+time cost: 0.30208659172058105
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 14
+time cost: 0.09620475769042969
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 4898
+time cost: 37.617552042007446
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 163
+time cost: 2.5912561416625977
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 008.json================>
+---input info:['3x7']
+target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), [2])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 232
+time cost: 1.0293035507202148
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.17484402656555176
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28681
+time cost: 325.4090075492859
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 282
+time cost: 2.826078176498413
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 232
+time cost: 1.1233539581298828
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.18919062614440918
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28681
+time cost: 325.5983021259308
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 282
+time cost: 2.8513410091400146
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 232
+time cost: 1.017622947692871
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.1740880012512207
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28681
+time cost: 324.2811095714569
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 282
+time cost: 2.7277064323425293
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 009.json================>
+---input info:['5x11']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1, 2], max, 3); t2 <- group_mutate(t1, [1, 2], sum, 4); t3 <- mutate_arithmetic(t2, lambda x, y: y / (x - y), [6, 5]); t4 <- group_sum(t3, [0, 1], mean, 7)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 27222
+time cost: 600.008841753006
+number of solutions: 0
+number of correct solutions: 0
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 375
+time cost: 706.8673095703125
+number of solutions: 0
+number of correct solutions: 0
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 27221
+time cost: 600.0300817489624
+number of solutions: 0
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 375
+time cost: 708.4535880088806
+number of solutions: 0
+number of correct solutions: 0
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 27220
+time cost: 600.0398683547974
+number of solutions: 0
+number of correct solutions: 0
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 375
+time cost: 705.2189559936523
+number of solutions: 0
+number of correct solutions: 0
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 27802
+time cost: 600.0414388179779
+number of solutions: 0
+number of correct solutions: 0
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 375
+time cost: 685.1544568538666
+number of solutions: 0
+number of correct solutions: 0
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 27788
+time cost: 600.0409555435181
+number of solutions: 0
+number of correct solutions: 0
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 375
+time cost: 683.4424676895142
+number of solutions: 0
+number of correct solutions: 0
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 27817
+time cost: 600.0367541313171
+number of solutions: 0
+number of correct solutions: 0
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 375
+time cost: 686.6335771083832
+number of solutions: 0
+number of correct solutions: 0
+
+
+<==============evaluation of 010.json================>
+---input info:['4x6']
+target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, [1]); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, [2]); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, [3])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 29606
+time cost: 600.0622546672821
+number of solutions: 0
+number of correct solutions: 0
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+no results found after 13.106422662734985s
+number of correct solutions: 0
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 29605
+time cost: 600.0157325267792
+number of solutions: 0
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+no results found after 13.565386533737183s
+number of correct solutions: 0
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 29613
+time cost: 600.0185675621033
+number of solutions: 0
+number of correct solutions: 0
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+no results found after 12.785606384277344s
+number of correct solutions: 0
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 29645
+time cost: 600.0112526416779
+number of solutions: 0
+number of correct solutions: 0
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+no results found after 13.201878547668457s
+number of correct solutions: 0
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 29687
+time cost: 600.0223367214203
+number of solutions: 0
+number of correct solutions: 0
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+no results found after 12.815248966217041s
+number of correct solutions: 0
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 29681
+time cost: 600.0268805027008
+number of solutions: 0
+number of correct solutions: 0
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+no results found after 13.076168298721313s
+number of correct solutions: 0
+
+
+<==============evaluation of 011.json================>
+---input info:['3x3']
+target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, [0, 1]); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, [2, 3])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 7328
+time cost: 47.43937015533447
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 79
+time cost: 0.4967212677001953
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 48920
+time cost: 600.0082681179047
+number of solutions: 4
+number of correct solutions: 4
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 289
+time cost: 2.539422035217285
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 7328
+time cost: 47.08472919464111
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 79
+time cost: 0.503950834274292
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 49114
+time cost: 600.0194716453552
+number of solutions: 4
+number of correct solutions: 4
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 289
+time cost: 2.487440347671509
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 7328
+time cost: 47.74743318557739
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 79
+time cost: 0.4354064464569092
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 49217
+time cost: 600.0172526836395
+number of solutions: 4
+number of correct solutions: 4
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 289
+time cost: 2.3830361366271973
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 012.json================>
+---input info:['2x13']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [2, 0])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 606
+time cost: 6.670913934707642
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 54
+time cost: 1.3017253875732422
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 21871
+time cost: 549.6297087669373
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 184
+time cost: 10.581389904022217
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 606
+time cost: 6.721012592315674
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 54
+time cost: 1.362306833267212
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 21871
+time cost: 548.9996416568756
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 184
+time cost: 10.840793371200562
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 606
+time cost: 6.635458469390869
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 54
+time cost: 1.3258216381072998
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 21871
+time cost: 548.2565205097198
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 184
+time cost: 10.736378908157349
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 013.json================>
+---input info:['5x5']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [0], cumsum, 4)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 427
+time cost: 1.5094430446624756
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 70
+time cost: 0.589374303817749
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 502
+time cost: 3.3325648307800293
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 80
+time cost: 0.7324388027191162
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 427
+time cost: 1.484952449798584
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 70
+time cost: 0.5925452709197998
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 502
+time cost: 3.030160903930664
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 80
+time cost: 0.7462785243988037
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 427
+time cost: 1.4593889713287354
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 70
+time cost: 0.5547535419464111
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 502
+time cost: 3.047370433807373
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 80
+time cost: 0.7562394142150879
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 014.json================>
+---input info:['6x213']
+target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1, 5], sum, 3)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 248
+time cost: 55.685791015625
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 90
+time cost: 208.62629675865173
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 606
+time cost: 237.6559226512909
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 98
+time cost: 231.7124044895172
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 248
+time cost: 55.82358193397522
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 90
+time cost: 207.8968586921692
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 606
+time cost: 238.16971826553345
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 98
+time cost: 231.24481844902039
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 248
+time cost: 55.47002816200256
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 90
+time cost: 207.6435375213623
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 606
+time cost: 237.91962051391602
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 98
+time cost: 232.57190990447998
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 015.json================>
+---input info:['2x10']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 1)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 17
+time cost: 0.09741640090942383
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 9
+time cost: 0.10048222541809082
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 216
+time cost: 1.5457847118377686
+number of solutions: 5
+number of correct solutions: 5
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 85
+time cost: 1.7917070388793945
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 17
+time cost: 0.08281517028808594
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 9
+time cost: 0.08171916007995605
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 216
+time cost: 1.508223533630371
+number of solutions: 5
+number of correct solutions: 5
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 85
+time cost: 1.7090861797332764
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 17
+time cost: 0.09778952598571777
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 9
+time cost: 0.10060429573059082
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 216
+time cost: 1.5047509670257568
+number of solutions: 5
+number of correct solutions: 5
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 85
+time cost: 1.5417211055755615
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 017.json================>
+---input info:['3x13']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 1); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, [3, 1])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 22249
+time cost: 393.06830644607544
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 86
+time cost: 3.001795530319214
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28305
+time cost: 600.0146639347076
+number of solutions: 2
+number of correct solutions: 2
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 342
+time cost: 24.74637222290039
+number of solutions: 5
+number of correct solutions: 5
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 22249
+time cost: 396.39362120628357
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 86
+time cost: 3.10636830329895
+number of solutions: 1
+number of correct solutions: 1
+------config 6-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28255
+time cost: 600.0116109848022
+number of solutions: 2
+number of correct solutions: 2
+------config 7-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 342
+time cost: 24.655911922454834
+number of solutions: 5
+number of correct solutions: 5
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 22249
+time cost: 394.7359733581543
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 86
+time cost: 3.0477511882781982
+number of solutions: 1
+number of correct solutions: 1
+------config 10-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 28312
+time cost: 600.0162279605865
+number of solutions: 2
+number of correct solutions: 2
+------config 11-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 342
+time cost: 24.970500469207764
+number of solutions: 5
+number of correct solutions: 5
+
+
+<==============evaluation of 018.json================>
+---input info:['10x100']
+target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], count, 0)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 2923
+time cost: 29.267972707748413
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 1
+}
+number of programs searched: 241
+time cost: 101.53022408485413
+number of solutions: 1
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}
+number of programs searched: 3601
+time cost: 600.1323111057281
+number of solutions: 1
+number of correct solutions: 1
+------config 3-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 600,
+   "solution_limit": 5
+}

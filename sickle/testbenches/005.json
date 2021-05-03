@@ -14,7 +14,5 @@
   "correct_output": "t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- cumsum(t1, 1)",
   "exp_out": [{"0": 0},
     {"op": "group_sum", "0": [1], "1": "count", "2": 0},
-    {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}],
-  "time_2cols": [1.836, 5.358273029327393],
-  "time_3cols": 5.5753
+    {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
 }

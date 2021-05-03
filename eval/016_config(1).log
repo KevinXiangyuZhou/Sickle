@@ -1,0 +1,36 @@
+------evaluate 016.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_cheap': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 900, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+[error] <class 'RecursionError'> maximum recursion depth exceeded in comparison
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 231, in run_synthesis
+    stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 440, in iteratively_instantiate
+    candidates = instantiate(p, inputs, output, flat_out, indent)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\synthesizer.py", line 383, in instantiate
+    if checker_function(flat_rlt,
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 231, in checker_function
+    final_mapping = extract_mappings(mapping, keys)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 304, in extract_mappings
+    search_mappings(rlt, 0, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 346, in search_mappings
+    found = search_mappings(rlt, index + 1, mappings, keys, closed, open)
+  [Previous line repeated 987 more times]
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in search_mappings
+    if not [m for m in mappings[coord] if m not in closed]:
+  File "C:\Users\Administrator\Desktop\Sickle\sickle\table.py", line 327, in <listcomp>
+    if not [m for m in mappings[coord] if m not in closed]:
+
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+----
+number of programs searched: 30
+time cost: 3029.3346388339996
+number of solutions: 0
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)

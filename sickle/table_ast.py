@@ -8,6 +8,7 @@ from tabulate import tabulate
 from table_cell import *
 from table_cell_structureless import *
 from configuration import config
+import math
 
 
 # two special symbols used in the language
@@ -46,7 +47,8 @@ class Node(ABC):
 			if ast["op"] == "join":
 				node = constructors[ast["op"]](
 					Node.load_from_dict(ast["children"][0]),
-					Node.load_from_dict(ast["children"][1]))
+					Node.load_from_dict(ast["children"][1]),
+					*[arg["value"] for arg in ast["children"][2:]])
 			else:
 				node = constructors[ast["op"]](
 					Node.load_from_dict(ast["children"][0]),
@@ -56,7 +58,6 @@ class Node(ABC):
 	def to_stmt_dict(self):
 		"""translate the expression into a  """
 		def _recursive_translate(ast, used_vars):
-			#print(ast)
 			if ast["op"] == "table_ref":
 				# create a variable to capture the return variable
 				stmt_dict = copy.copy(ast)
@@ -183,16 +184,27 @@ class Table(Node):
 
 
 class Join(Node):
-	def __init__(self, q1, q2):
+	def __init__(self, q1, q2, predicate):
 		self.q1 = q1
 		self.q2 = q2
+		self.predicate = predicate
 
 	def infer_domain(self, arg_id, inputs, config):
-		return []
+		schema_1 = self.q1.infer_output_info(inputs)
+		schema_2 = self.q2.infer_output_info(inputs)
+		if arg_id == 2:
+			return config["join_predicates"]
+			"""
+			columns_1 = [i for i, s in enumerate(schema_1)]
+			columns_2 = [i for i, s in enumerate(schema_2)]
+			combinations_objects = [f"({i}, {j})" for i in columns_1 for j in columns_2]
+			# print(combinations_objects)
+			return combinations_objects
+			"""
+		else:
+			assert False, "[Join] No args to infer domain for id > 2."
 
 	def infer_output_info(self, inputs):
-		# schema_1, table_boundaries_1 = self.q1.infer_output_info(inputs)
-		# schema_2, table_boundaries_2 = self.q2.infer_output_info(inputs)
 		schema_1 = self.q1.infer_output_info(inputs)
 		schema_2 = self.q2.infer_output_info(inputs)
 		return schema_1 + schema_2
@@ -204,44 +216,35 @@ class Join(Node):
 		table2 = self.q2.eval(inputs)
 
 		# evaluate the dataframes from inputs
-		df1 = table1.extract_values()
-		df2 = table2.extract_values()
-
+		# df1 = table1.extract_values()
+		# df2 = table2.extract_values()
+		# eval predicate
+		join_keys = eval(self.predicate)
 		# perform join
-		res = (df1.assign(temp_join_key=1)
-			   .merge(df2.assign(temp_join_key=1), on="temp_join_key")
-			   .drop("temp_join_key", axis=1))
+		# res = (df1.assign(temp_join_key=1)
+		#       .merge(df2.assign(temp_join_key=1), on="temp_join_key")
+		# 	    .drop("temp_join_key", axis=1))
+		# res = pd.merge(df1, df2, left_on=df1.columns[join_keys[0]], right_on=df2.columns[join_keys[1]])
 
-		arguments = {}
-		# add trace info for df1
-		for colname in df1.columns:
-			x_coord = get_col_index_by_name(df1, colname)
-			for i in range(len(df1)):
-				for j in range(len(df2)):
-					# position info in output table
-					# the rid is the same as in the output table
-					rid = i * len(df2) + j
-					colname = res.columns[x_coord]
-					if rid not in arguments:
-						arguments[rid] = {}
-					arguments[rid][colname] = [("table_1", x_coord, i)]
-
-		# add trace info for df2
-		for colname in df2.columns:
-			x_coord = get_col_index_by_name(df2, colname)
-			for i in range(len(df1)):
-				for j in range(len(df2)):
-					# position info in output table
-					rid = i * len(df2) + j
-					# the cid in the output table is shifted
-					# right by the number of columns in df1
-					colname = res.columns[x_coord + len(df1.columns)]
-					if rid not in arguments:
-						arguments[rid] = {}
-					arguments[rid][colname] = [("table_2", x_coord, j)]
-
-		#print(res)
-		return df_to_annotated_table_join(res, None, arguments, table1, table2)
+		source = []
+		# build annotated table of joined tables
+		for rid1 in range(table1.get_row_num()):
+			for rid2 in range(table2.get_row_num()):
+				# add the a combination of table1[rid] & table2[rid] if the values of keys are the same
+				if table1.get_cell(join_keys[0], rid1).get_value() != table2.get_cell(join_keys[1], rid2).get_value():
+					continue
+				for cid in range(table1.get_col_num() + table2.get_col_num()):
+					if cid >= len(source):
+						source.append([])
+					if cid < table1.get_col_num():
+						arg = table1.get_cell(cid, rid1).get_exp()
+						val = table1.get_cell(cid, rid1).get_value()
+					else:
+						arg = table2.get_cell(cid - table1.get_col_num(), rid2).get_exp()
+						val = table2.get_cell(cid - table1.get_col_num(), rid2).get_value()
+					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
+		# print(AnnotatedTable(source, from_source=True).to_dataframe())
+		return AnnotatedTable(source, from_source=True)
 
 	def to_dict(self):
 		return {
@@ -250,6 +253,7 @@ class Join(Node):
 			"children": [
 				self.q1.to_dict(),
 				self.q2.to_dict(),
+				value_to_dict(self.predicate, "func")
 			]
 		}
 
@@ -310,6 +314,8 @@ class Join(Node):
 
 	def infer_cell_2(self, inputs):
 		# a cross product of computed intermediate of the two joined programs
+		if self.predicate != HOLE:
+			return self.eval(inputs)
 		table1 = self.q1.infer_cell_2(inputs)
 		table2 = self.q2.infer_cell_2(inputs)
 
@@ -337,7 +343,14 @@ class Join(Node):
 		return self.q1.infer_colnum(inputs) + self.q2.infer_colnum(inputs)
 
 	def infer_rownum(self, inputs):
-		return self.q1.infer_colnum(inputs) * self.q2.infer_colnum(inputs)
+		if self.predicate != HOLE:
+			val = self.eval(inputs)
+
+			if val.is_empty():
+				print(0)
+				return 0
+			return val.get_row_num()
+		return self.q1.infer_rownum(inputs) * self.q2.infer_rownum(inputs)
 
 
 class Select(Node):
@@ -517,6 +530,8 @@ class GroupSummary(Node):
 	def eval(self, inputs):
 		# make a copy of table for argument reference
 		table = self.q.eval(inputs)
+		if table.is_empty():
+			return table
 		df = self.q.eval(inputs).extract_values()
 		res = df.copy()
 		# print(res)
@@ -577,12 +592,17 @@ class GroupSummary(Node):
 	def infer_colnum(self, inputs):
 		n = self.q.infer_colnum(inputs)
 		if self.group_cols == HOLE:
-			return n
+			return n + 1
 		else:
 			return len(self.group_cols) + 1
 
 	# there is some inaccuracy in inferring the rownum of groupsum program
 	def infer_rownum(self, inputs):
+		if self.aggr_col != HOLE:
+			val = self.eval(inputs)
+			if val.is_empty():
+				return 0
+			return val.get_row_num()
 		return self.q.infer_rownum(inputs)
 
 	def infer_computation(self, inputs):
@@ -778,6 +798,8 @@ class GroupMutate(Node):
 	def eval(self, inputs):
 		# make a copy of table for argument reference
 		table = copy.copy(self.q.eval(inputs))
+		if table.is_empty():
+			return table
 		df = self.q.eval(inputs).extract_values()
 
 		res = df.copy()
@@ -1004,6 +1026,8 @@ class Mutate_Arithmetic(Node):
 	def eval(self, inputs):
 		# make a copy of table for argument reference
 		table = copy.copy(self.q.eval(inputs))
+		if table.is_empty():
+			return table
 		df = self.q.eval(inputs).extract_values()
 
 		res = df.copy()
@@ -1299,7 +1323,8 @@ def dict_to_program(l):
 		if op == "mutate_arithmetic":
 			return Mutate_Arithmetic(q, dict["0"], dict["1"])
 		if op == "join":
-			return Join(q, Table(dict["0"]))
+			# we assume user should specify join at the first step with some column provided
+			return Join(q, Table(dict["0"]), dict["1"])
 	q = Table(0)
 	for i in range(1, len(l)):
 		q = to_program(q, l[i])

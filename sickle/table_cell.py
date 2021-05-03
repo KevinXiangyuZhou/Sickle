@@ -128,6 +128,9 @@ def semantically_equiv(exp1, exp2):
     else:
         # we cannot do straight comparison if one of them is coord and the other is expnode
         # print([exp1,exp2])
+        # if isinstance(exp1, ExpNode) and isinstance(exp2,ArgOr):
+        #    print(f"exp1: {exp1}     exp2: {exp2}")
+        #    print(exp1 == exp2)
         return exp1 == exp2
 
 
@@ -145,6 +148,10 @@ class ExpNode(object):
             else:
                 # then it's a leaf note, both exp are coordinates
                 return exp1 == exp2
+        if isinstance(other, ArgOr):
+            for e in other.arguments:
+                if self.__eq__(e):
+                    return True
         if not isinstance(other, ExpNode):
             return False
         return exact_equiv(self, other)
@@ -255,7 +262,6 @@ class ArgOr:
         return total_hash
 
     def __eq__(self, other):
-        #TODO: chang eq logic to contains
         if not isinstance(other, ArgOr):
             return other in self.arguments
         return [1 for i in self.arguments for j in other.arguments if i == j] != []

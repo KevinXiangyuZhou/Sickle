@@ -19,7 +19,7 @@ abstract_combinators = {
     "group_sum": lambda q: GroupSummary(q, group_cols=HOLE, aggr_func=HOLE, aggr_col=HOLE),
     "group_mutate": lambda q: GroupMutate(q, group_cols=HOLE, aggr_func=HOLE, target_col=HOLE),
     "mutate_arithmetic": lambda q: Mutate_Arithmetic(q, cols=HOLE, func=HOLE),
-    "join": lambda q1, q2: Join(q1, q2)
+    "join": lambda q1, q2: Join(q1, q2, predicate=HOLE)
 }
 
 pd.set_option('display.max_colwidth', None)
@@ -74,13 +74,19 @@ class Synthesizer(object):
                     if op not in self.config["operators"]:
                         continue
                     if op == "join":
+                        for q0 in candidates[0]:
+                            for q1 in candidates[0]:
+                                q = abstract_combinators[op](copy.copy(q0), copy.copy(q1))
+                                candidates[level].append(q)
+                        """
                         for q1 in candidates[level - 1]:
                             for q2 in candidates[0]:
-                                q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))
+                                q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))   #TODO
                                 candidates[level + 1].append(q)
                             for q2 in candidates[1]:
                                 q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))
                                 candidates[level + 2].append(q)
+                        """
                     else:
                         for q0 in candidates[level - 1]:
                             q = abstract_combinators[op](copy.copy(q0))
@@ -213,7 +219,7 @@ class Synthesizer(object):
         print(f"number of programs: {len(candidates)}")
         return candidates
 
-    def run_synthesis(self, inputs, output, level_limit, logger, with_cheap,
+    def run_synthesis(self, inputs, output, level_limit, logger, correct_out, with_analysis=True,
                       time_limit_sec=None, solution_limit=None, print_trace=False):
         """Given inputs and output, enumerate all programs with premise check until
             find a solution p such that output ⊆ subseteq p(inputs) """
@@ -221,7 +227,8 @@ class Synthesizer(object):
         candidates = []
         start_time = time.time()
         searched = []
-        flat_out = get_flat_table(output)
+        # flat_out = get_flat_table(output)
+        flat_out = None
         log_s = logging.getLogger("summary")
         for level, sketches in all_sketches.items():
             for s in sketches:
@@ -229,19 +236,20 @@ class Synthesizer(object):
                 # programs = []
                 try:
                     stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
-                                                        solution_limit, time_limit_sec, "", print_trace, with_cheap,
-                                                        print_stmts=False)
+                                                        solution_limit, time_limit_sec, "", print_trace, correct_out,
+                                                        with_analysis, print_stmts=False)
                     # candidates += programs
                     if stop:
                         finsh_time = time.time() - start_time
+                        print("[stop]")
                         logger.info("----")
                         logger.info(f"number of programs searched: {len(searched)}")
-                        logger.info(f"number of solutions: {len(candidates)}")
                         logger.info("time cost: " + str(finsh_time))
+                        logger.info(f"number of solutions: {len(candidates)}")
                         # log the statistics into summary file
                         log_s.info(f"number of programs searched: {len(searched)}")
-                        log_s.info(f"number of solutions: {len(candidates)}")
                         log_s.info("time cost: " + str(finsh_time))
+                        log_s.info(f"number of solutions: {len(candidates)}")
                         return candidates
                 except Exception as e:
                     logger.info(f"[error] {sys.exc_info()[0]} {e}")
@@ -252,18 +260,20 @@ class Synthesizer(object):
         if finish_time >= time_limit_sec or len(candidates) > 0:
             logger.info("----")
             logger.info(f"number of programs searched: {len(searched)}")
-            logger.info(f"number of solutions: {len(candidates)}")
             logger.info("time cost: " + str(finish_time))
+            logger.info(f"number of solutions: {len(candidates)}")
             # log the statistics into summary file
             log_s.info(f"number of programs searched: {len(searched)}")
-            log_s.info(f"number of solutions: {len(candidates)}")
             log_s.info("time cost: " + str(finish_time))
+            log_s.info(f"number of solutions: {len(candidates)}")
             if finish_time >= time_limit_sec:
                 log_s.info("[TIME OUT]")
             #log_s.info("\n")
+        else:
+            log_s.info(f"no results found after {finish_time}s")
         return candidates
 
-    def enumerative_synthesis(self, inputs, output, max_prog_size,
+    def enumerative_synthesis(self, inputs, output, correct_out, max_prog_size,
                               time_limit_sec=None, solution_limit=None, print_trace=False):
         """Given inputs and output, enumerate all programs with premise check until
             find a solution p such that output ⊆ subseteq p(inputs) """
@@ -271,10 +281,11 @@ class Synthesizer(object):
         candidates = []
         start_time = time.time()
         searched = []
-        flat_out = get_flat_table(output)
-        print(flat_out.to_dataframe())
+        # flat_out = get_flat_table(output)
+        flat_out = None
+        # print(flat_out.to_dataframe())
         # turn on cheap analysis
-        with_cheap = True
+        with_analysis = True
         for level, sketches in all_sketches.items():
             for s in sketches:
                 # print(s.stmt_string())
@@ -282,9 +293,8 @@ class Synthesizer(object):
                 # programs = []
                 try:
                     stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
-                                                        solution_limit, time_limit_sec, "", print_trace, with_cheap,
-                                                        print_stmts=True)
-                    # candidates += programs
+                                                        solution_limit, time_limit_sec, "", print_trace, correct_out,
+                                                        with_analysis, print_stmts=True)
                     if stop:
                         finsh_time = time.time() - start_time
                         print("----")
@@ -298,31 +308,6 @@ class Synthesizer(object):
                     tb = sys.exc_info()[2]
                     tb_info = ''.join(traceback.format_tb(tb))
                     print(tb_info)
-                """
-                for p in programs:
-                    try:
-                        # print(p.stmt_string())
-                        t = p.eval(inputs)
-                        if t is None:
-                            continue
-                        # print(t.to_dataframe().to_csv())
-                        # print(t.extract_values())
-                        if checker_function(t, output) is not None:
-                            # print the result of annotated table
-                            candidates.append(p)
-                        if solution_limit is not None and len(candidates) >= solution_limit: # stop when enough progs found
-                            finsh_time = time.time() - start_time
-                            print("----")
-                            print(f"number of programs: {len(candidates)}")
-                            print("time cost: " + str(finsh_time))
-                            print()
-                            return candidates
-                    except Exception as e:
-                        print(f"[error] {sys.exc_info()[0]} {e}")
-                        tb = sys.exc_info()[2]
-                        tb_info = ''.join(traceback.format_tb(tb))
-                        print(tb_info)
-                """
         finsh_time = time.time() - start_time
         print("----")
         print(f"number of programs: {len(candidates)}")
@@ -331,7 +316,8 @@ class Synthesizer(object):
         return candidates
 
     def iteratively_instantiate(self, p, inputs, output, flat_out, results, searched, start_time,
-                                solution_limit, time_limit_sec, indent, print_trace, with_cheap, print_stmts=False):
+                                solution_limit, time_limit_sec, indent, print_trace, correct_out,
+                                with_analysis, print_stmts=False):
         """iteratively instantiate abstract programs w/ promise check"""
         def instantiate(p, inputs, output, flat_out, indent):
             """instantiate programs and then check each one of them against the premise """
@@ -340,7 +326,6 @@ class Synthesizer(object):
             if p.is_abstract():
                 if print_stmts:
                     print(indent + p.stmt_string())
-                searched.append(p)
 
                 ast = p.to_dict()
                 """generate program instantitated from the most recent level
@@ -364,18 +349,16 @@ class Synthesizer(object):
                         for partial_p in instantiated_progs:
                             pp = Node.load_from_dict(partial_p)
                             # print(indent + pp.stmt_string())
-                            if pp.is_abstract():
+                            searched.append(pp)
+                            if pp.is_abstract() and with_analysis:
                                 if print_stmts:
                                     print(indent + pp.stmt_string())
-                                searched.append(pp)
-                                expensive_check = True
-                                check_one = False
-                                check_two = False
                                 infer_rlt = pp.infer_cell_2(inputs)
-                                # print(with_cheap)
-                                cheap_check = with_cheap
+                                # print(with_analysis)
+                                cheap_check = False
+                                expensive_check = with_analysis
                                 # cheap_check
-                                if True:
+                                if cheap_check:
                                     # print(indent + "cheap check")
                                     flat_rlt = get_flat_table(infer_rlt)
                                     if checker_function(flat_rlt,
@@ -391,7 +374,7 @@ class Synthesizer(object):
                                 # expensive_check
                                 if expensive_check:
                                     # print(indent + "cell trace check 2")
-                                    if checker_function(infer_rlt, output) is None:
+                                    if checker_function(infer_rlt, output, print_result=print_trace) is None:
                                         if print_trace:
                                             print(indent + "cell trace check 2 failed!")
                                             print("=====Cell Trace 2 Check Result=====")
@@ -402,27 +385,9 @@ class Synthesizer(object):
                                         if print_trace:
                                             print("***************passed******************************************")
                                         # print(pp.infer_cell_2(inputs).to_dataframe())
-                                """
-                                # Check 1
-                                if check_one:
-                                    print(indent + "cell trace check")
-                                    if not check_cell_trace(pp, inputs, output):
-                                        print(indent + "cell trace check failed!")
-                                        # print(pp.infer_computation(inputs).to_dataframe())
-                                        continue
-                                # Check 2
-                                if check_two:
-                                    print(indent + "computation check")
-                                    if checker_function(pp.infer_computation(inputs), output) is None:
-                                        print(indent + "computation check failed!")
-                                        print("=====Computation Check Result=====")
-                                        print(pp.infer_computation(inputs).to_dataframe())
-                                        continue
-                                """
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
                         # number of candidate restriction
-
                     recent_candidates = temp_candidates
                 # level = innermost_level - 1
                 next_level_programs = recent_candidates
@@ -440,7 +405,7 @@ class Synthesizer(object):
             for _p in candidates:
                 stop = self.iteratively_instantiate(_p, inputs, output, flat_out, results, searched, start_time,
                                                     solution_limit, time_limit_sec, indent + "     ", print_trace,
-                                                    with_cheap, print_stmts)
+                                                    correct_out, with_analysis, print_stmts)
                 if stop:
                     return True
             return False
@@ -452,7 +417,11 @@ class Synthesizer(object):
                 print(indent + p.stmt_string())
             if print_trace:
                 print(indent + "run checker_function!")
-            if checker_function(p.eval(inputs), output, print_result=True) is not None:
+            curr_out = p.eval(inputs)
+            # compare against both user examples and correct label
+            # if checker_function(curr_out, output, print_result=print_trace) is not None:
+            #    results.append(p)
+            if checker_function(curr_out, correct_out, print_result=print_trace) is not None:
                 results.append(p)
             if (solution_limit is not None and len(results) >= solution_limit) \
                     or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
@@ -554,7 +523,7 @@ class Synthesizer(object):
                         tb_info = ''.join(traceback.format_tb(tb))
                         print(tb_info)
                 # early return if the termination condition is met
-                # TODO: time_limit may be exceeded if the synthesizer is stuck on iteratively instantiation
+                # time_limit may be exceeded if the synthesizer is stuck on iteratively instantiation
                 # if time_limit_sec is not None and time.time() - start_time > time_limit_sec:
                 #    return candidates
         return candidates
