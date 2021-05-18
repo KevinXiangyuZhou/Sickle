@@ -1,11 +1,11 @@
 ------evaluate 013.json on config_3-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['(0, 0)', '(1, 0)', '(0, 1)'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 600, 'solution_limit': 5}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 5}
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 10)
 ----
 number of programs searched: 80
-time cost: 0.7324388027191162
+time cost: 0.8904094696044922
 number of solutions: 5
 =======target output==========
       COL_0     COL_1     COL_2     COL_3     COL_4                 COL_5

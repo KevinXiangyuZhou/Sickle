@@ -1,60 +1,78 @@
 ------evaluate 020.json on config_6-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_cheap': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 900, 'solution_limit': 10}
-=======output candidates 0==========
-        COL_0      COL_1                         COL_2                                                                                                                                                                                                                                                                                                 COL_3
-0    ['0_a0']   ['0_b0']   [('lambda x: 1', ['0_b0'])]                                                                                                                                                                                                                                                               ('cumsum', [('lambda x: 1', ['0_b0'])])
-1    ['0_a1']   ['0_b1']   [('lambda x: 1', ['0_b1'])]                                                                                                                                                                                                                                    ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1'])])
-2    ['0_a2']   ['0_b2']   [('lambda x: 1', ['0_b2'])]                                                                                                                                                                                                         ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2'])])
-3    ['0_a3']   ['0_b3']   [('lambda x: 1', ['0_b3'])]                                                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3'])])
-4    ['0_a4']   ['0_b4']   [('lambda x: 1', ['0_b4'])]                                                                                                                                                   ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4'])])
-5    ['0_a5']   ['0_b5']   [('lambda x: 1', ['0_b5'])]                                                                                                                        ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5'])])
-6    ['0_a6']   ['0_b6']   [('lambda x: 1', ['0_b6'])]                                                                                             ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6'])])
-7    ['0_a7']   ['0_b7']   [('lambda x: 1', ['0_b7'])]                                                                  ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7'])])
-8    ['0_a8']   ['0_b8']   [('lambda x: 1', ['0_b8'])]                                       ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7']), ('lambda x: 1', ['0_b8'])])
-9    ['0_a9']   ['0_b9']   [('lambda x: 1', ['0_b9'])]            ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7']), ('lambda x: 1', ['0_b8']), ('lambda x: 1', ['0_b9'])])
-10  ['0_a10']  ['0_b10']  [('lambda x: 1', ['0_b10'])]                                                                                                                                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b10'])])
-11  ['0_a11']  ['0_b11']  [('lambda x: 1', ['0_b11'])]                                                                                                                                                                                                                                  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11'])])
-12  ['0_a12']  ['0_b12']  [('lambda x: 1', ['0_b12'])]                                                                                                                                                                                                      ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12'])])
-13  ['0_a13']  ['0_b13']  [('lambda x: 1', ['0_b13'])]                                                                                                                                                                          ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13'])])
-14  ['0_a14']  ['0_b14']  [('lambda x: 1', ['0_b14'])]                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14'])])
-15  ['0_a15']  ['0_b15']  [('lambda x: 1', ['0_b15'])]                                                                                                                  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15'])])
-16  ['0_a16']  ['0_b16']  [('lambda x: 1', ['0_b16'])]                                                                                      ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16'])])
-17  ['0_a17']  ['0_b17']  [('lambda x: 1', ['0_b17'])]                                                          ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17'])])
-18  ['0_a18']  ['0_b18']  [('lambda x: 1', ['0_b18'])]                              ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17']), ('lambda x: 1', ['0_b18'])])
-19  ['0_a19']  ['0_b19']  [('lambda x: 1', ['0_b19'])]  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17']), ('lambda x: 1', ['0_b18']), ('lambda x: 1', ['0_b19'])])
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': False, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 5}
+=======output candidates 11==========
+        COL_0                                                                                                                                                                                                                                                                                                 COL_1                         COL_2      COL_3
+0    ['0_b0']                                                                                                                                                                                                                                                               ('cumsum', [('lambda x: 1', ['0_b0'])])   [('lambda x: 1', ['0_b0'])]   ['0_a0']
+1    ['0_b1']                                                                                                                                                                                                                                    ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1'])])   [('lambda x: 1', ['0_b1'])]   ['0_a1']
+2    ['0_b2']                                                                                                                                                                                                         ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2'])])   [('lambda x: 1', ['0_b2'])]   ['0_a2']
+3    ['0_b3']                                                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3'])])   [('lambda x: 1', ['0_b3'])]   ['0_a3']
+4    ['0_b4']                                                                                                                                                   ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4'])])   [('lambda x: 1', ['0_b4'])]   ['0_a4']
+5    ['0_b5']                                                                                                                        ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5'])])   [('lambda x: 1', ['0_b5'])]   ['0_a5']
+6    ['0_b6']                                                                                             ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6'])])   [('lambda x: 1', ['0_b6'])]   ['0_a6']
+7    ['0_b7']                                                                  ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7'])])   [('lambda x: 1', ['0_b7'])]   ['0_a7']
+8    ['0_b8']                                       ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7']), ('lambda x: 1', ['0_b8'])])   [('lambda x: 1', ['0_b8'])]   ['0_a8']
+9    ['0_b9']            ('cumsum', [('lambda x: 1', ['0_b0']), ('lambda x: 1', ['0_b1']), ('lambda x: 1', ['0_b2']), ('lambda x: 1', ['0_b3']), ('lambda x: 1', ['0_b4']), ('lambda x: 1', ['0_b5']), ('lambda x: 1', ['0_b6']), ('lambda x: 1', ['0_b7']), ('lambda x: 1', ['0_b8']), ('lambda x: 1', ['0_b9'])])   [('lambda x: 1', ['0_b9'])]   ['0_a9']
+10  ['0_b10']                                                                                                                                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b10'])])  [('lambda x: 1', ['0_b10'])]  ['0_a10']
+11  ['0_b11']                                                                                                                                                                                                                                  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11'])])  [('lambda x: 1', ['0_b11'])]  ['0_a11']
+12  ['0_b12']                                                                                                                                                                                                      ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12'])])  [('lambda x: 1', ['0_b12'])]  ['0_a12']
+13  ['0_b13']                                                                                                                                                                          ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13'])])  [('lambda x: 1', ['0_b13'])]  ['0_a13']
+14  ['0_b14']                                                                                                                                              ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14'])])  [('lambda x: 1', ['0_b14'])]  ['0_a14']
+15  ['0_b15']                                                                                                                  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15'])])  [('lambda x: 1', ['0_b15'])]  ['0_a15']
+16  ['0_b16']                                                                                      ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16'])])  [('lambda x: 1', ['0_b16'])]  ['0_a16']
+17  ['0_b17']                                                          ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17'])])  [('lambda x: 1', ['0_b17'])]  ['0_a17']
+18  ['0_b18']                              ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17']), ('lambda x: 1', ['0_b18'])])  [('lambda x: 1', ['0_b18'])]  ['0_a18']
+19  ['0_b19']  ('cumsum', [('lambda x: 1', ['0_b10']), ('lambda x: 1', ['0_b11']), ('lambda x: 1', ['0_b12']), ('lambda x: 1', ['0_b13']), ('lambda x: 1', ['0_b14']), ('lambda x: 1', ['0_b15']), ('lambda x: 1', ['0_b16']), ('lambda x: 1', ['0_b17']), ('lambda x: 1', ['0_b18']), ('lambda x: 1', ['0_b19'])])  [('lambda x: 1', ['0_b19'])]  ['0_a19']
 ===============================
 =======with partial table==========
-      COL_0
-0  ['0_b6']
-1  ['0_b7']
-2  ['0_b8']
-3  ['0_b9']
+                          COL_0      COL_1
+0  [('lambda x: 1', ['0_b10'])]  ['0_a10']
+1  [('lambda x: 1', ['0_b11'])]  ['0_a11']
+2  [('lambda x: 1', ['0_b12'])]  ['0_a12']
+3  [('lambda x: 1', ['0_b13'])]  ['0_a13']
+4  [('lambda x: 1', ['0_b14'])]  ['0_a14']
+5  [('lambda x: 1', ['0_b15'])]  ['0_a15']
+6  [('lambda x: 1', ['0_b16'])]  ['0_a16']
+7  [('lambda x: 1', ['0_b17'])]  ['0_a17']
+8  [('lambda x: 1', ['0_b18'])]  ['0_a18']
+9  [('lambda x: 1', ['0_b19'])]  ['0_a19']
 =======with randomized trace==========
-      COL_0
-0  ['0_b6']
-1  ['0_b7']
-2  ['0_b8']
-3  ['0_b9']
+                          COL_0      COL_1
+0  [('lambda x: 1', ['0_b10'])]  ['0_a10']
+1         [('lambda x: 1', [])]  ['0_a11']
+2  [('lambda x: 1', ['0_b12'])]  ['0_a12']
+3         [('lambda x: 1', [])]  ['0_a13']
+4  [('lambda x: 1', ['0_b14'])]  ['0_a14']
+5         [('lambda x: 1', [])]  ['0_a15']
+6  [('lambda x: 1', ['0_b16'])]  ['0_a16']
+7         [('lambda x: 1', [])]  ['0_a17']
+8  [('lambda x: 1', ['0_b18'])]  ['0_a18']
+9  [('lambda x: 1', ['0_b19'])]  ['0_a19']
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 2)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 4)
-t0 <- table_ref(0)   (program searched: 0)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 2)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 4)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 11)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 12)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 14)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 21)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 22)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 24)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 50)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 51)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 53)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 14)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 46)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 57)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 67)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 521)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 598)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 604)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 683)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 1481)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1626)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1632)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1685)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 2057)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 2136)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2282)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2296)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3195)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3353)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3359)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3711)
 ----
-number of programs searched: 60
-time cost: 4.792553901672363
+number of programs searched: 26055
+time cost: 300.01815533638
 number of solutions: 2
 =======target output==========
         COL_0      COL_1                         COL_2                                                                                                                                                                                                                                                                                                 COL_3

@@ -1,0 +1,623 @@
+<==============evaluation of 001.json================>
+---input info:['3x14']
+target program:t0 <- table_ref(0); t1 <- group_sum(t0, [1], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.6952142715454102
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 12
+time cost: 0.16678500175476074
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.19102883338928223
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 26
+time cost: 0.2313542366027832
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 38
+time cost: 0.3400700092315674
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 12
+time cost: 0.20346593856811523
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 002.json================>
+---input info:['3x14']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.9912948608398438
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 25
+time cost: 0.7770099639892578
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.5283710956573486
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 70
+time cost: 0.6306860446929932
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 122
+time cost: 0.5123345851898193
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 82
+time cost: 0.6972715854644775
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 003.json================>
+---input info:['3x7']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], mean, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.4543616771697998
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 13
+time cost: 0.2124326229095459
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.4203760623931885
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 37
+time cost: 0.44143152236938477
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 53
+time cost: 0.2882251739501953
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 13
+time cost: 0.19844555854797363
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 022.json================>
+---input info:['4x6']
+target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x / y, [2, 3])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 102
+time cost: 0.9257495403289795
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 19
+time cost: 0.490231990814209
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 102
+time cost: 1.0423657894134521
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 102
+time cost: 1.037226915359497
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 102
+time cost: 0.6368584632873535
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 102
+time cost: 0.7406058311462402
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 020.json================>
+---input info:['2x20']
+target program:t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: 1, [1]); t2 <- group_mutate(t1, [0], cumsum, 2)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 1622
+time cost: 25.3370623588562
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 60
+time cost: 4.889222860336304
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 1622
+time cost: 24.383769512176514
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 1039
+time cost: 34.68817925453186
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 1622
+time cost: 26.30889081954956
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 1039
+time cost: 37.04031157493591
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 007.json================>
+---input info:['2x9']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [1], cumsum, 0)
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 75
+time cost: 0.29226255416870117
+number of solutions: 1
+number of correct solutions: 1
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 20
+time cost: 0.21642017364501953
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 75
+time cost: 0.2693181037902832
+number of solutions: 1
+number of correct solutions: 1
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 63
+time cost: 0.3451399803161621
+number of solutions: 1
+number of correct solutions: 1
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 75
+time cost: 0.2642204761505127
+number of solutions: 1
+number of correct solutions: 1
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 51
+time cost: 0.3769974708557129
+number of solutions: 1
+number of correct solutions: 1
+
+
+<==============evaluation of 006.json================>
+---input info:['3x7']
+target program:t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- mutate_arithmetic(t1, lambda x: 1, [2]); t3 <- group_mutate(t2, [], cumsum, 4); t4 <- mutate_arithmetic(t3, lambda x, y: x / y, [3, 5])
+------config 0-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 5875
+time cost: 60.04053831100464
+number of solutions: 0
+number of correct solutions: 0
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": false,
+   "partial_trace": false,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 635
+time cost: 26.751929759979248
+number of solutions: 1
+number of correct solutions: 1
+------config 4-------
+{
+   "with_analysis": false,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 6645
+time cost: 60.0273220539093
+number of solutions: 0
+number of correct solutions: 0
+------config 5-------
+{
+   "with_analysis": true,
+   "permutation_test": false,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 3257
+time cost: 60.003507137298584
+number of solutions: 0
+number of correct solutions: 0
+------config 8-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 6205
+time cost: 60.04952335357666
+number of solutions: 0
+number of correct solutions: 0
+------config 9-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 4,
+   "time_limit": 60,
+   "solution_limit": 1
+}
+number of programs searched: 2351
+time cost: 60.05033206939697
+number of solutions: 0
+number of correct solutions: 0
+
+

@@ -1,5 +1,5 @@
 ------evaluate 003.json on config_10-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['(0, 0)', '(1, 0)', '(0, 1)'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 600, 'solution_limit': 5}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 5}
 =======output candidates 2==========
       COL_0     COL_1     COL_2                                                               COL_3
 0  ['0_a0']  ['0_c0']  ['0_b0']  ('mean', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])
@@ -24,16 +24,16 @@ t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 19)
 t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 57)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?)   (program searched: 68)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 74)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 93)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 707)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 833)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 930)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 1014)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 68)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 78)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 97)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 711)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 837)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 843)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 927)
 ----
-number of programs searched: 1433
-time cost: 15.899118423461914
+number of programs searched: 1346
+time cost: 8.01667070388794
 number of solutions: 5
 =======target output==========
       COL_0     COL_1     COL_2                                                               COL_3

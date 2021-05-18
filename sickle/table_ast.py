@@ -182,18 +182,17 @@ class Table(Node):
 	def infer_rownum(self, inputs):
 		return len(inputs[self.data_id])
 
-
 class Join(Node):
-	def __init__(self, q1, q2, predicate):
+	def __init__(self, q1, q2, predicate, is_left_outer):
+		# (Not using) possible predicate "[(0, 1, 2), [(0, 1, (0, 0), \"inner\"), (1, 2, (1, 0), \"outer\")]]"
+		# self.qs = qs  # with size 2 - len(inputs)
 		self.q1 = q1
 		self.q2 = q2
 		self.predicate = predicate
+		self.is_left_outer = is_left_outer
 
 	def infer_domain(self, arg_id, inputs, config):
-		schema_1 = self.q1.infer_output_info(inputs)
-		schema_2 = self.q2.infer_output_info(inputs)
 		if arg_id == 2:
-			return config["join_predicates"]
 			"""
 			columns_1 = [i for i, s in enumerate(schema_1)]
 			columns_2 = [i for i, s in enumerate(schema_2)]
@@ -201,17 +200,29 @@ class Join(Node):
 			# print(combinations_objects)
 			return combinations_objects
 			"""
+			return config["join_predicates"]
+		elif arg_id == 3:
+			return [False, True]
 		else:
-			assert False, "[Join] No args to infer domain for id > 2."
+			assert False, "[Join] No args to infer domain for id > 3."
 
 	def infer_output_info(self, inputs):
+		"""
+		schema = []
+		for q in self.qs:
+			schema.append(q.infer_output_info(inputs))
+		return schema
+		"""
 		schema_1 = self.q1.infer_output_info(inputs)
 		schema_2 = self.q2.infer_output_info(inputs)
 		return schema_1 + schema_2
 
+
 	def eval(self, inputs):
+		# TODO: notice that the size of predicates could be inconsistent
 		# make a copy of table for argument reference
 		# for convenience of infer_computation
+		# tables = [q.eval(inputs) for q in self.qs]
 		table1 = self.q1.eval(inputs)
 		table2 = self.q2.eval(inputs)
 
@@ -219,20 +230,31 @@ class Join(Node):
 		# df1 = table1.extract_values()
 		# df2 = table2.extract_values()
 		# eval predicate
-		join_keys = eval(self.predicate)
+		eval_predicate = eval(self.predicate)
+		if self.q1.get_id() != eval_predicate[0][0] or self.q2.get_id() != eval_predicate[0][1]:
+			# return empty table to the next level
+			return AnnotatedTable([], from_source=True)
+		join_keys = eval_predicate[1]
+		if join_keys[0] >= table1.get_col_num() or join_keys[1] >= table2.get_col_num():
+			return AnnotatedTable([], from_source=True)
+
 		# perform join
 		# res = (df1.assign(temp_join_key=1)
 		#       .merge(df2.assign(temp_join_key=1), on="temp_join_key")
 		# 	    .drop("temp_join_key", axis=1))
 		# res = pd.merge(df1, df2, left_on=df1.columns[join_keys[0]], right_on=df2.columns[join_keys[1]])
-
 		source = []
+
 		# build annotated table of joined tables
 		for rid1 in range(table1.get_row_num()):
+			# left outer join will include the row in left table when there is no match in the right table
+			exist_matches = False
 			for rid2 in range(table2.get_row_num()):
 				# add the a combination of table1[rid] & table2[rid] if the values of keys are the same
+				# else exclude the row from final output
 				if table1.get_cell(join_keys[0], rid1).get_value() != table2.get_cell(join_keys[1], rid2).get_value():
 					continue
+				exist_matches = True
 				for cid in range(table1.get_col_num() + table2.get_col_num()):
 					if cid >= len(source):
 						source.append([])
@@ -243,7 +265,21 @@ class Join(Node):
 						arg = table2.get_cell(cid - table1.get_col_num(), rid2).get_exp()
 						val = table2.get_cell(cid - table1.get_col_num(), rid2).get_value()
 					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
+			if self.is_left_outer and not exist_matches:
+				for cid in range(table1.get_col_num() + table2.get_col_num()):
+					if cid >= len(source):
+						source.append([])
+					if cid < table1.get_col_num():
+						arg = table1.get_cell(cid, rid1).get_exp()
+						val = table1.get_cell(cid, rid1).get_value()
+					else:
+						arg = []
+						val = 0.0
+					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
+
+
 		# print(AnnotatedTable(source, from_source=True).to_dataframe())
+		# it is okay to pass empty joined result to the next level
 		return AnnotatedTable(source, from_source=True)
 
 	def to_dict(self):
@@ -253,7 +289,8 @@ class Join(Node):
 			"children": [
 				self.q1.to_dict(),
 				self.q2.to_dict(),
-				value_to_dict(self.predicate, "func")
+				value_to_dict(self.predicate, "func"),
+				value_to_dict(self.is_left_outer, "bool")
 			]
 		}
 
@@ -352,7 +389,6 @@ class Join(Node):
 			return val.get_row_num()
 		return self.q1.infer_rownum(inputs) * self.q2.infer_rownum(inputs)
 
-
 class Select(Node):
 	def __init__(self, q, cols):
 		self.q = q
@@ -374,8 +410,8 @@ class Select(Node):
 		return [s for i, s in enumerate(schema) if i in self.cols]
 
 	def eval(self, inputs):
-		df = self.q.eval(inputs).extract_values()  # of type pandas dataframe
 		res = self.q.eval(inputs)
+		df = res.extract_values()  # of type pandas dataframe
 		# check if df has input cols
 		for col in self.cols:
 			if col >= len(df.columns):
@@ -510,10 +546,7 @@ class GroupSummary(Node):
 				cols = number_fields
 			return cols
 		elif arg_id == 2:
-			if self.aggr_col != HOLE:
-				return [f for f in config["aggr_func"]]
-			else:
-				return config["aggr_func"]
+			return config["aggr_func"]
 		else:
 			assert False, "[Gather] No args to infer domain for id > 1."
 
@@ -532,7 +565,7 @@ class GroupSummary(Node):
 		table = self.q.eval(inputs)
 		if table.is_empty():
 			return table
-		df = self.q.eval(inputs).extract_values()
+		df = table.extract_values()
 		res = df.copy()
 		# print(res)
 		group_keys = [res.columns[idx] for idx in self.group_cols]
@@ -693,6 +726,8 @@ class GroupSummary(Node):
 		new_cols = [e for e in self.group_cols] + [colnum]
 		start_row = 0
 		for (key, group) in df:
+			# print(group.to_dict())
+			index_list = group.index.tolist()
 			for cid in range(colnum + 1):  # group_cols + one new col
 				if cid not in self.group_cols and cid != colnum:
 					continue
@@ -701,12 +736,11 @@ class GroupSummary(Node):
 				if cid == colnum:
 					# the new cell in new column can come from any cell
 					# but it should not be placed in group cols
-					trace = [(x, y) for x in range(colnum)
-							 for y in range(start_row, start_row + len(group)) if x not in self.group_cols]
+					trace = [(x, y) for x in range(colnum) for y in index_list if x not in self.group_cols]
 				else:
 					# this column is group column
 					# its trace should be ArgOr of all cells in the column
-					trace = [(cid, y) for y in range(start_row, start_row + len(group))]
+					trace = [(cid, y) for y in index_list]
 				args = []
 				for c in trace:
 					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
@@ -767,8 +801,17 @@ class GroupMutate(Node):
 						table_keys.append(gb_keys)
 						continue
 					col_list_candidates += [gb_keys]
-			col_list_candidates.append([])
-			return col_list_candidates
+			group_rlts = []
+			valid_candidates = []
+			for group_keys in col_list_candidates:
+				keys = [df.columns[idx] for idx in group_keys]
+				# Format: {index: {colname: argument}}
+				# iterate through df, map each cell in resulting table with its argument
+				temp = df.groupby(keys, sort=False)
+				if temp not in group_rlts:
+					valid_candidates.append(group_keys)
+			valid_candidates.append([])
+			return valid_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]
 			if self.group_cols != HOLE:
@@ -797,10 +840,10 @@ class GroupMutate(Node):
 
 	def eval(self, inputs):
 		# make a copy of table for argument reference
-		table = copy.copy(self.q.eval(inputs))
+		table = self.q.eval(inputs)
 		if table.is_empty():
 			return table
-		df = self.q.eval(inputs).extract_values()
+		df = table.extract_values()
 
 		res = df.copy()
 		target = df.columns[self.target_col]
@@ -957,7 +1000,6 @@ class GroupMutate(Node):
 		else:
 			group_keys = [df.columns[idx] for idx in self.group_cols]
 			df = df.groupby(group_keys)
-		start_row = 0
 		new_cols = [i for i in range(colnum)] + [colnum]
 		group_arg = {}  # gid: args
 		member_gid = {}  # member1 : gid
@@ -967,7 +1009,6 @@ class GroupMutate(Node):
 					for y in group.index.values.tolist() if x not in self.group_cols]
 			for m in group.index.values.tolist():
 				member_gid[m] = gid
-			start_row += len(group)
 			gid += 1
 		for cid in range(colnum + 1):  # include new column
 			new_source.append([])
@@ -1025,10 +1066,10 @@ class Mutate_Arithmetic(Node):
 
 	def eval(self, inputs):
 		# make a copy of table for argument reference
-		table = copy.copy(self.q.eval(inputs))
+		table = self.q.eval(inputs)
 		if table.is_empty():
 			return table
-		df = self.q.eval(inputs).extract_values()
+		df = table.extract_values()
 
 		res = df.copy()
 		arguments = generate_direct_arguments(res)
@@ -1324,7 +1365,7 @@ def dict_to_program(l):
 			return Mutate_Arithmetic(q, dict["0"], dict["1"])
 		if op == "join":
 			# we assume user should specify join at the first step with some column provided
-			return Join(q, Table(dict["0"]), dict["1"])
+			return Join(q, Table(dict["0"]), dict["1"], dict["2"])
 	q = Table(0)
 	for i in range(1, len(l)):
 		q = to_program(q, l[i])

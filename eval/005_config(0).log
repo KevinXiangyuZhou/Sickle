@@ -1,20 +1,25 @@
 ------evaluate 005.json on config_0-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['(0, 0)', '(1, 0)', '(0, 1)'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 600, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 14)
 t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 46)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?)   (program searched: 57)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 63)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 72)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 512)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 589)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 655)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 57)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 86)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 526)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 603)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 615)
 ----
-number of programs searched: 712
-time cost: 4.499558448791504
+number of programs searched: 672
+time cost: 3.174685001373291
 number of solutions: 1
 =======target output==========
+                                     COL_0                                          COL_1                                                                                                                COL_2
+0  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]  [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])]                                                            ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])])
+1          [ArgOr['0_b4', '0_b5', '0_b6']]          [('count', ['0_a4', '0_a5', '0_a6'])]                       ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6'])])
+2                          [ArgOr['0_b7']]                          [('count', ['0_a7'])]  ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6']), ('count', ['0_a7'])])
+=======correct output==========
                                      COL_0                                          COL_1                                                                                                                COL_2
 0  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]  [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])]                                                            ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])])
 1          [ArgOr['0_b4', '0_b5', '0_b6']]          [('count', ['0_a4', '0_a5', '0_a6'])]                       ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6'])])

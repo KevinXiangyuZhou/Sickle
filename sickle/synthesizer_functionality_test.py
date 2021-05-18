@@ -18,8 +18,11 @@ test_config = {
                 "filer_op": ["=="],
                 "constants": [3000],
                 "aggr_func": ["mean", "sum", "count", "max"],
-                "mutate_func": ["mean", "sum", "max", "cumsum"],
-                "join_predicates": ["(0, 0)", "(1, 0)", "(0, 1)"],
+                "mutate_func": ["mean", "sum", "max", "cumsum", "count"],
+                "join_predicates": ["[(0, 1), (0, 0)]",
+                                    "[(0, 1), (1, 0)]",
+                                    "[(0, 0), (2, 3)]",
+                                    "[(0, 1), (0, 1)]"],
                 "mutate_function": ["lambda x, y: x - y",
                                     "lambda x, y: x + y",
                                     "lambda x, y: x * y",
@@ -146,7 +149,7 @@ class SynthesizerTest(unittest.TestCase):
             #print(rlt)
 
 
-    #@unittest.skip
+    # @unittest.skip
     def test_run(self):
         print(ArgOr([('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b1']), ('(0, 0)', ['0_b2'])])
                     == ('(0, 0)', ['0_b0']))
@@ -167,7 +170,7 @@ class SynthesizerTest(unittest.TestCase):
         annotated_output = p.eval(inputs)
         print("-----")
         """
-        with open('testbenches/026.json', 'r') as filehandler:
+        with open('testbenches/032.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
@@ -187,6 +190,7 @@ class SynthesizerTest(unittest.TestCase):
                 print("-----")
                 """
                 annotated_output = p.eval(inputs)
+                print(annotated_output.extract_values())
                 print(annotated_output.to_dataframe())
                 correct_out = copy.copy(annotated_output)
             else:

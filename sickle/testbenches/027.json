@@ -15,7 +15,7 @@
   ]],
   "url":"https://www.red-gate.com/simple-talk/sql/oracle/introduction-to-analytic-functions-part-1-2/",
   "exp_out": [{"0": 0},
-    {"op": "join", "0": 1, "1": "(1, 0)"},
+    {"op": "join", "0": 1, "1": "[(0, 1), (1, 0)]", "2": true},
     {"op": "group_mutate", "0": [0], "1": "sum", "2": 3},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [3, 4]}]
 }

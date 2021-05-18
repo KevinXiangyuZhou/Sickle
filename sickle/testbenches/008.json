@@ -22,6 +22,5 @@
   "url": "https://www.w3resource.com/sql/update-statement/update-columns-using-arithmetical-expression.php",
   "correct_output": "t0 <- table_ref(0); t1 <- mutate_2(t0, lambda x: x - (x * 0.1), (2,))",
   "exp_out": [{"0": 0},
-    {"op": "mutate_arithmetic", "0": "lambda x: x - (x * 0.1)", "1": [2]}],
-  "time": "141s"
+    {"op": "mutate_arithmetic", "0": "lambda x: x - (x * 0.1)", "1": [2]}]
 }

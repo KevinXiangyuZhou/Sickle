@@ -22,7 +22,7 @@
   "url": "https://stackoverflow.com/questions/61640526/sql-query-to-calculate-the-cumulative-number-of-trips-for-each-date",
   "correct_output": "t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- cumsum(t1, 1)",
   "exp_out": [{"0": 0},
-    {"op": "join", "0": 1, "1": "(0, 0)"},
+    {"op": "join", "0": 1, "1": "[(0, 1), (0, 0)]", "2": false},
     {"op": "group_sum", "0": [1], "1": "sum", "2": 3},
     {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
 }

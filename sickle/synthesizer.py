@@ -19,7 +19,7 @@ abstract_combinators = {
     "group_sum": lambda q: GroupSummary(q, group_cols=HOLE, aggr_func=HOLE, aggr_col=HOLE),
     "group_mutate": lambda q: GroupMutate(q, group_cols=HOLE, aggr_func=HOLE, target_col=HOLE),
     "mutate_arithmetic": lambda q: Mutate_Arithmetic(q, cols=HOLE, func=HOLE),
-    "join": lambda q1, q2: Join(q1, q2, predicate=HOLE)
+    "join": lambda q1, q2: Join(q1, q2, predicate=HOLE, is_left_outer=HOLE)
 }
 
 pd.set_option('display.max_colwidth', None)
@@ -37,6 +37,7 @@ def get_node(node, path):
         node = node["children"][k]
     return node
 
+program_cache = {}
 
 class Synthesizer(object):
     def __init__(self, config=None):
@@ -74,19 +75,25 @@ class Synthesizer(object):
                     if op not in self.config["operators"]:
                         continue
                     if op == "join":
-                        for q0 in candidates[0]:
-                            for q1 in candidates[0]:
-                                q = abstract_combinators[op](copy.copy(q0), copy.copy(q1))
-                                candidates[level].append(q)
-                        """
-                        for q1 in candidates[level - 1]:
-                            for q2 in candidates[0]:
-                                q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))   #TODO
-                                candidates[level + 1].append(q)
-                            for q2 in candidates[1]:
-                                q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))
-                                candidates[level + 2].append(q)
-                        """
+                        if level == 1:
+                            # q = abstract_combinators[op]
+                            # candidates[level].append(q)
+                            # continue
+                            for q0 in candidates[0]:
+                                for q1 in candidates[0]:
+                                    q = abstract_combinators[op](copy.copy(q0), copy.copy(q1))
+                                    candidates[level].append(q)
+                            """
+                            for q1 in candidates[level - 1]:
+                                for q2 in candidates[0]:
+                                    q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))   #TODO
+                                    candidates[level + 1].append(q)
+                                for q2 in candidates[1]:
+                                    q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))
+                                    candidates[level + 2].append(q)
+                            """
+                        else:
+                            continue
                     else:
                         for q0 in candidates[level - 1]:
                             q = abstract_combinators[op](copy.copy(q0))
@@ -230,6 +237,7 @@ class Synthesizer(object):
         # flat_out = get_flat_table(output)
         flat_out = None
         log_s = logging.getLogger("summary")
+        program_cache.clear()
         for level, sketches in all_sketches.items():
             for s in sketches:
                 logger.info(s.stmt_string() + f"   (program searched: {len(searched)})")
@@ -286,6 +294,7 @@ class Synthesizer(object):
         # print(flat_out.to_dataframe())
         # turn on cheap analysis
         with_analysis = True
+        program_cache.clear()
         for level, sketches in all_sketches.items():
             for s in sketches:
                 # print(s.stmt_string())
@@ -326,6 +335,8 @@ class Synthesizer(object):
             if p.is_abstract():
                 if print_stmts:
                     print(indent + p.stmt_string())
+                if time.time() - start_time > time_limit_sec:
+                    return []
 
                 ast = p.to_dict()
                 """generate program instantitated from the most recent level
@@ -347,13 +358,19 @@ class Synthesizer(object):
                         # pruning with running checker function on abstract program
                         valid_progs = []
                         for partial_p in instantiated_progs:
+                            if time.time() - start_time > time_limit_sec:
+                                break
                             pp = Node.load_from_dict(partial_p)
                             # print(indent + pp.stmt_string())
                             searched.append(pp)
                             if pp.is_abstract() and with_analysis:
                                 if print_stmts:
                                     print(indent + pp.stmt_string())
-                                infer_rlt = pp.infer_cell_2(inputs)
+                                if pp.stmt_string() in program_cache:
+                                    infer_rlt = program_cache[pp.stmt_string()]
+                                else:
+                                    infer_rlt = pp.infer_cell_2(inputs)
+                                    program_cache[pp.stmt_string()] = copy.copy(infer_rlt)
                                 # print(with_analysis)
                                 cheap_check = False
                                 expensive_check = with_analysis
@@ -387,8 +404,12 @@ class Synthesizer(object):
                                         # print(pp.infer_cell_2(inputs).to_dataframe())
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
+                        if time.time() - start_time > time_limit_sec:
+                            break
                         # number of candidate restriction
                     recent_candidates = temp_candidates
+                    if time.time() - start_time > time_limit_sec:
+                        break
                 # level = innermost_level - 1
                 next_level_programs = recent_candidates
                 # next_level_programs, level = self.instantiate_one_level(ast, inputs)
@@ -417,7 +438,11 @@ class Synthesizer(object):
                 print(indent + p.stmt_string())
             if print_trace:
                 print(indent + "run checker_function!")
-            curr_out = p.eval(inputs)
+            if p.stmt_string() in program_cache:
+                curr_out = program_cache[p.stmt_string()]
+            else:
+                curr_out = p.eval(inputs)
+                program_cache[p.stmt_string()] = copy.copy(curr_out)
             # compare against both user examples and correct label
             # if checker_function(curr_out, output, print_result=print_trace) is not None:
             #    results.append(p)

@@ -7,7 +7,9 @@ from table_cell import *
 from configuration import target_configs
 import logging
 import os
-import time
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 pd.set_option('expand_frame_repr', False)
 
@@ -24,7 +26,7 @@ formatter = logging.Formatter('%(asctime)s %(message)s')
 logging.basicConfig(format='%(asctime)s %(message)s',
                     filemode='w+',
                     level=logging.INFO)
-random.seed(5)
+random.seed(8)
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -36,7 +38,7 @@ def setup_logger(name, log_file, level=logging.INFO):
     return logger
 
 
-logger_summary = setup_logger("summary", f'../eval/summary1.log')
+logger_summary = setup_logger("summary", f'../eval/summary5.18.log')
 
 
 def permutate_table(annotated_output):
@@ -48,32 +50,42 @@ def permutate_table(annotated_output):
 
 
 def randomize_table(annotated_output, config, logger, permutation_candidates):
+    res = copy.copy(annotated_output)
     if config["permutation_test"]:
         # if config["random_test"]:
         sample_id = random.randrange(len(permutation_candidates))
-        annotated_output = permutation_candidates[sample_id]
+        res = permutation_candidates[sample_id]
         logger.info("=======output candidates " + str(sample_id) + "==========")
-        logger.info(annotated_output.to_dataframe())
+        logger.info(res.to_dataframe())
         logger.info("===============================")
     if config["partial_table"]:
         if config["random_test"]:
-            x_start = random.randrange(int(annotated_output.get_col_num() / 2))
-            y_start = random.randrange(int(annotated_output.get_row_num() / 2))
-            x_end = random.randrange(int(annotated_output.get_col_num() / 2), annotated_output.get_col_num())
-            y_end = random.randrange(int(annotated_output.get_row_num() / 2), annotated_output.get_row_num())
+            x_s, x_e = int(res.get_col_num() / 2), res.get_col_num()
+            y_s, y_e = int(res.get_row_num() / 2), res.get_row_num()
+            if x_s == 0:
+                x_start = random.randrange(x_s + 1)
+            else:
+                x_start = random.randrange(x_s)
+            if y_s == 0:
+                y_start = random.randrange(y_s + 1)
+            else:
+                y_start = random.randrange(y_s)
+            x_end = random.randrange(x_s, x_e)
+            y_end = random.randrange(y_s, y_e)
         else:
-            x_end = annotated_output.get_col_num()
-            x_start = int(annotated_output.get_col_num() / 2)
-            y_end = annotated_output.get_row_num()
-            y_start = int(annotated_output.get_row_num() / 2)
-        annotated_output = annotated_output.select_region((x_start, x_end), (y_start, y_end))
+            x_end = res.get_col_num()
+            x_start = int(res.get_col_num() / 2)
+            y_end = res.get_row_num()
+            y_start = int(res.get_row_num() / 2)
+        res = res.select_region((x_start, x_end), (y_start, y_end))
         logger.info("=======with partial table==========")
-        logger.info(annotated_output.to_dataframe())
+        logger.info(res.to_dataframe())
 
     if config["partial_trace"]:
-        annotated_output = annotated_output.randomize()
+        res = res.randomize()
         logger.info("=======with randomized trace==========")
-        logger.info(annotated_output.to_dataframe())
+        logger.info(res.to_dataframe())
+    return res
 
 
 def eval_correctness(inputs, candidates, correct_out):
@@ -88,7 +100,6 @@ def run_wrapper(annotated_output, correct_out, config, logger):
     # logger.info(p.eval(inputs).to_dataframe())
     # logger.error(f"[error] invalid benchmark file")
     candidates = []
-    results = []
     for j in range(config["level_limit"], config["level_limit"] + 1):
         candidates = Synthesizer(config).run_synthesis(inputs, annotated_output, j, logger, correct_out,
                                                         with_analysis=config["with_analysis"],
@@ -104,11 +115,14 @@ def run_wrapper(annotated_output, correct_out, config, logger):
 
     logger.info("=======target output==========")
     logger.info(annotated_output.to_dataframe())
+    logger.info("=======correct output==========")
+    logger.info(correct_out.to_dataframe())
     for p in candidates:
         # print(alignment_result)
+        res = p.eval(inputs)
         logger.info(p.stmt_string())
-        logger.info(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
-        logger.info(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
+        logger.info(tabulate(res.extract_values(), headers='keys', tablefmt='psql'))
+        logger.info(tabulate(res.extract_traces(), headers='keys', tablefmt='psql'))
         logger.info("\n")
     logger.info(f"number of programs: {len(candidates)}")
     logger.info("\n\n\n\n\n\n")
@@ -122,7 +136,7 @@ if __name__ == '__main__':
         "constants": [3000],
         "aggr_func": ["mean", "sum", "count", "max"],
         "mutate_func": ["mean", "sum", "max", "count", "cumsum"],
-        "join_predicates": ["(0, 0)", "(1, 0)", "(0, 1)"],
+        "join_predicates": ["[(0, 1), (0, 0)]", "[(0, 1), (1, 0)]"],
         "mutate_function": ["lambda x, y: x - y",
                             "lambda x, y: x + y",
                             "lambda x, y: x * y",
@@ -135,15 +149,19 @@ if __name__ == '__main__':
         "partial_table": False,
         "partial_trace": False,
         "level_limit": 4,
-        "time_limit": 600,
+        "time_limit": 300,
         "solution_limit": 5
     }
 
-    for fname in os.listdir(DATA_DIR):
-    # for fname in ["006.json", "001.json"]:
+    #for fname in os.listdir(DATA_DIR):
+    for fname in ["001.json", "002.json", "003.json", "022.json", "020.json", "007.json", "006.json"]:
         if fname == "024.json":  # add more arithmetic operators later
             continue
         if fname == "016.json":  # table too big
+            continue
+        if fname == "028.json":  # solution absent
+            continue
+        if fname == "033.json":
             continue
         if fname.endswith("json") and "discard" not in fname:
             fpath = os.path.join(DATA_DIR, fname)
@@ -168,6 +186,11 @@ if __name__ == '__main__':
                 # run on all configs
                 user_example = copy.copy(correct_out)
                 for i in range(len(target_configs)):
+                    # 0246810(without analysis)
+                    # 0 4 8 1 solution 2 6 10
+                    # 159 1 solution, 3 7 11 5 solution
+                    if i % 4 == 3 or i % 4 == 2:
+                        continue
                     curr_config = target_configs[i]
                     logger = setup_logger(f"{fname}_{i}", f'../eval/{fname[:3]}_config({i}).log')
                     config = target_configs[i]
@@ -186,8 +209,7 @@ if __name__ == '__main__':
                     logger.info(f"------evaluate {fname} on config_{i}-------")
                     logger.info(str(curr_config))
                     # get randomized user sample, according to the given config
-                    if i % 2 == 0:
-                        randomize_table(user_example, config, logger, permutation_candidates)
+                    user_example = randomize_table(user_example, config, logger, permutation_candidates)
                     try:
                         run_wrapper(user_example, correct_out, config, logger)
                     except Exception as e:

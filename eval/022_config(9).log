@@ -1,31 +1,35 @@
 ------evaluate 022.json on config_9-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_cheap': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 4, 'time_limit': 900, 'solution_limit': 5}
-=======output candidates 88==========
-      COL_0     COL_1                                     COL_2     COL_3     COL_4
-0  ['0_d0']  ['0_c0']  ('lambda x, y: x / y', ['0_c0', '0_d0'])  ['0_a0']  ['0_b0']
-1  ['0_d1']  ['0_c1']  ('lambda x, y: x / y', ['0_c1', '0_d1'])  ['0_a1']  ['0_b1']
-2  ['0_d2']  ['0_c2']  ('lambda x, y: x / y', ['0_c2', '0_d2'])  ['0_a2']  ['0_b2']
-3  ['0_d3']  ['0_c3']  ('lambda x, y: x / y', ['0_c3', '0_d3'])  ['0_a3']  ['0_b3']
-4  ['0_d4']  ['0_c4']  ('lambda x, y: x / y', ['0_c4', '0_d4'])  ['0_a4']  ['0_b4']
-5  ['0_d5']  ['0_c5']  ('lambda x, y: x / y', ['0_c5', '0_d5'])  ['0_a5']  ['0_b5']
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
+=======output candidates 49==========
+      COL_0     COL_1     COL_2                                     COL_3     COL_4
+0  ['0_c0']  ['0_a0']  ['0_b0']  ('lambda x, y: x / y', ['0_c0', '0_d0'])  ['0_d0']
+1  ['0_c1']  ['0_a1']  ['0_b1']  ('lambda x, y: x / y', ['0_c1', '0_d1'])  ['0_d1']
+2  ['0_c2']  ['0_a2']  ['0_b2']  ('lambda x, y: x / y', ['0_c2', '0_d2'])  ['0_d2']
+3  ['0_c3']  ['0_a3']  ['0_b3']  ('lambda x, y: x / y', ['0_c3', '0_d3'])  ['0_d3']
+4  ['0_c4']  ['0_a4']  ['0_b4']  ('lambda x, y: x / y', ['0_c4', '0_d4'])  ['0_d4']
+5  ['0_c5']  ['0_a5']  ['0_b5']  ('lambda x, y: x / y', ['0_c5', '0_d5'])  ['0_d5']
 ===============================
+=======with partial table==========
+      COL_0     COL_1     COL_2
+0  ['0_c2']  ['0_a2']  ['0_b2']
+1  ['0_c3']  ['0_a3']  ['0_b3']
 =======with randomized trace==========
-      COL_0     COL_1                                     COL_2     COL_3     COL_4
-0  ['0_d0']  ['0_c0']          ('lambda x, y: x / y', ['0_d0'])  ['0_a0']  ['0_b0']
-1  ['0_d1']  ['0_c1']  ('lambda x, y: x / y', ['0_c1', '0_d1'])  ['0_a1']  ['0_b1']
-2  ['0_d2']  ['0_c2']  ('lambda x, y: x / y', ['0_c2', '0_d2'])  ['0_a2']  ['0_b2']
-3  ['0_d3']  ['0_c3']  ('lambda x, y: x / y', ['0_c3', '0_d3'])  ['0_a3']  ['0_b3']
-4  ['0_d4']  ['0_c4']          ('lambda x, y: x / y', ['0_c4'])  ['0_a4']  ['0_b4']
-5  ['0_d5']  ['0_c5']          ('lambda x, y: x / y', ['0_c5'])  ['0_a5']  ['0_b5']
+      COL_0     COL_1     COL_2
+0  ['0_c2']  ['0_a2']  ['0_b2']
+1  ['0_c3']  ['0_a3']  ['0_b3']
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 37)
 ----
-number of programs searched: 15
-time cost: 0.20644712448120117
-number of solutions: 2
+number of programs searched: 102
+time cost: 0.7406058311462402
+number of solutions: 1
 =======target output==========
+      COL_0     COL_1     COL_2
+0  ['0_c2']  ['0_a2']  ['0_b2']
+1  ['0_c3']  ['0_a3']  ['0_b3']
+=======correct output==========
       COL_0     COL_1     COL_2     COL_3                                     COL_4
 0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ('lambda x, y: x / y', ['0_c0', '0_d0'])
 1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ('lambda x, y: x / y', ['0_c1', '0_d1'])
@@ -56,30 +60,7 @@ t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x / y, (2, 3))
 +----+----------+----------+----------+----------+------------------------------------------+
 
 
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x / y, (3, 2))
-+----+------------+---------+---------+---------+---------+
-|    | COL_0      |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
-|----+------------+---------+---------+---------+---------|
-|  0 | Alabama    | 1296530 | 1317711 | 1118631 |    0.85 |
-|  1 | Alaska     | 1170302 | 1960378 | 1818085 |    0.93 |
-|  2 | Arizona    | 1742027 | 1968140 | 1377583 |    0.7  |
-|  3 | Arkansas   | 1485531 | 1994927 | 1119299 |    0.56 |
-|  4 | California | 1685349 | 1675807 | 1889570 |    1.13 |
-|  5 | Colorado   | 1343824 | 1878473 | 1886149 |    1    |
-+----+------------+---------+---------+---------+---------+
-+----+----------+----------+----------+----------+------------------------------------------+
-|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                    |
-|----+----------+----------+----------+----------+------------------------------------------|
-|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | ('lambda x, y: x / y', ['0_d0', '0_c0']) |
-|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | ('lambda x, y: x / y', ['0_d1', '0_c1']) |
-|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | ('lambda x, y: x / y', ['0_d2', '0_c2']) |
-|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | ('lambda x, y: x / y', ['0_d3', '0_c3']) |
-|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | ('lambda x, y: x / y', ['0_d4', '0_c4']) |
-|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | ('lambda x, y: x / y', ['0_d5', '0_c5']) |
-+----+----------+----------+----------+----------+------------------------------------------+
-
-
-number of programs: 2
+number of programs: 1
 
 
 

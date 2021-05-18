@@ -1,3 +1,5 @@
+
+
 # 2020/7/16
 
 import json
@@ -145,10 +147,16 @@ class AnnotatedTable:
         if x_range[0] < 0 or x_range[1] > self.get_col_num()\
            or y_range[0] < 0 or y_range[1] > self.get_row_num():
             return None
+        x1, x2 = x_range[0], x_range[1]
+        y1, y2 = y_range[0], y_range[1]
+        if x1 == x2:
+            x2 += 1
+        if y1 == y2:
+            y2 += 1
         selected = []
-        for x in range(x_range[0], x_range[1]):
+        for x in range(x1, x2):
             selected.append([])
-            for y in range(y_range[0], y_range[1]):
+            for y in range(y1, y2):
                 selected[-1].append(self.get_cell(x, y))
         return AnnotatedTable(selected, from_source=True)
 
@@ -234,6 +242,7 @@ def checker_function(actual, target, check_relations=True, print_result=False):
         print("failed mapping: ")
         print(mapping)
     return final_mapping
+
 
 """search for valid mapping for each cell in target table"""
 def find_mapping(target, actual, print_result):

@@ -1,50 +1,62 @@
 ------evaluate 007.json on config_5-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['(0, 0)', '(1, 0)', '(0, 1)'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': False, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 600, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
+=======with partial table==========
+      COL_0
+0  ['0_a1']
+1  ['0_a2']
+=======with randomized trace==========
+      COL_0
+0  ['0_a1']
+1  ['0_a2']
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
 ----
-number of programs searched: 14
-time cost: 0.5507397651672363
+number of programs searched: 63
+time cost: 0.3451399803161621
 number of solutions: 1
 =======target output==========
-      COL_0     COL_1                                                                                 COL_2
-0  ['0_a0']  ['0_b0']                                                                  ('cumsum', ['0_a0'])
-1  ['0_a1']  ['0_b1']                                                          ('cumsum', ['0_a0', '0_a1'])
-2  ['0_a2']  ['0_b2']                                                  ('cumsum', ['0_a0', '0_a1', '0_a2'])
-3  ['0_a3']  ['0_b3']                                          ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3'])
-4  ['0_a4']  ['0_b4']                                  ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4'])
-5  ['0_a5']  ['0_b5']                          ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5'])
-6  ['0_a6']  ['0_b6']                  ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6'])
-7  ['0_a7']  ['0_b7']          ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6', '0_a7'])
-8  ['0_a8']  ['0_b8']  ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6', '0_a7', '0_a8'])
-t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 0)
+      COL_0
+0  ['0_a1']
+1  ['0_a2']
+=======correct output==========
+      COL_0     COL_1                                 COL_2
+0  ['0_a0']  ['0_b0']                  ('cumsum', ['0_a0'])
+1  ['0_a1']  ['0_b1']                  ('cumsum', ['0_a1'])
+2  ['0_a2']  ['0_b2']                  ('cumsum', ['0_a2'])
+3  ['0_a3']  ['0_b3']          ('cumsum', ['0_a0', '0_a3'])
+4  ['0_a4']  ['0_b4']          ('cumsum', ['0_a1', '0_a4'])
+5  ['0_a5']  ['0_b5']          ('cumsum', ['0_a2', '0_a5'])
+6  ['0_a6']  ['0_b6']  ('cumsum', ['0_a0', '0_a3', '0_a6'])
+7  ['0_a7']  ['0_b7']  ('cumsum', ['0_a1', '0_a4', '0_a7'])
+8  ['0_a8']  ['0_b8']  ('cumsum', ['0_a2', '0_a5', '0_a8'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (1,), cumsum, 0)
 +----+---------+---------+---------+
 |    |   COL_0 |   COL_1 |   COL_2 |
 |----+---------+---------+---------|
 |  0 |    1000 |       1 |    1000 |
-|  1 |    3000 |       2 |    4000 |
-|  2 |    2000 |       3 |    6000 |
-|  3 |    3000 |       1 |    9000 |
-|  4 |    2500 |       2 |   11500 |
-|  5 |    3750 |       3 |   15250 |
-|  6 |    2000 |       1 |   17250 |
-|  7 |    2500 |       2 |   19750 |
-|  8 |    1450 |       3 |   21200 |
+|  1 |    3000 |       2 |    3000 |
+|  2 |    2000 |       3 |    2000 |
+|  3 |    3000 |       1 |    4000 |
+|  4 |    2500 |       2 |    5500 |
+|  5 |    3750 |       3 |    5750 |
+|  6 |    2000 |       1 |    6000 |
+|  7 |    2500 |       2 |    8000 |
+|  8 |    1450 |       3 |    7200 |
 +----+---------+---------+---------+
-+----+----------+----------+--------------------------------------------------------------------------------------+
-|    | COL_0    | COL_1    | COL_2                                                                                |
-|----+----------+----------+--------------------------------------------------------------------------------------|
-|  0 | ['0_a0'] | ['0_b0'] | ('cumsum', ['0_a0'])                                                                 |
-|  1 | ['0_a1'] | ['0_b1'] | ('cumsum', ['0_a0', '0_a1'])                                                         |
-|  2 | ['0_a2'] | ['0_b2'] | ('cumsum', ['0_a0', '0_a1', '0_a2'])                                                 |
-|  3 | ['0_a3'] | ['0_b3'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3'])                                         |
-|  4 | ['0_a4'] | ['0_b4'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4'])                                 |
-|  5 | ['0_a5'] | ['0_b5'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5'])                         |
-|  6 | ['0_a6'] | ['0_b6'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6'])                 |
-|  7 | ['0_a7'] | ['0_b7'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6', '0_a7'])         |
-|  8 | ['0_a8'] | ['0_b8'] | ('cumsum', ['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6', '0_a7', '0_a8']) |
-+----+----------+----------+--------------------------------------------------------------------------------------+
++----+----------+----------+--------------------------------------+
+|    | COL_0    | COL_1    | COL_2                                |
+|----+----------+----------+--------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ('cumsum', ['0_a0'])                 |
+|  1 | ['0_a1'] | ['0_b1'] | ('cumsum', ['0_a1'])                 |
+|  2 | ['0_a2'] | ['0_b2'] | ('cumsum', ['0_a2'])                 |
+|  3 | ['0_a3'] | ['0_b3'] | ('cumsum', ['0_a0', '0_a3'])         |
+|  4 | ['0_a4'] | ['0_b4'] | ('cumsum', ['0_a1', '0_a4'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ('cumsum', ['0_a2', '0_a5'])         |
+|  6 | ['0_a6'] | ['0_b6'] | ('cumsum', ['0_a0', '0_a3', '0_a6']) |
+|  7 | ['0_a7'] | ['0_b7'] | ('cumsum', ['0_a1', '0_a4', '0_a7']) |
+|  8 | ['0_a8'] | ['0_b8'] | ('cumsum', ['0_a2', '0_a5', '0_a8']) |
++----+----------+----------+--------------------------------------+
 
 
 number of programs: 1
