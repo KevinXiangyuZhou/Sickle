@@ -10,11 +10,17 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 pd.set_option('expand_frame_repr', False)
 
 DATA_DIR = os.path.join(".", "testbenches")
 
+# storage of current data
+run_time_summary = []
+n_program_search_summary = []
+run_time_summary_analysis = []
+n_program_search_summary_analysis = []
+run_time_result = {}
+n_program_result = {}
 # Creating an object
 # logger = logging.getLogger()
 
@@ -26,7 +32,7 @@ formatter = logging.Formatter('%(asctime)s %(message)s')
 logging.basicConfig(format='%(asctime)s %(message)s',
                     filemode='w+',
                     level=logging.INFO)
-random.seed(8)
+# random.seed(10)
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -39,12 +45,33 @@ def setup_logger(name, log_file, level=logging.INFO):
 
 
 logger_summary = setup_logger("summary", f'../eval/summary5.18.log')
+logger_data = setup_logger("data", f'../eval/data_5.29.log')
+
+
+def barchart(data_1, data_2, x_label, y_label, fnames, img_name):
+    # plt.yscale('log')
+    ind = np.arange(len(fnames))
+    width = 0.35
+    plt.bar(fnames, data_1, width, label="default")
+    plt.bar(ind + width, data_2, width,
+        label='with_analysis')
+
+    plt.ylabel(y_label)
+    plt.title(f"{x_label} vs {y_label}")
+
+    plt.xlabel(x_label)
+    plt.xticks(ind + width / 2, fnames)
+    plt.legend(["enumeration", "enumeration with analysis"])
+    plt.savefig(f'../plots/{img_name}.png')
+    plt.show()
 
 
 def permutate_table(annotated_output):
     columns = [i for i in range(annotated_output.get_col_num())]
     permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
     # logger.info(permutation_list)  # verify permutations of column ids
+    if len(permutation_list) > 100:
+        permutation_list = permutation_list[:100]
     return [select_columns(annotated_output, selected)
             for selected in permutation_list]
 
@@ -101,7 +128,7 @@ def run_wrapper(annotated_output, correct_out, config, logger):
     # logger.error(f"[error] invalid benchmark file")
     candidates = []
     for j in range(config["level_limit"], config["level_limit"] + 1):
-        candidates = Synthesizer(config).run_synthesis(inputs, annotated_output, j, logger, correct_out,
+        candidates, run_time, n_program = Synthesizer(config).run_synthesis(inputs, annotated_output, j, logger, correct_out,
                                                         with_analysis=config["with_analysis"],
                                                         solution_limit=config["solution_limit"],
                                                         time_limit_sec=config["time_limit"],
@@ -127,34 +154,13 @@ def run_wrapper(annotated_output, correct_out, config, logger):
     logger.info(f"number of programs: {len(candidates)}")
     logger.info("\n\n\n\n\n\n")
     logger.info("------------------------------------------------------------------------------------------")
+    return run_time, n_program
 
 
 if __name__ == '__main__':
-    config = {
-        "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
-        "filer_op": ["=="],
-        "constants": [3000],
-        "aggr_func": ["mean", "sum", "count", "max"],
-        "mutate_func": ["mean", "sum", "max", "count", "cumsum"],
-        "join_predicates": ["[(0, 1), (0, 0)]", "[(0, 1), (1, 0)]"],
-        "mutate_function": ["lambda x, y: x - y",
-                            "lambda x, y: x + y",
-                            "lambda x, y: x * y",
-                            "lambda x, y: x / y",
-                            "lambda x: x - (x * 0.1)",
-                            "lambda x, y: y / (x - y)",
-                            "lambda x: 1"],
-        "permutation_test": False,
-        "random_test": False,
-        "partial_table": False,
-        "partial_trace": False,
-        "level_limit": 4,
-        "time_limit": 300,
-        "solution_limit": 5
-    }
-
-    #for fname in os.listdir(DATA_DIR):
-    for fname in ["001.json", "002.json", "003.json", "022.json", "020.json", "007.json", "006.json"]:
+    fnames = []
+    for fname in os.listdir(DATA_DIR):
+    # for fname in ["001.json", "002.json", "003.json", "022.json", "020.json", "007.json", "006.json"]:
         if fname == "024.json":  # add more arithmetic operators later
             continue
         if fname == "016.json":  # table too big
@@ -163,9 +169,14 @@ if __name__ == '__main__':
             continue
         if fname == "033.json":
             continue
+        if fname == "036.json":
+            continue
         if fname.endswith("json") and "discard" not in fname:
+            fnames.append(fname[:3])
             fpath = os.path.join(DATA_DIR, fname)
             with open(fpath, 'r') as filehandler:
+                run_time_result[fname] = {}
+                n_program_result[fname] = {}
                 # file info
                 logger_summary.info(f"<==============evaluation of {fname}================>")
                 data = json.load(filehandler)
@@ -186,39 +197,90 @@ if __name__ == '__main__':
                 # run on all configs
                 user_example = copy.copy(correct_out)
                 for i in range(len(target_configs)):
-                    # 0246810(without analysis)
-                    # 0 4 8 1 solution 2 6 10
-                    # 159 1 solution, 3 7 11 5 solution
-                    if i % 4 == 3 or i % 4 == 2:
-                        continue
                     curr_config = target_configs[i]
                     logger = setup_logger(f"{fname}_{i}", f'../eval/{fname[:3]}_config({i}).log')
-                    config = target_configs[i]
-                    print("START=====>")
-                    print(f"evaluate {fname} on config_{i}...")
-                    logger_summary.info(f"------config {i}-------")
-                    # log config info
-                    logger_summary.info(json.dumps({key: curr_config[key] for key in curr_config
-                                                    if key == "with_analysis"
-                                                    or key == "permutation_test"
-                                                    or key == "partial_table"
-                                                    or key == "partial_trace"
-                                                    or key == "level_limit"
-                                                    or key == "time_limit"
-                                                    or key == "solution_limit"}, indent=3))
-                    logger.info(f"------evaluate {fname} on config_{i}-------")
-                    logger.info(str(curr_config))
-                    # get randomized user sample, according to the given config
-                    user_example = randomize_table(user_example, config, logger, permutation_candidates)
-                    try:
-                        run_wrapper(user_example, correct_out, config, logger)
-                    except Exception as e:
-                        logger_summary.info(f"[Error] examining {fname}")
-                        print(f"[error] {sys.exc_info()[0]} {e}")
-                        tb = sys.exc_info()[2]
-                        tb_info = ''.join(traceback.format_tb(tb))
-                        print(tb_info)
-                        continue
+                    # for config with analysis, run ten times
+                    run_time, n_program = 0, 0
+                    j = 0
+                    while j < 10:
+                        print("START=====>")
+                        print(f"evaluate {fname} on config_{i}...")
+                        logger_summary.info(f"------config {i}-------")
+                        # log config info
+                        logger_summary.info(json.dumps({key: curr_config[key] for key in curr_config
+                                                        if key == "with_analysis"
+                                                        or key == "permutation_test"
+                                                        or key == "partial_table"
+                                                        or key == "partial_trace"
+                                                        or key == "level_limit"
+                                                        or key == "time_limit"
+                                                        or key == "solution_limit"}, indent=3))
+                        logger.info(f"------evaluate {fname} on config_{i}-------")
+                        logger.info(str(curr_config))
+                        # get randomized user sample, according to the given config
+                        user_example = randomize_table(user_example, curr_config, logger, permutation_candidates)
+                        try:
+                            run_time_j, n_program_j = run_wrapper(user_example, correct_out, curr_config, logger)
+                            run_time += run_time_j
+                            n_program += n_program_j
+                            j += 1
+                        except Exception as e:
+                            logger_summary.info(f"[Error] examining {fname}")
+                            print(f"[error] {sys.exc_info()[0]} {e}")
+                            tb = sys.exc_info()[2]
+                            tb_info = ''.join(traceback.format_tb(tb))
+                            print(tb_info)
+                            continue
+                        if i % 2 == 0:
+                            break
+                    run_time_result[fname][i] = run_time / j
+                    n_program_result[fname][i] = n_program / j
                     print("<=====Finish")
                 logger_summary.info("\n")
+                logger_data.info(f"=====result after checking {fname}=====")
+                logger_data.info("number of program searched:")
+                logger_data.info(n_program_result)
+                logger_data.info("run time:")
+                logger_data.info(run_time_result)
+                """
+                n_program_search_summary += n_program_search
+                n_program_search_summary_analysis += n_program_search_analysis
+                run_time_summary += run_time
+                run_time_summary_analysis += run_time_analysis
+                logger_data.info(fname)
+                logger_data.info(n_program_search_summary)
+                logger_data.info(n_program_search_summary_analysis)
+                logger_data.info(run_time_summary)
+                logger_data.info(run_time_summary_analysis)
+                n_program_search.clear()
+                n_program_search_analysis.clear()
+                run_time.clear()
+                run_time_analysis.clear()
+                """
+    # randomness vs search time/ number of program evaluated on configs
+    n_r1 = [n_program_result[fname][0] for fname in n_program_result]
+    na_r1 = [n_program_result[fname][1] for fname in n_program_result]
+    n_r2 = [n_program_result[fname][2] for fname in n_program_result]
+    na_r2 = [n_program_result[fname][3] for fname in n_program_result]
+    n_r3 = [n_program_result[fname][4] for fname in n_program_result]
+    na_r3 = [n_program_result[fname][5] for fname in n_program_result]
+    print(n_r1)
+    print(na_r1)
+    print(fnames)
+
+    t_r1 = [run_time_result[fname][0] for fname in run_time_result]
+    ta_r1 = [run_time_result[fname][1] for fname in run_time_result]
+    t_r2 = [run_time_result[fname][2] for fname in run_time_result]
+    ta_r2 = [run_time_result[fname][3] for fname in run_time_result]
+    t_r3 = [run_time_result[fname][4] for fname in run_time_result]
+    ta_r3 = [run_time_result[fname][5] for fname in run_time_result]
+    print(t_r1)
+
+    barchart(n_r1, na_r1, "testbench id", "number of program searched", fnames, "n_r1")
+    barchart(n_r2, na_r2, "testbench id", "number of program searched", fnames, "n_r2")
+    barchart(n_r3, na_r3, "testbench id", "number of program searched", fnames, "n_r3")
+
+    barchart(t_r1, ta_r1, "testbench id", "time cost", fnames, "t_r1")
+    barchart(t_r2, ta_r2, "testbench id", "time cost", fnames, "t_r2")
+    barchart(t_r3, ta_r3, "testbench id", "time cost", fnames, "t_r3")
     print("<=====Evaluation Ends")

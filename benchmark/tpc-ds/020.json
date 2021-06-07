@@ -1,0 +1,53 @@
+{
+  "input_data": [
+    [
+      {
+        "i_item_id": 0,
+        "i_item_desc": "str",
+        "i_category": "str",
+        "i_class": "str",
+        "i_item_sk": "str",
+        "i_current_price": 800
+      },
+      {
+        "i_item_id": 0,
+        "i_item_desc": "str",
+        "i_category": "str",
+        "i_class": "str",
+        "i_item_sk": "str",
+        "i_current_price": 800
+      }
+    ],
+    [
+      {
+        "cs_ext_sales_price": 800,
+        "cs_item_sk": "str",
+        "cs_sold_date_sk": "str"
+      },
+      {
+        "cs_ext_sales_price": 800,
+        "cs_item_sk": "str",
+        "cs_sold_date_sk": "str"
+      }
+    ],
+    [
+      {
+        "...": 800,
+        "d_date_sk": "str"
+      },
+      {
+        "...": 800,
+        "d_date_sk": "str"
+      }
+    ]
+  ],
+  "url":"-",
+  "exp_out": [
+    {"0": 0},
+    {"op": "join", "0": "[table: (0, 1); on (4, 1)]", "1": false},
+    {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
+    {"op": "group_sum", "0": [0, 1, 2, 3, 4], "1": "sum", "2": 5},
+    {"op": "group_mutate", "0": [3], "1": "sum", "2": x},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: 100 * x / y", "1": [x, x]}
+  ]
+}

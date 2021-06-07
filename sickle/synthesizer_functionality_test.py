@@ -18,7 +18,7 @@ test_config = {
                 "filer_op": ["=="],
                 "constants": [3000],
                 "aggr_func": ["mean", "sum", "count", "max"],
-                "mutate_func": ["mean", "sum", "max", "cumsum", "count"],
+                "mutate_func": ["mean", "sum", "max", "cumsum", "count", "rank"],
                 "join_predicates": ["[(0, 1), (0, 0)]",
                                     "[(0, 1), (1, 0)]",
                                     "[(0, 0), (2, 3)]",
@@ -30,7 +30,8 @@ test_config = {
                                     "lambda x: x - (x * 0.1)",
                                     "lambda x, y: y / (x - y)",
                                     "lambda x: 1",
-                                    "lambda x, y, z: x - y / z"]
+                                    "lambda x, y, z: x - y / z",
+                                    "lambda x: x * 1000"]
             }
 
 test_config_10 = {
@@ -98,36 +99,11 @@ test_config_010 = {
 
 test_config_list = {"008": test_config_008,
                     "009": test_config_009}
-"""
-annotated_output_009 = AnnotatedTable([
-    {"value": "E.Els", "exp": ExpNode("", [ArgOr([(0, 0, 0), (0, 0, 1)])]), "attribute": "player"},
-    {"value": "E.Els", "exp": ExpNode("", [ArgOr([(0, 0, 0), (0, 0, 1)])]), "attribute": "player"},
-    {"value": 1, "exp": ExpNode("", [(0, 1, 1)]), "attribute": "rd"},
-    {"value": 2, "exp": ExpNode("", [(0, 1, 1)]), "attribute": "rd"},
-    {"value": None, "exp": ExpNode("", [(0, 3, 0), (0, 4, 0)]), "operator": ["group_mean", "sum", "max", "lambda x, y: x / y - x "], "attribute": "efficiency"},
-    {"value": None, "argument": [(0, 3, 0), (0, 4, 0)], "operator": ["group_mean", "sum", "max", "lambda x, y: x / y - x "], "attribute": "efficiency"}
-    ])
 
-annotated_output_010 = AnnotatedTable([
-    {"value": "Alabama", "exp": ExpNode("", [(0, 0, 0)]), "attribute": "state"},
-    {"value": "Alaska", "exp": ExpNode("", [(0, 0, 1)]), "attribute": "state"},
-    {"value": 1667, "exp": ExpNode("", [(0, 1, 0)]), "attribute": "count"},
-    {"value": 507, "exp": ExpNode("", [(0, 1, 1)]), "attribute": "count"},
-    {"value": None, "exp": ExpNode("lambda x, y: (x / y) * 100", [(0, 1, 0)]), "attribute": "percentage"},
-    {"value": None, "exp": ExpNode("lambda x, y: (x / y) * 100", [(0, 1, 1)]), "attribute": "percentage"}
-    ])
-
-
-td = AnnotatedTable([
-    {"value": 2916.67, "argument": [(2450, 2, 6)], "operator": "", "attribute": "mean_sal"},
-    {"value": 2175.00, "argument": [(800, 2, 0)], "operator": "", "attribute": "mean_sal"},
-    {"value": 1566.67, "argument": [(1600, 2, 1)], "operator": "", "attribute": "mean_sal"}
-    ])
-"""
-permutation_test = False  # edit this for permute user outputs
+permutation_test = True  # edit this for permute user outputs
 partial_table = False  # select random region of the table as demonstration
-partial_trace = False  # trace info could be incomplete
-level_limit = 4
+partial_trace = True  # trace info could be incomplete
+level_limit = 5
 time_limit = 900
 solution_limit = 1
 random_test = False
@@ -145,50 +121,19 @@ class SynthesizerTest(unittest.TestCase):
             p = dict_to_program(data["exp_out1"])
             print(p.eval(inputs).to_dataframe())
             annotated_output = p.eval(inputs)
-            #rlt = checker_function(computed_out, annotated_output, print_result=True)
-            #print(rlt)
+            # rlt = checker_function(computed_out, annotated_output, print_result=True)
+            # print(rlt)
 
 
     # @unittest.skip
     def test_run(self):
-        print(ArgOr([('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b0']), ('(0, 0)', ['0_b1']), ('(0, 0)', ['0_b2'])])
-                    == ('(0, 0)', ['0_b0']))
-        print({ArgOr(["a", "b"])}.issubset({"a", "b"}))
-        print({ArgOr(["a", "b"]), "a"})
-        print([e for e in {ArgOr(["a", "b"])} if e not in {"a", "b"}] == [])
-        print({"a"}.issubset({ArgOr(["a", "b"])}))
-        print([e for e in list({ArgOr(["a", "b", "c"])}) if e not in list({"a"})] == [])
-        print([e for e in {"a"} if e not in {ArgOr(["a", "b", "c"])}] == [])
-        """
-        p = dict_to_program([{"0": 0},
-                            {"op": "group_mutate", "0": [1,2], "1": "max", "2": 3},
-                            {"op": "group_mutate", "0": [1,2], "1": "sum", "2": 4},
-                            {"op": "mutate_arithmetic", "0": "lambda x, y: y / (x - y)", "1": [6,5]},
-                            {"op": "group_sum", "0": [0,1], "1": "mean", "2": 7}
-                            ])
-        print(p.infer_cell_2(inputs).to_dataframe())
-        annotated_output = p.eval(inputs)
-        print("-----")
-        """
-        with open('testbenches/032.json', 'r') as filehandler:
+        with open('testbenches/034.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
             correct_out = None
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
-                """
-                p_temp = dict_to_program([{"0": 0},
-                                     {"op": "group_mutate", "0": [1], "1": HOLE, "2": HOLE},
-                                     {"op": "group_mutate", "0": HOLE, "1": HOLE, "2": HOLE},
-                                     {"op": "mutate_arithmetic", "0": HOLE, "1": HOLE},
-                                     {"op": "group_sum", "0": HOLE, "1": HOLE, "2": HOLE}
-                                     ])
-                print(p.infer_cell_2(inputs).to_dataframe())
-                print(checker_function(p_temp.infer_cell_2(inputs), p.eval(inputs), print_result=True))
-                # annotated_output = p.eval(inputs)
-                print("-----")
-                """
                 annotated_output = p.eval(inputs)
                 print(annotated_output.extract_values())
                 print(annotated_output.to_dataframe())
@@ -199,6 +144,8 @@ class SynthesizerTest(unittest.TestCase):
             if permutation_test:
                 columns = [i for i in range(annotated_output.get_col_num())]
                 permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
+                if len(permutation_list) > 100:
+                    permutation_list = permutation_list[:100]
                 # print(permutation_list)  # verify permutations of column ids
                 output_candidates = [select_columns(annotated_output, selected)
                                      for selected in permutation_list]
@@ -257,7 +204,7 @@ class SynthesizerTest(unittest.TestCase):
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/026.json', 'r') as filehandler:
+        with open('testbenches/034.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic

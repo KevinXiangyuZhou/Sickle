@@ -1,21 +1,17 @@
 {
   "input_data": [[
-    {"name": "Smith", "job": "Clerk"},
-    {"name": "Smith", "job": "Salesman"},
-    {"name": "Ward", "job": "Salesman"},
-    {"name": "Jones", "job": "Manager"},
-    {"name": "Blake", "job": "Manager"},
-    {"name": "Clark", "job": "Manager"},
-    {"name": "Blake", "job": "Salesman"}
-  ],
-  [
-    {"job": "Clerk","salary": 1800},
-    {"job": "Salesman", "salary": 1250},
-    {"job": "Manager", "salary": 2800}
+    {"embark": "Cherbourg", "class": "First", "fare": 8901.07},
+    {"embark": "Cherbourg", "class": "Second", "fare": 431.09},
+    {"embark": "Cherbourg", "class": "Third", "fare": 740.13},
+    {"embark": "Queenstown", "class": "First", "fare": 180.0},
+    {"embark": "Queenstown", "class": "Second", "fare": 37.05},
+    {"embark": "Queenstown", "class": "Third", "fare": 805.2},
+    {"embark": "Southampton", "class": "First", "fare": 8936.34},
+    {"embark": "Southampton", "class": "Second", "fare": 3333.7},
+    {"embark": "Southampton", "class": "Third", "fare": 5169.36}
   ]],
-  "url":"https://www.red-gate.com/simple-talk/sql/oracle/introduction-to-analytic-functions-part-1-2/",
+  "url":"https://pbpython.com/groupby-agg.html",
   "exp_out": [{"0": 0},
-    {"op": "join", "0": 1, "1": "[(0, 1), (1, 0)]", "2": true},
-    {"op": "group_mutate", "0": [0], "1": "sum", "2": 3},
-    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [3, 4]}]
+    {"op": "group_mutate", "0": [], "1": "sum", "2": 2},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [2, 3]}]
 }

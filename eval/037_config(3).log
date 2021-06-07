@@ -1,0 +1,1060 @@
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 44==========
+      COL_0     COL_1     COL_2                              COL_3                                 COL_4     COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c0']  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_d1']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']  [('count', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_d2']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']  [('count', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_d3']                  ('sum', ['0_d3'])                  [('mean', ['0_c3'])]  ['0_c3']                  [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_d4']          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_c4']          [('count', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']  ['0_d5']          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_c5']          [('count', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2                      COL_3                         COL_4     COL_5                          COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']          ('sum', ['0_d1'])  [('mean', ['0_c0', '0_c1'])]  ['0_c0']  [('count', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  ['0_d1']  ('sum', ['0_d1', '0_d2'])  [('mean', ['0_c1', '0_c2'])]  ['0_c1']          [('count', ['0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_d2']          ('sum', ['0_d1'])          [('mean', ['0_c0'])]  ['0_c2']          [('count', ['0_c0'])]
+3  ['0_a3']  ['0_b3']  ['0_d3']                ('sum', [])          [('mean', ['0_c3'])]  ['0_c3']          [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_d4']  ('sum', ['0_d4', '0_d5'])                [('mean', [])]  ['0_c4']          [('count', ['0_c4'])]
+5  ['0_a5']  ['0_b5']  ['0_d5']                ('sum', [])  [('mean', ['0_c4', '0_c5'])]  ['0_c5']  [('count', ['0_c4', '0_c5'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 626)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 633)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 637)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 651)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9422)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9429)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9433)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9447)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9462)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9469)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9473)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9487)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9938)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 9945)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9949)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9963)
+----
+number of programs searched: 10227
+time cost: 327.90736865997314
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                      COL_3                         COL_4     COL_5                          COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']          ('sum', ['0_d1'])  [('mean', ['0_c0', '0_c1'])]  ['0_c0']  [('count', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  ['0_d1']  ('sum', ['0_d1', '0_d2'])  [('mean', ['0_c1', '0_c2'])]  ['0_c1']          [('count', ['0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_d2']          ('sum', ['0_d1'])          [('mean', ['0_c0'])]  ['0_c2']          [('count', ['0_c0'])]
+3  ['0_a3']  ['0_b3']  ['0_d3']                ('sum', [])          [('mean', ['0_c3'])]  ['0_c3']          [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_d4']  ('sum', ['0_d4', '0_d5'])                [('mean', [])]  ['0_c4']          [('count', ['0_c4'])]
+5  ['0_a5']  ['0_b5']  ['0_d5']                ('sum', [])  [('mean', ['0_c4', '0_c5'])]  ['0_c5']  [('count', ['0_c4', '0_c5'])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 2==========
+      COL_0     COL_1     COL_2     COL_3                                  COL_4                                 COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('count', ['0_c3'])]                  [('mean', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2     COL_3                          COL_4                         COL_5                      COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']          [('count', ['0_c1'])]                [('mean', [])]          ('sum', ['0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']          [('count', ['0_c1'])]  [('mean', ['0_c1', '0_c2'])]  ('sum', ['0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('count', ['0_c0', '0_c1'])]  [('mean', ['0_c0', '0_c1'])]          ('sum', ['0_d0'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                [('count', [])]                [('mean', [])]          ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  [('count', ['0_c4', '0_c5'])]  [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('count', ['0_c5'])]                [('mean', [])]          ('sum', ['0_d4'])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 626)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 633)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 637)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 651)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9422)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9429)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9433)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9447)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9462)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9469)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9473)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9487)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9938)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 9945)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9949)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9963)
+----
+number of programs searched: 10227
+time cost: 301.36635756492615
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2     COL_3                          COL_4                         COL_5                      COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']          [('count', ['0_c1'])]                [('mean', [])]          ('sum', ['0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']          [('count', ['0_c1'])]  [('mean', ['0_c1', '0_c2'])]  ('sum', ['0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('count', ['0_c0', '0_c1'])]  [('mean', ['0_c0', '0_c1'])]          ('sum', ['0_d0'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                [('count', [])]                [('mean', [])]          ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  [('count', ['0_c4', '0_c5'])]  [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('count', ['0_c5'])]                [('mean', [])]          ('sum', ['0_d4'])
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 1==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                              COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  ('sum', ['0_d3'])                  [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('count', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('count', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2     COL_3                         COL_4                      COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']          [('mean', ['0_c0'])]          ('sum', ['0_d0'])  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']          [('mean', ['0_c1'])]  ('sum', ['0_d0', '0_d2'])                  [('count', ['0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']          [('mean', ['0_c1'])]                ('sum', [])          [('count', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']          [('mean', ['0_c3'])]          ('sum', ['0_d3'])                        [('count', [])]
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4'])]  ('sum', ['0_d4', '0_d5'])                        [('count', [])]
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d5'])                        [('count', [])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 626)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 633)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 637)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 651)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9422)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9429)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9433)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9447)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9462)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9469)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9473)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9487)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9938)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 9945)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9949)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9963)
+----
+number of programs searched: 10227
+time cost: 316.0625696182251
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2     COL_3                         COL_4                      COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']          [('mean', ['0_c0'])]          ('sum', ['0_d0'])  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']          [('mean', ['0_c1'])]  ('sum', ['0_d0', '0_d2'])                  [('count', ['0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']          [('mean', ['0_c1'])]                ('sum', [])          [('count', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']          [('mean', ['0_c3'])]          ('sum', ['0_d3'])                        [('count', [])]
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4'])]  ('sum', ['0_d4', '0_d5'])                        [('count', [])]
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d5'])                        [('count', [])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 20==========
+      COL_0     COL_1     COL_2                              COL_3                                 COL_4     COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d1']  [('count', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d2']  [('count', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']                  ('sum', ['0_d3'])                  [('mean', ['0_c3'])]  ['0_d3']                  [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_d4']          [('count', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_d5']          [('count', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2                              COL_3                         COL_4     COL_5                          COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']          ('sum', ['0_d0', '0_d1'])  [('mean', ['0_c1', '0_c2'])]  ['0_d0']  [('count', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']          ('sum', ['0_d0', '0_d2'])  [('mean', ['0_c0', '0_c1'])]  ['0_d1']  [('count', ['0_c0', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c2'])]  ['0_d2']          [('count', ['0_c1'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']                        ('sum', [])          [('mean', ['0_c3'])]  ['0_d3']          [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']                        ('sum', [])          [('mean', ['0_c5'])]  ['0_d4']          [('count', ['0_c5'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']                  ('sum', ['0_d4'])  [('mean', ['0_c4', '0_c5'])]  ['0_d5']          [('count', ['0_c4'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 134.41228413581848
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                              COL_3                         COL_4     COL_5                          COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']          ('sum', ['0_d0', '0_d1'])  [('mean', ['0_c1', '0_c2'])]  ['0_d0']  [('count', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']          ('sum', ['0_d0', '0_d2'])  [('mean', ['0_c0', '0_c1'])]  ['0_d1']  [('count', ['0_c0', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c2'])]  ['0_d2']          [('count', ['0_c1'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']                        ('sum', [])          [('mean', ['0_c3'])]  ['0_d3']          [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']                        ('sum', [])          [('mean', ['0_c5'])]  ['0_d4']          [('count', ['0_c5'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']                  ('sum', ['0_d4'])  [('mean', ['0_c4', '0_c5'])]  ['0_d5']          [('count', ['0_c4'])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 86==========
+      COL_0     COL_1                                  COL_2                                 COL_3     COL_4     COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d0']  ['0_c0']  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d1']  ['0_c1']  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d2']  ['0_c2']  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']                  [('count', ['0_c3'])]                  [('mean', ['0_c3'])]  ['0_d3']  ['0_c3']                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]  ['0_d4']  ['0_c4']          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]  ['0_d5']  ['0_c5']          ('sum', ['0_d4', '0_d5'])
+===============================
+=======with randomized trace==========
+      COL_0     COL_1                                  COL_2                                 COL_3     COL_4     COL_5                      COL_6
+0  ['0_a0']  ['0_b0']          [('count', ['0_c0', '0_c1'])]                        [('mean', [])]  ['0_d0']  ['0_c0']  ('sum', ['0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]                  [('mean', ['0_c1'])]  ['0_d1']  ['0_c1']          ('sum', ['0_d1'])
+2  ['0_a2']  ['0_b2']                  [('count', ['0_c1'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d2']  ['0_c2']          ('sum', ['0_d2'])
+3  ['0_a3']  ['0_b3']                        [('count', [])]                  [('mean', ['0_c3'])]  ['0_d3']  ['0_c3']          ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']                  [('count', ['0_c5'])]          [('mean', ['0_c4', '0_c5'])]  ['0_d4']  ['0_c4']          ('sum', ['0_d4'])
+5  ['0_a5']  ['0_b5']                  [('count', ['0_c5'])]                  [('mean', ['0_c5'])]  ['0_d5']  ['0_c5']          ('sum', ['0_d4'])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 133.91213011741638
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                                  COL_2                                 COL_3     COL_4     COL_5                      COL_6
+0  ['0_a0']  ['0_b0']          [('count', ['0_c0', '0_c1'])]                        [('mean', [])]  ['0_d0']  ['0_c0']  ('sum', ['0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]                  [('mean', ['0_c1'])]  ['0_d1']  ['0_c1']          ('sum', ['0_d1'])
+2  ['0_a2']  ['0_b2']                  [('count', ['0_c1'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_d2']  ['0_c2']          ('sum', ['0_d2'])
+3  ['0_a3']  ['0_b3']                        [('count', [])]                  [('mean', ['0_c3'])]  ['0_d3']  ['0_c3']          ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']                  [('count', ['0_c5'])]          [('mean', ['0_c4', '0_c5'])]  ['0_d4']  ['0_c4']          ('sum', ['0_d4'])
+5  ['0_a5']  ['0_b5']                  [('count', ['0_c5'])]                  [('mean', ['0_c5'])]  ['0_d5']  ['0_c5']          ('sum', ['0_d4'])
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 96==========
+      COL_0     COL_1                              COL_2     COL_3     COL_4                                 COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']                  ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]
+4  ['0_a4']  ['0_b4']          ('sum', ['0_d4', '0_d5'])  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d4', '0_d5'])  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1                      COL_2     COL_3     COL_4                                 COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']                ('sum', [])  ['0_c0']  ['0_d0']          [('mean', ['0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d1', '0_d2'])  ['0_c1']  ['0_d1']                        [('mean', [])]                        [('count', [])]
+2  ['0_a2']  ['0_b2']          ('sum', ['0_d1'])  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]          [('count', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']          ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                        [('mean', [])]                        [('count', [])]
+4  ['0_a4']  ['0_b4']  ('sum', ['0_d4', '0_d5'])  ['0_c4']  ['0_d4']                  [('mean', ['0_c5'])]                        [('count', [])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d5'])  ['0_c5']  ['0_d5']                  [('mean', ['0_c5'])]                  [('count', ['0_c5'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 133.48183345794678
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                      COL_2     COL_3     COL_4                                 COL_5                                  COL_6
+0  ['0_a0']  ['0_b0']                ('sum', [])  ['0_c0']  ['0_d0']          [('mean', ['0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d1', '0_d2'])  ['0_c1']  ['0_d1']                        [('mean', [])]                        [('count', [])]
+2  ['0_a2']  ['0_b2']          ('sum', ['0_d1'])  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]          [('count', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']          ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                        [('mean', [])]                        [('count', [])]
+4  ['0_a4']  ['0_b4']  ('sum', ['0_d4', '0_d5'])  ['0_c4']  ['0_d4']                  [('mean', ['0_c5'])]                        [('count', [])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d5'])  ['0_c5']  ['0_d5']                  [('mean', ['0_c5'])]                  [('count', ['0_c5'])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 97==========
+      COL_0     COL_1                              COL_2     COL_3     COL_4                                  COL_5                                 COL_6
+0  ['0_a0']  ['0_b0']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c0']  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c1']  ['0_d1']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_c2']  ['0_d2']  [('count', ['0_c0', '0_c1', '0_c2'])]  [('mean', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']                  ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                  [('count', ['0_c3'])]                  [('mean', ['0_c3'])]
+4  ['0_a4']  ['0_b4']          ('sum', ['0_d4', '0_d5'])  ['0_c4']  ['0_d4']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d4', '0_d5'])  ['0_c5']  ['0_d5']          [('count', ['0_c4', '0_c5'])]          [('mean', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1                      COL_2     COL_3     COL_4                          COL_5                                 COL_6
+0  ['0_a0']  ['0_b0']  ('sum', ['0_d1', '0_d2'])  ['0_c0']  ['0_d0']  [('count', ['0_c1', '0_c2'])]                  [('mean', ['0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d1', '0_d2'])  ['0_c1']  ['0_d1']                [('count', [])]  [('mean', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ('sum', ['0_d0', '0_d1'])  ['0_c2']  ['0_d2']          [('count', ['0_c0'])]          [('mean', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']          ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                [('count', [])]                        [('mean', [])]
+4  ['0_a4']  ['0_b4']                ('sum', [])  ['0_c4']  ['0_d4']  [('count', ['0_c4', '0_c5'])]                  [('mean', ['0_c4'])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d5'])  ['0_c5']  ['0_d5']          [('count', ['0_c5'])]                        [('mean', [])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 133.06289768218994
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                      COL_2     COL_3     COL_4                          COL_5                                 COL_6
+0  ['0_a0']  ['0_b0']  ('sum', ['0_d1', '0_d2'])  ['0_c0']  ['0_d0']  [('count', ['0_c1', '0_c2'])]                  [('mean', ['0_c2'])]
+1  ['0_a1']  ['0_b1']  ('sum', ['0_d1', '0_d2'])  ['0_c1']  ['0_d1']                [('count', [])]  [('mean', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ('sum', ['0_d0', '0_d1'])  ['0_c2']  ['0_d2']          [('count', ['0_c0'])]          [('mean', ['0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']          ('sum', ['0_d3'])  ['0_c3']  ['0_d3']                [('count', [])]                        [('mean', [])]
+4  ['0_a4']  ['0_b4']                ('sum', [])  ['0_c4']  ['0_d4']  [('count', ['0_c4', '0_c5'])]                  [('mean', ['0_c4'])]
+5  ['0_a5']  ['0_b5']          ('sum', ['0_d5'])  ['0_c5']  ['0_d5']          [('count', ['0_c5'])]                        [('mean', [])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 35==========
+      COL_0     COL_1     COL_2                                 COL_3                              COL_4                                  COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']                  [('mean', ['0_c3'])]                  ('sum', ['0_d3'])                  [('count', ['0_c3'])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('count', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('count', ['0_c4', '0_c5'])]  ['0_c5']
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2                 COL_3                              COL_4                          COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('mean', ['0_c2'])]                  ('sum', ['0_d1'])  [('count', ['0_c0', '0_c1'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']  [('mean', ['0_c1'])]  ('sum', ['0_d0', '0_d1', '0_d2'])          [('count', ['0_c1'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']        [('mean', [])]                  ('sum', ['0_d1'])  [('count', ['0_c0', '0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']        [('mean', [])]                  ('sum', ['0_d3'])                [('count', [])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']        [('mean', [])]                  ('sum', ['0_d5'])  [('count', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']        [('mean', [])]                        ('sum', [])          [('count', ['0_c4'])]  ['0_c5']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 626)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 633)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 637)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 651)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9422)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9429)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9433)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9447)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9462)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 9469)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9473)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9487)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9938)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 9945)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9949)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9963)
+----
+number of programs searched: 10227
+time cost: 316.2593913078308
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                 COL_3                              COL_4                          COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('mean', ['0_c2'])]                  ('sum', ['0_d1'])  [('count', ['0_c0', '0_c1'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']  [('mean', ['0_c1'])]  ('sum', ['0_d0', '0_d1', '0_d2'])          [('count', ['0_c1'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']        [('mean', [])]                  ('sum', ['0_d1'])  [('count', ['0_c0', '0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']        [('mean', [])]                  ('sum', ['0_d3'])                [('count', [])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']        [('mean', [])]                  ('sum', ['0_d5'])  [('count', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']        [('mean', [])]                        ('sum', [])          [('count', ['0_c4'])]  ['0_c5']
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 76==========
+      COL_0     COL_1                                  COL_2     COL_3                              COL_4     COL_5                                 COL_6
+0  ['0_a0']  ['0_b0']  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c0']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']                  [('count', ['0_c3'])]  ['0_c3']                  ('sum', ['0_d3'])  ['0_d3']                  [('mean', ['0_c3'])]
+4  ['0_a4']  ['0_b4']          [('count', ['0_c4', '0_c5'])]  ['0_c4']          ('sum', ['0_d4', '0_d5'])  ['0_d4']          [('mean', ['0_c4', '0_c5'])]
+5  ['0_a5']  ['0_b5']          [('count', ['0_c4', '0_c5'])]  ['0_c5']          ('sum', ['0_d4', '0_d5'])  ['0_d5']          [('mean', ['0_c4', '0_c5'])]
+===============================
+=======with randomized trace==========
+      COL_0     COL_1                                  COL_2     COL_3                              COL_4     COL_5                         COL_6
+0  ['0_a0']  ['0_b0']                  [('count', ['0_c2'])]  ['0_c0']                  ('sum', ['0_d0'])  ['0_d0']  [('mean', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_d1']  [('mean', ['0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']          [('count', ['0_c0', '0_c1'])]  ['0_c2']                  ('sum', ['0_d2'])  ['0_d2']                [('mean', [])]
+3  ['0_a3']  ['0_b3']                  [('count', ['0_c3'])]  ['0_c3']                  ('sum', ['0_d3'])  ['0_d3']                [('mean', [])]
+4  ['0_a4']  ['0_b4']                        [('count', [])]  ['0_c4']                  ('sum', ['0_d5'])  ['0_d4']          [('mean', ['0_c5'])]
+5  ['0_a5']  ['0_b5']                  [('count', ['0_c5'])]  ['0_c5']                        ('sum', [])  ['0_d5']                [('mean', [])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 133.79844784736633
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                                  COL_2     COL_3                              COL_4     COL_5                         COL_6
+0  ['0_a0']  ['0_b0']                  [('count', ['0_c2'])]  ['0_c0']                  ('sum', ['0_d0'])  ['0_d0']  [('mean', ['0_c0', '0_c1'])]
+1  ['0_a1']  ['0_b1']  [('count', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']  ('sum', ['0_d0', '0_d1', '0_d2'])  ['0_d1']  [('mean', ['0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']          [('count', ['0_c0', '0_c1'])]  ['0_c2']                  ('sum', ['0_d2'])  ['0_d2']                [('mean', [])]
+3  ['0_a3']  ['0_b3']                  [('count', ['0_c3'])]  ['0_c3']                  ('sum', ['0_d3'])  ['0_d3']                [('mean', [])]
+4  ['0_a4']  ['0_b4']                        [('count', [])]  ['0_c4']                  ('sum', ['0_d5'])  ['0_d4']          [('mean', ['0_c5'])]
+5  ['0_a5']  ['0_b5']                  [('count', ['0_c5'])]  ['0_c5']                        ('sum', [])  ['0_d5']                [('mean', [])]
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 037.json on config_3-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 41==========
+      COL_0     COL_1     COL_2                                  COL_3                              COL_4                                 COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])  [('mean', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])                  [('mean', ['0_c3'])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])          [('mean', ['0_c4', '0_c5'])]  ['0_c5']
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2                                  COL_3                      COL_4                         COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]          ('sum', ['0_d1'])  [('mean', ['0_c1', '0_c2'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']                        [('count', [])]  ('sum', ['0_d1', '0_d2'])  [('mean', ['0_c0', '0_c2'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']          [('count', ['0_c0', '0_c1'])]          ('sum', ['0_d1'])          [('mean', ['0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']                  [('count', ['0_c3'])]          ('sum', ['0_d3'])          [('mean', ['0_c3'])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']                  [('count', ['0_c4'])]  ('sum', ['0_d4', '0_d5'])  [('mean', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']                  [('count', ['0_c5'])]          ('sum', ['0_d4'])          [('mean', ['0_c5'])]  ['0_c5']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 30)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 95)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 110)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 117)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 121)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 135)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 396)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 403)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 407)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 421)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3912)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3919)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3923)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3937)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3952)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3959)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3963)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 3977)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4198)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4205)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4209)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4223)
+----
+number of programs searched: 4487
+time cost: 133.94792342185974
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3                      COL_4                         COL_5     COL_6
+0  ['0_a0']  ['0_b0']  ['0_d0']  [('count', ['0_c0', '0_c1', '0_c2'])]          ('sum', ['0_d1'])  [('mean', ['0_c1', '0_c2'])]  ['0_c0']
+1  ['0_a1']  ['0_b1']  ['0_d1']                        [('count', [])]  ('sum', ['0_d1', '0_d2'])  [('mean', ['0_c0', '0_c2'])]  ['0_c1']
+2  ['0_a2']  ['0_b2']  ['0_d2']          [('count', ['0_c0', '0_c1'])]          ('sum', ['0_d1'])          [('mean', ['0_c2'])]  ['0_c2']
+3  ['0_a3']  ['0_b3']  ['0_d3']                  [('count', ['0_c3'])]          ('sum', ['0_d3'])          [('mean', ['0_c3'])]  ['0_c3']
+4  ['0_a4']  ['0_b4']  ['0_d4']                  [('count', ['0_c4'])]  ('sum', ['0_d4', '0_d5'])  [('mean', ['0_c4', '0_c5'])]  ['0_c4']
+5  ['0_a5']  ['0_b5']  ['0_d5']                  [('count', ['0_c5'])]          ('sum', ['0_d4'])          [('mean', ['0_c5'])]  ['0_c5']
+=======correct output==========
+      COL_0     COL_1     COL_2     COL_3                                 COL_4                                  COL_5                              COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2'])]  [('count', ['0_c0', '0_c1', '0_c2'])]  ('sum', ['0_d0', '0_d1', '0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']                  [('mean', ['0_c3'])]                  [('count', ['0_c3'])]                  ('sum', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']          [('mean', ['0_c4', '0_c5'])]          [('count', ['0_c4', '0_c5'])]          ('sum', ['0_d4', '0_d5'])
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- group_mutate(t1, (0,), sum, 3); t3 <- group_mutate(t2, (0,), count, 2)
++----+-------------------+------------------+---------+---------+---------+---------+---------+
+|    | COL_0             | COL_1            |   COL_2 |   COL_3 |   COL_4 |   COL_5 |   COL_6 |
+|----+-------------------+------------------+---------+---------+---------+---------+---------|
+|  0 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  1 | Brad Pitt         | Moneyball        |     7   |      70 |    7.27 |     260 |       3 |
+|  2 | Brad Pitt         | Mr. & Mrs. Smith |     7.8 |     120 |    7.27 |     260 |       3 |
+|  3 | Rowan Atkinson    | The Lion King    |     9   |     150 |    9    |     150 |       1 |
+|  4 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
+|  5 | Leonardo DiCaprio | Inception        |     8.2 |     110 |    8.2  |     220 |       2 |
++----+-------------------+------------------+---------+---------+---------+---------+---------+
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                                | COL_5                               | COL_6                               |
+|----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('mean', ['0_c0', '0_c1', '0_c2'])] | [('sum', ['0_d0', '0_d1', '0_d2'])] | ('count', ['0_c0', '0_c1', '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('mean', ['0_c3'])]                 | [('sum', ['0_d3'])]                 | ('count', ['0_c3'])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('mean', ['0_c4', '0_c5'])]         | [('sum', ['0_d4', '0_d5'])]         | ('count', ['0_c4', '0_c5'])         |
++----+----------+----------+----------+----------+--------------------------------------+-------------------------------------+-------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

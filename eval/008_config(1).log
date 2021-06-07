@@ -1,14 +1,581 @@
 ------evaluate 008.json on config_1-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
 t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
 ----
 number of programs searched: 25
-time cost: 0.17183804512023926
+time cost: 0.1929464340209961
 number of solutions: 1
 =======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.22575664520263672
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.20850372314453125
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.1967005729675293
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.20003771781921387
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.19292330741882324
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.24700140953063965
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.25320863723754883
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.2981269359588623
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x - (x * 0.1), (2,))
++----+---------+---------+---------+---------+
+|    | COL_0   |   COL_1 |   COL_2 |   COL_3 |
+|----+---------+---------+---------+---------|
+|  0 | UK      |       2 |    4000 |    3600 |
+|  1 | USA     |       2 |    6000 |    5400 |
+|  2 | USA     |       3 |    6000 |    5400 |
+|  3 | India   |       2 |    8000 |    7200 |
+|  4 | UK      |       2 |    6000 |    5400 |
+|  5 | UK      |       1 |   11000 |    9900 |
+|  6 | USA     |       3 |    3000 |    2700 |
++----+---------+---------+---------+---------+
++----+----------+----------+----------+---------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                 |
+|----+----------+----------+----------+---------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ('lambda x: x - (x * 0.1)', ['0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ('lambda x: x - (x * 0.1)', ['0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ('lambda x: x - (x * 0.1)', ['0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ('lambda x: x - (x * 0.1)', ['0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ('lambda x: x - (x * 0.1)', ['0_c4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ('lambda x: x - (x * 0.1)', ['0_c5']) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | ('lambda x: x - (x * 0.1)', ['0_c6']) |
++----+----------+----------+----------+---------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 008.json on config_1-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 14)
+----
+number of programs searched: 25
+time cost: 0.268282413482666
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1     COL_2                                  COL_3
+0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ('lambda x: x - (x * 0.1)', ['0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ('lambda x: x - (x * 0.1)', ['0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ('lambda x: x - (x * 0.1)', ['0_c4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ('lambda x: x - (x * 0.1)', ['0_c5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  ('lambda x: x - (x * 0.1)', ['0_c6'])
+=======correct output==========
       COL_0     COL_1     COL_2                                  COL_3
 0  ['0_a0']  ['0_b0']  ['0_c0']  ('lambda x: x - (x * 0.1)', ['0_c0'])
 1  ['0_a1']  ['0_b1']  ['0_c1']  ('lambda x: x - (x * 0.1)', ['0_c1'])

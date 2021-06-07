@@ -1,5 +1,11 @@
 ------evaluate 001.json on config_5-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
 =======with partial table==========
                               COL_0
 0  [ArgOr['0_b6', '0_b8', '0_b13']]
@@ -9,12 +15,516 @@
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 ----
-number of programs searched: 26
-time cost: 0.2313542366027832
+number of programs searched: 31
+time cost: 0.12943816184997559
 number of solutions: 1
 =======target output==========
                               COL_0
 0  [ArgOr['0_b6', '0_b8', '0_b13']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 1==========
+                                                         COL_0                                                     COL_1
+0                          ('mean', ['0_c6', '0_c8', '0_c13'])                          [ArgOr['0_b6', '0_b8', '0_b13']]
+1         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+2  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]
+===============================
+=======with partial table==========
+                                                  COL_0
+0                   ('mean', ['0_c6', '0_c8', '0_c13'])
+1  ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+=======with randomized trace==========
+                         COL_0
+0          ('mean', ['0_c13'])
+1  ('mean', ['0_c0', '0_c12'])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 13
+time cost: 0.08566689491271973
+number of solutions: 1
+=======target output==========
+                         COL_0
+0          ('mean', ['0_c13'])
+1  ('mean', ['0_c0', '0_c12'])
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======with randomized trace==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.13086700439453125
+number of solutions: 1
+=======target output==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+=======with randomized trace==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.11171293258666992
+number of solutions: 1
+=======target output==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======with randomized trace==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.11263585090637207
+number of solutions: 1
+=======target output==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+=======with randomized trace==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.15235352516174316
+number of solutions: 1
+=======target output==========
+                              COL_0
+0  [ArgOr['0_b6', '0_b8', '0_b13']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 1==========
+                                                         COL_0                                                     COL_1
+0                          ('mean', ['0_c6', '0_c8', '0_c13'])                          [ArgOr['0_b6', '0_b8', '0_b13']]
+1         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+2  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]
+===============================
+=======with partial table==========
+                                                  COL_0
+0                   ('mean', ['0_c6', '0_c8', '0_c13'])
+1  ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+=======with randomized trace==========
+                                 COL_0
+0                  ('mean', ['0_c13'])
+1  ('mean', ['0_c0', '0_c3', '0_c12'])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 13
+time cost: 0.08614993095397949
+number of solutions: 1
+=======target output==========
+                                 COL_0
+0                  ('mean', ['0_c13'])
+1  ('mean', ['0_c0', '0_c3', '0_c12'])
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======with randomized trace==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.12479043006896973
+number of solutions: 1
+=======target output==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 1==========
+                                                         COL_0                                                     COL_1
+0                          ('mean', ['0_c6', '0_c8', '0_c13'])                          [ArgOr['0_b6', '0_b8', '0_b13']]
+1         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+2  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]
+===============================
+=======with partial table==========
+                                 COL_0
+0  ('mean', ['0_c6', '0_c8', '0_c13'])
+=======with randomized trace==========
+          COL_0
+0  ('mean', [])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 26
+time cost: 0.14360570907592773
+number of solutions: 1
+=======target output==========
+          COL_0
+0  ('mean', [])
+=======correct output==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+t0 <- table_ref(0); t1 <- group_sum(t0, (1,), mean, 2)
++----+---------+---------+
+|    |   COL_0 |   COL_1 |
+|----+---------+---------|
+|  0 |      10 | 2916.67 |
+|  1 |      20 | 2175    |
+|  2 |      30 | 1566.67 |
++----+---------+---------+
++----+----------------------------------------------------------+-------------------------------------------------------------+
+|    | COL_0                                                    | COL_1                                                       |
+|----+----------------------------------------------------------+-------------------------------------------------------------|
+|  0 | [ArgOr['0_b6', '0_b8', '0_b13']]                         | ('mean', ['0_c6', '0_c8', '0_c13'])                         |
+|  1 | [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]        | ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])        |
+|  2 | [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']] | ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11']) |
++----+----------------------------------------------------------+-------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 001.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 0==========
+                                                      COL_0                                                        COL_1
+0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])
+1         [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]         ('mean', ['0_c0', '0_c3', '0_c7', '0_c10', '0_c12'])
+2  [ArgOr['0_b1', '0_b2', '0_b4', '0_b5', '0_b9', '0_b11']]  ('mean', ['0_c1', '0_c2', '0_c4', '0_c5', '0_c9', '0_c11'])
+===============================
+=======with partial table==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+=======with randomized trace==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+----
+number of programs searched: 31
+time cost: 0.1266627311706543
+number of solutions: 1
+=======target output==========
+                                               COL_0
+0                   [ArgOr['0_b6', '0_b8', '0_b13']]
+1  [ArgOr['0_b0', '0_b3', '0_b7', '0_b10', '0_b12']]
 =======correct output==========
                                                       COL_0                                                        COL_1
 0                          [ArgOr['0_b6', '0_b8', '0_b13']]                          ('mean', ['0_c6', '0_c8', '0_c13'])

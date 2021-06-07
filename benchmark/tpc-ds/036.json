@@ -1,0 +1,80 @@
+{
+  "input_data": [
+    [
+      {
+        "i_item_id": 0,
+        "i_item_desc": "str",
+        "i_category": "str",
+        "i_class": "str",
+        "i_item_sk": "str",
+        "i_current_price": 800
+      },
+      {
+        "i_item_id": 0,
+        "i_item_desc": "str",
+        "i_category": "str",
+        "i_class": "str",
+        "i_item_sk": "str",
+        "i_current_price": 800
+      }
+    ],
+    [
+      {
+        "cs_ext_sales_price": 800,
+        "cs_item_sk": "str",
+        "cs_sold_date_sk": "str"
+      },
+      {
+        "cs_ext_sales_price": 800,
+        "cs_item_sk": "str",
+        "cs_sold_date_sk": "str"
+      }
+    ],
+    [
+      {
+        "...": 800,
+        "d_date_sk": "str"
+      },
+      {
+        "...": 800,
+        "d_date_sk": "str"
+      }
+    ]
+  ],
+  "url":"-",
+  "exp_out": [
+    {"0": 0},
+    {"op": "join", "0": "[table: (0, 1); on (4, 1)]", "1": false},
+    {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
+    {"op": "group_sum", "0": [0, 1, 2, 3, 4], "1": "sum", "2": [x, x]},
+    {"op": "group_mutate", "0": [3], "1": "rank", "2": x},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [x, x]}
+  ]
+}
+
+
+    sum(ss_net_profit)/sum(ss_ext_sales_price) as gross_margin
+   ,i_category
+   ,i_class
+   ,grouping(i_category)+grouping(i_class) as lochierarchy
+   ,rank() over (
+ 	partition by grouping(i_category)+grouping(i_class),
+ 	case when grouping(i_class) = 0 then i_category end
+ 	order by sum(ss_net_profit)/sum(ss_ext_sales_price) asc) as rank_within_parent
+ from
+    store_sales
+   ,date_dim       d1
+   ,item
+   ,store
+ where
+    d1.d_year = [YEAR]
+ and d1.d_date_sk = ss_sold_date_sk
+ and i_item_sk  = ss_item_sk
+ and s_store_sk  = ss_store_sk
+ and s_state in ('[STATE_A]','[STATE_B]','[STATE_C]','[STATE_D]',
+                 '[STATE_E]','[STATE_F]','[STATE_G]','[STATE_H]')
+ group by rollup(i_category,i_class)
+ order by
+   lochierarchy desc
+  ,case when lochierarchy = 0 then i_category end
+  ,rank_within_parent

@@ -1,19 +1,22 @@
 {
-  "input_data": [[{
-    "key": "chelsea",
-    "name": "Chelsea",
-    "code": "CHE"
-    },
-    {
-    "key": "arsenal",
-    "name": "Arsenal",
-    "code": "ARS"
-    },
-    {
-    "key": "tottenham",
-    "name": "Tottenham Hotspur",
-    "code": "TOT"
-}],
+  "input_data": [
+    [
+      {
+        "key": "chelsea",
+        "name": "Chelsea",
+        "code": "CHE"
+      },
+      {
+        "key": "arsenal",
+        "name": "Arsenal",
+        "code": "ARS"
+      },
+      {
+        "key": "tottenham",
+        "name": "Tottenham Hotspur",
+        "code": "TOT"
+      }
+    ],
     [
         {
           "date": "2012-01-11",

@@ -1,17 +1,30 @@
 ------evaluate 009.json on config_2-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 5}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 1==========
+                                                             COL_0                                                                                                                                                                                                                                   COL_1                                                            COL_2
+0  [ArgOr['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6']]  ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e0', '0_e1', '0_e2', '0_e3']), ('max', ['0_d0', '0_d1', '0_d2', '0_d3'])]), ('lambda x, y: y / (x - y)', [('sum', ['0_e4', '0_e5', '0_e6']), ('max', ['0_d4', '0_d5', '0_d6'])])])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3', '0_b4', '0_b5', '0_b6']]
+1                         [ArgOr['0_a7', '0_a8', '0_a9', '0_a10']]                                                                                                      ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e7', '0_e8', '0_e9', '0_e10']), ('max', ['0_d7', '0_d8', '0_d9', '0_d10'])])])                         [ArgOr['0_b7', '0_b8', '0_b9', '0_b10']]
+===============================
+=======with randomized trace==========
+                                                             COL_0                                                                                      COL_1                                                            COL_2
+0  [ArgOr['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6']]                                               ('mean', [('lambda x, y: y / (x - y)', [])])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3', '0_b4', '0_b5', '0_b6']]
+1                         [ArgOr['0_a7', '0_a8', '0_a9', '0_a10']]  ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e8', '0_e10']), ('max', ['0_d9'])])])                         [ArgOr['0_b7', '0_b8', '0_b9', '0_b10']]
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 196)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 484)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 627)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 637)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 2700)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 243)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 643)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 786)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 806)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 3996)
 ----
-number of programs searched: 28703
-time cost: 300.00035071372986
+number of programs searched: 32661
+time cost: 360.0174722671509
 number of solutions: 0
 =======target output==========
+                                                             COL_0                                                                                      COL_1                                                            COL_2
+0  [ArgOr['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6']]                                               ('mean', [('lambda x, y: y / (x - y)', [])])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3', '0_b4', '0_b5', '0_b6']]
+1                         [ArgOr['0_a7', '0_a8', '0_a9', '0_a10']]  ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e8', '0_e10']), ('max', ['0_d9'])])])                         [ArgOr['0_b7', '0_b8', '0_b9', '0_b10']]
+=======correct output==========
                                                              COL_0                                                            COL_1                                                                                                                                                                                                                                   COL_2
 0  [ArgOr['0_a0', '0_a1', '0_a2', '0_a3', '0_a4', '0_a5', '0_a6']]  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3', '0_b4', '0_b5', '0_b6']]  ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e0', '0_e1', '0_e2', '0_e3']), ('max', ['0_d0', '0_d1', '0_d2', '0_d3'])]), ('lambda x, y: y / (x - y)', [('sum', ['0_e4', '0_e5', '0_e6']), ('max', ['0_d4', '0_d5', '0_d6'])])])
 1                         [ArgOr['0_a7', '0_a8', '0_a9', '0_a10']]                         [ArgOr['0_b7', '0_b8', '0_b9', '0_b10']]                                                                                                      ('mean', [('lambda x, y: y / (x - y)', [('sum', ['0_e7', '0_e8', '0_e9', '0_e10']), ('max', ['0_d7', '0_d8', '0_d9', '0_d10'])])])

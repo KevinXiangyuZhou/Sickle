@@ -1,26 +1,668 @@
 ------evaluate 011.json on config_5-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': False, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 44==========
+      COL_0                                                                       COL_1     COL_2     COL_3                                       COL_4
+0  ['0_b0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_b1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_c1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]
+2  ['0_b2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_c2']  ['0_a2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]
+===============================
+=======with partial table==========
+                                                                        COL_0
+0  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+=======with randomized trace==========
+                                                                COL_0
+0  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0'])])
+1                                    ('lambda x, y: x + y', ['0_c1'])
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
 t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
 t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 9)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 11)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 11)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 12)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 19)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 21)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 21)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 22)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 29)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 31)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 31)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 32)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 14)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 38)
 ----
-number of programs searched: 73
-time cost: 0.43740320205688477
+number of programs searched: 79
+time cost: 0.3084723949432373
 number of solutions: 1
 =======target output==========
+                                                                COL_0
+0  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0'])])
+1                                    ('lambda x, y: x + y', ['0_c1'])
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 78==========
+                                        COL_0     COL_1     COL_2     COL_3                                                                       COL_4
+0  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_b0']  ['0_a0']  ['0_c0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ['0_b1']  ['0_a1']  ['0_c1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_b2']  ['0_a2']  ['0_c2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+===============================
+=======with partial table==========
+                                        COL_0     COL_1     COL_2
+0  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_b0']  ['0_a0']
+=======with randomized trace==========
+                                COL_0     COL_1     COL_2
+0  [('lambda x, y: x + y', ['0_b0'])]  ['0_b0']  ['0_a0']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1322
+time cost: 5.728964328765869
+number of solutions: 1
+=======target output==========
+                                COL_0     COL_1     COL_2
+0  [('lambda x, y: x + y', ['0_b0'])]  ['0_b0']  ['0_a0']
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 51==========
+      COL_0     COL_1                                       COL_2                                                                       COL_3     COL_4
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_b0']
+1  ['0_c1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_b1']
+2  ['0_c2']  ['0_a2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_b2']
+===============================
+=======with partial table==========
+      COL_0     COL_1                                       COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_c1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]
+=======with randomized trace==========
+      COL_0     COL_1                               COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0'])]
+1  ['0_c1']  ['0_a1']        [('lambda x, y: x + y', [])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1322
+time cost: 5.898069858551025
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                               COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0'])]
+1  ['0_c1']  ['0_a1']        [('lambda x, y: x + y', [])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 82==========
+                                        COL_0     COL_1                                                                       COL_2     COL_3     COL_4
+0  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_b0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_a0']  ['0_c0']
+1  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ['0_b1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_a1']  ['0_c1']
+2  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_b2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_a2']  ['0_c2']
+===============================
+=======with partial table==========
+      COL_0                                                                       COL_1     COL_2
+0  ['0_b0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_a0']
+1  ['0_b1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_a1']
+=======with randomized trace==========
+      COL_0                             COL_1     COL_2
+0  ['0_b0']  ('lambda x, y: x + y', ['0_c0'])  ['0_a0']
+1  ['0_b1']  ('lambda x, y: x + y', ['0_c1'])  ['0_a1']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1254
+time cost: 5.748791217803955
+number of solutions: 1
+=======target output==========
+      COL_0                             COL_1     COL_2
+0  ['0_b0']  ('lambda x, y: x + y', ['0_c0'])  ['0_a0']
+1  ['0_b1']  ('lambda x, y: x + y', ['0_c1'])  ['0_a1']
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 57==========
+      COL_0     COL_1                                       COL_2                                                                       COL_3     COL_4
+0  ['0_c0']  ['0_b0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_a0']
+1  ['0_c1']  ['0_b1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_a1']
+2  ['0_c2']  ['0_b2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_a2']
+===============================
+=======with partial table==========
+      COL_0     COL_1                                       COL_2
+0  ['0_c0']  ['0_b0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+=======with randomized trace==========
+      COL_0     COL_1                               COL_2
+0  ['0_c0']  ['0_b0']  [('lambda x, y: x + y', ['0_b0'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1322
+time cost: 5.846743583679199
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                               COL_2
+0  ['0_c0']  ['0_b0']  [('lambda x, y: x + y', ['0_b0'])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 51==========
+      COL_0     COL_1                                       COL_2                                                                       COL_3     COL_4
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_b0']
+1  ['0_c1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_b1']
+2  ['0_c2']  ['0_a2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_b2']
+===============================
+=======with partial table==========
+      COL_0     COL_1                                       COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_c1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]
+=======with randomized trace==========
+      COL_0     COL_1                                       COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_c1']  ['0_a1']          [('lambda x, y: x + y', ['0_a1'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 185)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 189)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 189)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 869)
+----
+number of programs searched: 1194
+time cost: 5.381393671035767
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                                       COL_2
+0  ['0_c0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_c1']  ['0_a1']          [('lambda x, y: x + y', ['0_a1'])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 20==========
+      COL_0                                                                       COL_1     COL_2     COL_3                                       COL_4
+0  ['0_a0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  ['0_c0']  ['0_b0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]
+1  ['0_a1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  ['0_c1']  ['0_b1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]
+2  ['0_a2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  ['0_c2']  ['0_b2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]
+===============================
+=======with partial table==========
+      COL_0                                                                       COL_1
+0  ['0_a0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+=======with randomized trace==========
+      COL_0                       COL_1
+0  ['0_a0']  ('lambda x, y: x + y', [])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 441)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 445)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 445)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1125)
+----
+number of programs searched: 1450
+time cost: 6.699655294418335
+number of solutions: 1
+=======target output==========
+      COL_0                       COL_1
+0  ['0_a0']  ('lambda x, y: x + y', [])
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 54==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_c0']  ['0_b0']  ['0_a0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_c1']  ['0_b1']  ['0_a1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_c2']  ['0_b2']  ['0_a2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+===============================
+=======with partial table==========
+      COL_0     COL_1
+0  ['0_b0']  ['0_a0']
+=======with randomized trace==========
+      COL_0     COL_1
+0  ['0_b0']  ['0_a0']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 51)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 130)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 134)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 134)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 178)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 230)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 234)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 234)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 2357)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 5154)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 5158)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 5158)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 8190)
+----
+number of programs searched: 9187
+time cost: 45.124523401260376
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1
+0  ['0_b0']  ['0_a0']
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 2==========
+      COL_0     COL_1                                       COL_2     COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_c0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ['0_c1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_c2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+===============================
+=======with partial table==========
+      COL_0                                       COL_1     COL_2
+0  ['0_b0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_c0']
+=======with randomized trace==========
+      COL_0                               COL_1     COL_2
+0  ['0_b0']  [('lambda x, y: x + y', ['0_b0'])]  ['0_c0']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1322
+time cost: 5.789667367935181
+number of solutions: 1
+=======target output==========
+      COL_0                               COL_1     COL_2
+0  ['0_b0']  [('lambda x, y: x + y', ['0_b0'])]  ['0_c0']
+=======correct output==========
+      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
++----+---------+---------+---------+---------+---------+
+|    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
+|----+---------+---------+---------+---------+---------|
+|  0 |       1 |       2 |       3 |       3 |       6 |
+|  1 |       2 |       3 |       4 |       5 |       9 |
+|  2 |       3 |       4 |       5 |       7 |      12 |
++----+---------+---------+---------+---------+---------+
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
+|----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_a0', '0_b0'])] | ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])]) |
++----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 011.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 46==========
+      COL_0                                                                       COL_1                                       COL_2     COL_3     COL_4
+0  ['0_b0']  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ['0_a0']  ['0_c0']
+1  ['0_b1']  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ['0_a1']  ['0_c1']
+2  ['0_b2']  ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_a2', '0_b2'])])  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_a2']  ['0_c2']
+===============================
+=======with partial table==========
+                                                                        COL_0
+0  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
+1  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])
+=======with randomized trace==========
+                              COL_0
+0        ('lambda x, y: x + y', [])
+1  ('lambda x, y: x + y', ['0_c1'])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 2)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 21)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 25)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 39)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 43)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 44)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 313)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 317)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 997)
+----
+number of programs searched: 1254
+time cost: 5.6121299266815186
+number of solutions: 1
+=======target output==========
+                              COL_0
+0        ('lambda x, y: x + y', [])
+1  ('lambda x, y: x + y', ['0_c1'])
+=======correct output==========
       COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
 0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_a0', '0_b0'])]  ('lambda x, y: x + y', ['0_c0', ('lambda x, y: x + y', ['0_a0', '0_b0'])])
 1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_a1', '0_b1'])]  ('lambda x, y: x + y', ['0_c1', ('lambda x, y: x + y', ['0_a1', '0_b1'])])

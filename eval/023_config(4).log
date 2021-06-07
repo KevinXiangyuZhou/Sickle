@@ -1,32 +1,48 @@
 ------evaluate 023.json on config_4-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 56==========
+      COL_0     COL_1     COL_2     COL_3                                         COL_4     COL_5                                                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_e0']  ['0_d0']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c0']  ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+1  ['0_a1']  ['0_b1']  ['0_e1']  ['0_d1']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c1']  ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+2  ['0_a2']  ['0_b2']  ['0_e2']  ['0_d2']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c2']  ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+3  ['0_a3']  ['0_b3']  ['0_e3']  ['0_d3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c3']  ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
+4  ['0_a4']  ['0_b4']  ['0_e4']  ['0_d4']                  [('mean', ['0_c4', '0_c5'])]  ['0_c4']                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])
+5  ['0_a5']  ['0_b5']  ['0_e5']  ['0_d5']                  [('mean', ['0_c4', '0_c5'])]  ['0_c5']                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])
+===============================
 =======with partial table==========
-      COL_0     COL_1     COL_2                                         COL_3
-0  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]
-1  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]
+      COL_0     COL_1
+0  ['0_b2']  ['0_e2']
+1  ['0_b3']  ['0_e3']
+2  ['0_b4']  ['0_e4']
 =======with randomized trace==========
-      COL_0     COL_1     COL_2                         COL_3
-0  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c2', '0_c3'])]
-1  ['0_c3']  ['0_d3']  ['0_e3']          [('mean', ['0_c0'])]
+      COL_0     COL_1
+0  ['0_b2']  ['0_e2']
+1  ['0_b3']  ['0_e3']
+2  ['0_b4']  ['0_e4']
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 30)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 102)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 181)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 201)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 218)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 2762)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 4311)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 6894)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 7103)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 37)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 137)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 216)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 236)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 257)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 4515)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 6430)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 9640)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 9991)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 18575)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 23526)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 28082)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 28268)
 ----
-number of programs searched: 7733
-time cost: 60.011366844177246
-number of solutions: 0
+number of programs searched: 28404
+time cost: 314.7609624862671
+number of solutions: 1
 =======target output==========
-      COL_0     COL_1     COL_2                         COL_3
-0  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c2', '0_c3'])]
-1  ['0_c3']  ['0_d3']  ['0_e3']          [('mean', ['0_c0'])]
+      COL_0     COL_1
+0  ['0_b2']  ['0_e2']
+1  ['0_b3']  ['0_e3']
+2  ['0_b4']  ['0_e4']
 =======correct output==========
       COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
 0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
@@ -35,7 +51,30 @@ number of solutions: 0
 3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
 4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])
 5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])
-number of programs: 0
+t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, (2, 5))
++----+---------+------------+---------+---------+---------+-------------+-----------+
+|    | COL_0   | COL_1      |   COL_2 |   COL_3 |   COL_4 |       COL_5 |     COL_6 |
+|----+---------+------------+---------+---------+---------+-------------+-----------|
+|  0 | A       | Alabama    | 1296530 | 1317711 | 1118631 | 1.4236e+06  | -127068   |
+|  1 | A       | Alaska     | 1170302 | 1960378 | 1818085 | 1.4236e+06  | -253296   |
+|  2 | A       | Arizona    | 1742027 | 1968140 | 1377583 | 1.4236e+06  |  318430   |
+|  3 | A       | Arkansas   | 1485531 | 1994927 | 1119299 | 1.4236e+06  |   61933.5 |
+|  4 | C       | California | 1685349 | 1675807 | 1889570 | 1.51459e+06 |  170762   |
+|  5 | C       | Colorado   | 1343824 | 1878473 | 1886149 | 1.51459e+06 | -170762   |
++----+---------+------------+---------+---------+---------+-------------+-----------+
++----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4    | COL_5                                        | COL_6                                                                        |
+|----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | ['0_e0'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | ['0_e1'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | ['0_e2'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | ['0_e3'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | ['0_e4'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])                 |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | ['0_e5'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])                 |
++----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
+
+
+number of programs: 1
 
 
 

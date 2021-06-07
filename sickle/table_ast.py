@@ -13,8 +13,14 @@ import math
 
 # two special symbols used in the language
 HOLE = "_?_"
-UNKNOWN = "_UNK_"
+UNKNOWN = "_UNK_"`
+# = 4
 
+# global used dataN storage
+n_program_search = []
+n_program_search_analysis = []
+run_time = []
+run_time_analysis = []
 
 class Node(ABC):
 	def __init__(self):
@@ -172,7 +178,23 @@ class Table(Node):
 
 	def infer_cell_2(self, inputs):
 		return self.eval(inputs)
-
+		"""
+		inp = inputs[self.data_id]
+		if isinstance(inp, (list,)):
+			df = pd.DataFrame.from_dict(inp)
+		else:
+			df = inp
+		res = []
+		for col in range(len(df.columns)):
+			res.append([])
+			for row in range(len(df)):
+				if row < N:
+					res[col].append(TableCell(HOLE, HOLE))
+				else:
+					res[col].append(TableCell(HOLE, [f"{self.data_id}_{get_alphabet(col)}{row}"]))
+		print(AnnotatedTable(res, from_source=True).to_dataframe)
+		return AnnotatedTable(res, from_source=True)
+		"""
 	def infer_cell(self, inputs, target):
 		return [target]
 
@@ -276,8 +298,6 @@ class Join(Node):
 						arg = []
 						val = 0.0
 					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
-
-
 		# print(AnnotatedTable(source, from_source=True).to_dataframe())
 		# it is okay to pass empty joined result to the next level
 		return AnnotatedTable(source, from_source=True)
@@ -491,8 +511,8 @@ class Filter(Node):
 			"type": "node",
 			"op": "filter",
 			"children": [
-				self.q.to_dict(), 
-				value_to_dict(self.col_index, "col_index"), 
+				self.q.to_dict(),
+				value_to_dict(self.col_index, "col_index"),
 				value_to_dict(self.op, "filter_op"),
 				value_to_dict(self.const, "constants")
 			]}
@@ -616,7 +636,7 @@ class GroupSummary(Node):
 			"type": "node",
 			"op": "group_sum",
 			"children": [
-				self.q.to_dict(), 
+				self.q.to_dict(),
 				value_to_dict(self.group_cols, "col_index_list"),
 				value_to_dict(self.aggr_func, "aggr_func"),
 				value_to_dict(self.aggr_col, "col_index")
@@ -855,20 +875,24 @@ class GroupMutate(Node):
 			group_keys = [df.columns[idx] for idx in self.group_cols]
 			# Format: {index: {colname: argument}}
 			# iterate through df, map each cell in resulting table with its argument
-			temp = res.groupby(group_keys, sort=False)
+			grouped_res = res.groupby(group_keys, sort=False)
 
 			# map argument for keys and groups
-			for (key, group) in temp:
+			for (key, group) in grouped_res:
 				# key can be a tuple if there are multiple group cols
 				# get the group argument for the target column
 				temp_arg = []
 				# group.to_dict() in {col_name:{rid:}} format
+				# special trace handler for cumsum
 				if self.aggr_func == "cumsum":
 					# map argument for col cumsum
 					for index in group.to_dict()[target]:
 						temp_arg.append((self.target_col, index))
 						arguments[index][new_col] = temp_arg.copy()
 					continue
+				elif self.aggr_func == "rank":  # special trace handler for rank
+					for row_index in group.to_dict()[target]:
+						arguments[row_index][new_col] = [(self.target_col, row_index)]
 				# get a list of all coordinate in the same group in target column
 				for row_index in group.to_dict()[target]:
 					temp_arg.append((self.target_col, row_index))
@@ -878,7 +902,9 @@ class GroupMutate(Node):
 						arguments[row_index] = {}
 					arguments[row_index][new_col] = temp_arg
 			# do aggregation work
-			res[new_col] = temp.transform(self.aggr_func)[target]
+			if self.aggr_func == "rank":
+				res[new_col] = grouped_res[target].rank(method='first')
+			res[new_col] = grouped_res.transform(self.aggr_func)[target]
 		else:
 			# if we have not group_key, we simply do a mutate
 			if self.aggr_func == "cumsum":
@@ -888,6 +914,10 @@ class GroupMutate(Node):
 				for index in res.to_dict()[target]:
 					temp_arg.append((self.target_col, index))
 					arguments[index][new_col] = temp_arg.copy()
+			elif self.aggr_func == "rank":
+				res[new_col] = res[target].rank(method='first')
+				for index in arguments:
+					arguments[index][new_col] = arguments[index][target].copy()
 			else:
 				res[new_col] = res.apply(self.aggr_func)[target]
 				# add arguments for the new column
@@ -1209,7 +1239,7 @@ def get_temp_var(used_vars):
 
 
 def value_to_dict(val, val_type):
-	"""given the value and its type, dump it to a dict 
+	"""given the value and its type, dump it to a dict
 		the helper function to dump values into dict ast
 	"""
 	return {"type": val_type, "value": val}

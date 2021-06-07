@@ -1,51 +1,1069 @@
 ------evaluate 006.json on config_5-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 60, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 86==========
+      COL_0                                                                               COL_1                                                                   COL_2     COL_3     COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']                                                  [('rank', [('cumsum', ['0_c0'])])]                                                  [('cumsum', ['0_c0'])]  ['0_c0']  ['0_b0']                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                          [('cumsum', ['0_c0', '0_c1'])]  ['0_c1']  ['0_b1']                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']  ['0_b2']                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c3']  ['0_b3']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]  ['0_c4']  ['0_b4']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]  ['0_c5']  ['0_b5']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ['0_c6']  ['0_b6']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+===============================
 =======with partial table==========
-      COL_0
-0  ['0_c2']
+                                                            COL_0
+0                                          [('cumsum', ['0_c0'])]
+1                                  [('cumsum', ['0_c0', '0_c1'])]
+2                          [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+3                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]
+4          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]
+5  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]
 =======with randomized trace==========
-      COL_0
-0  ['0_c2']
+                                    COL_0
+0                        [('cumsum', [])]
+1          [('cumsum', ['0_c0', '0_c1'])]
+2  [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+3          [('cumsum', ['0_c2', '0_c3'])]
+4  [('cumsum', ['0_c0', '0_c1', '0_c3'])]
+5  [('cumsum', ['0_c2', '0_c3', '0_c4'])]
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 7)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 45)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 56)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 60)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 66)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 276)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 326)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 330)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 336)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 1346)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1551)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1555)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1561)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 1939)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 2018)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2022)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2028)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2233)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 2281)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2285)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2291)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 28)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 48)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 52)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 59)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 448)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 499)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 503)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 505)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 551)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 558)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 562)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 564)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 577)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 584)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 588)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 595)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1139)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1199)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1203)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1205)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1273)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1280)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1284)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1291)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1567)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 1615)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1619)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1626)
 ----
-number of programs searched: 3257
-time cost: 60.003507137298584
+number of programs searched: 16193
+time cost: 360.00157403945923
 number of solutions: 0
 =======target output==========
-      COL_0
-0  ['0_c2']
+                                    COL_0
+0                        [('cumsum', [])]
+1          [('cumsum', ['0_c0', '0_c1'])]
+2  [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+3          [('cumsum', ['0_c2', '0_c3'])]
+4  [('cumsum', ['0_c0', '0_c1', '0_c3'])]
+5  [('cumsum', ['0_c2', '0_c3', '0_c4'])]
 =======correct output==========
-      COL_0     COL_1     COL_2                                                                   COL_3                        COL_4                                                                                                                                                                                                        COL_5                                                                                                                                                                                                                                                                                                      COL_6
-0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]  [('lambda x: 1', ['0_c0'])]                                                                                                                                                                    [('cumsum', [('lambda x: 1', ['0_c0'])])]                                                                                                                                                                                                                    ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('cumsum', [('lambda x: 1', ['0_c0'])])])
-1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]  [('lambda x: 1', ['0_c1'])]                                                                                                                                         [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1'])])]                                                                                                                                                                                 ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1'])])])
-2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  [('lambda x: 1', ['0_c2'])]                                                                                                              [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2'])])]                                                                                                                                              ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2'])])])
-3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  [('lambda x: 1', ['0_c3'])]                                                                                   [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3'])])]                                                                                                           ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3'])])])
-4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]  [('lambda x: 1', ['0_c4'])]                                                        [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4'])])]                                                                        ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4'])])])
-5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]  [('lambda x: 1', ['0_c5'])]                             [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4']), ('lambda x: 1', ['0_c5'])])]                                     ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4']), ('lambda x: 1', ['0_c5'])])])
-6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('lambda x: 1', ['0_c6'])]  [('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4']), ('lambda x: 1', ['0_c5']), ('lambda x: 1', ['0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('cumsum', [('lambda x: 1', ['0_c0']), ('lambda x: 1', ['0_c1']), ('lambda x: 1', ['0_c2']), ('lambda x: 1', ['0_c3']), ('lambda x: 1', ['0_c4']), ('lambda x: 1', ['0_c5']), ('lambda x: 1', ['0_c6'])])])
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
 number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 34==========
+      COL_0     COL_1                                                                   COL_2                                                                                                                                                                             COL_3     COL_4                                                                               COL_5
+0  ['0_a0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])  ['0_b0']                                                  [('rank', [('cumsum', ['0_c0'])])]
+1  ['0_a1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])  ['0_b1']                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]
+2  ['0_a2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])  ['0_b2']                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]
+3  ['0_a3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])  ['0_b3']                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]
+4  ['0_a4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])  ['0_b4']                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]
+5  ['0_a5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])  ['0_b5']          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]
+6  ['0_a6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  ['0_b6']  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]
+===============================
+=======with partial table==========
+      COL_0     COL_1                                   COL_2
+0  ['0_a2']  ['0_c2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+=======with randomized trace==========
+      COL_0     COL_1                                   COL_2
+0  ['0_a2']  ['0_c2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 28)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 48)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 52)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 54)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 443)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 494)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 498)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 500)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 546)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 553)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 557)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 559)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 572)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 579)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 583)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 585)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1129)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1189)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1193)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1195)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1263)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1270)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1274)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1276)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1372)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 1390)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1394)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1396)
+----
+number of programs searched: 16008
+time cost: 360.0167279243469
+number of solutions: 0
+=======target output==========
+      COL_0     COL_1                                   COL_2
+0  ['0_a2']  ['0_c2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 62==========
+      COL_0                                                                   COL_1                                                                               COL_2     COL_3     COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]  ['0_c0']  ['0_b0']                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_c1']  ['0_b1']                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_c2']  ['0_b2']                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_c3']  ['0_b3']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_c4']  ['0_b4']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]  ['0_c5']  ['0_b5']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ['0_c6']  ['0_b6']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+===============================
+=======with partial table==========
+      COL_0                                   COL_1                                               COL_2
+0  ['0_a0']                  [('cumsum', ['0_c0'])]                  [('rank', [('cumsum', ['0_c0'])])]
+1  ['0_a1']          [('cumsum', ['0_c0', '0_c1'])]          [('rank', [('cumsum', ['0_c0', '0_c1'])])]
+2  ['0_a2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]
+=======with randomized trace==========
+      COL_0                                   COL_1                               COL_2
+0  ['0_a0']                  [('cumsum', ['0_c0'])]                      [('rank', [])]
+1  ['0_a1']                  [('cumsum', ['0_c0'])]  [('rank', [('cumsum', ['0_c0'])])]
+2  ['0_a2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                      [('rank', [])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 35)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 80)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 87)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 91)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 93)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 96)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 103)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 107)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 109)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 112)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 119)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 123)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 125)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 195)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 202)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 206)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 208)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 211)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 218)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 222)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 224)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 249)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 256)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 260)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 262)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4395)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4651)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4655)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4657)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 5339)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 5346)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5350)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5352)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5355)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 5362)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5366)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5368)
+----
+number of programs searched: 5473
+time cost: 104.28855013847351
+number of solutions: 1
+=======target output==========
+      COL_0                                   COL_1                               COL_2
+0  ['0_a0']                  [('cumsum', ['0_c0'])]                      [('rank', [])]
+1  ['0_a1']                  [('cumsum', ['0_c0'])]  [('rank', [('cumsum', ['0_c0'])])]
+2  ['0_a2']  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                      [('rank', [])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 7==========
+      COL_0     COL_1                                                                   COL_2     COL_3                                                                                                                                                                             COL_4                                                                               COL_5
+0  ['0_a0']  ['0_b0']                                                  [('cumsum', ['0_c0'])]  ['0_c0']                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                  [('rank', [('cumsum', ['0_c0'])])]
+1  ['0_a1']  ['0_b1']                                          [('cumsum', ['0_c0', '0_c1'])]  ['0_c1']                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]
+2  ['0_a2']  ['0_b2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]
+3  ['0_a3']  ['0_b3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c3']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]
+4  ['0_a4']  ['0_b4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]  ['0_c4']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]
+5  ['0_a5']  ['0_b5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]  ['0_c5']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]
+6  ['0_a6']  ['0_b6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ['0_c6']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]
+===============================
+=======with partial table==========
+      COL_0     COL_1                                                           COL_2
+0  ['0_a1']  ['0_b1']                                  [('cumsum', ['0_c0', '0_c1'])]
+1  ['0_a2']  ['0_b2']                          [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+2  ['0_a3']  ['0_b3']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]
+3  ['0_a4']  ['0_b4']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]
+4  ['0_a5']  ['0_b5']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]
+=======with randomized trace==========
+      COL_0     COL_1                                   COL_2
+0  ['0_a1']  ['0_b1']                  [('cumsum', ['0_c1'])]
+1  ['0_a2']  ['0_b2']                        [('cumsum', [])]
+2  ['0_a3']  ['0_b3']  [('cumsum', ['0_c0', '0_c2', '0_c3'])]
+3  ['0_a4']  ['0_b4']          [('cumsum', ['0_c2', '0_c3'])]
+4  ['0_a5']  ['0_b5']          [('cumsum', ['0_c0', '0_c3'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 15)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 26)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 28)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 41)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 48)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 52)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 54)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 443)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 494)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 498)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 500)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 546)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 553)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 557)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 559)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 572)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 579)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 583)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 585)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1141)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1201)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1205)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1207)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 1275)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 1282)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1286)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1288)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1384)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 1402)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1406)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 1408)
+----
+number of programs searched: 14681
+time cost: 360.00463008880615
+number of solutions: 0
+=======target output==========
+      COL_0     COL_1                                   COL_2
+0  ['0_a1']  ['0_b1']                  [('cumsum', ['0_c1'])]
+1  ['0_a2']  ['0_b2']                        [('cumsum', [])]
+2  ['0_a3']  ['0_b3']  [('cumsum', ['0_c0', '0_c2', '0_c3'])]
+3  ['0_a4']  ['0_b4']          [('cumsum', ['0_c2', '0_c3'])]
+4  ['0_a5']  ['0_b5']          [('cumsum', ['0_c0', '0_c3'])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 24==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_c0']  ['0_b0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_c1']  ['0_b1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_c2']  ['0_b2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_c3']  ['0_b3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_c4']  ['0_b4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_c5']  ['0_b5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_c6']  ['0_b6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+===============================
+=======with partial table==========
+      COL_0     COL_1     COL_2
+0  ['0_a2']  ['0_c2']  ['0_b2']
+1  ['0_a3']  ['0_c3']  ['0_b3']
+=======with randomized trace==========
+      COL_0     COL_1     COL_2
+0  ['0_a2']  ['0_c2']  ['0_b2']
+1  ['0_a3']  ['0_c3']  ['0_b3']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 55)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 66)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 72)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 168)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 186)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 190)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 192)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 2094)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 2373)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 2377)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 2379)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 2907)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 2986)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2990)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 2992)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3088)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 3106)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3110)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 3112)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 9639)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 10614)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 10618)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 10620)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 12372)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 12679)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 12683)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 12685)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 12781)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 12799)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 12803)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 12805)
+----
+number of programs searched: 16844
+time cost: 360.0051407814026
+number of solutions: 0
+=======target output==========
+      COL_0     COL_1     COL_2
+0  ['0_a2']  ['0_c2']  ['0_b2']
+1  ['0_a3']  ['0_c3']  ['0_b3']
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 75==========
+      COL_0                                                                               COL_1     COL_2                                                                   COL_3                                                                                                                                                                             COL_4     COL_5
+0  ['0_a0']                                                  [('rank', [('cumsum', ['0_c0'])])]  ['0_b0']                                                  [('cumsum', ['0_c0'])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])  ['0_c0']
+1  ['0_a1']                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_b1']                                          [('cumsum', ['0_c0', '0_c1'])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])  ['0_c1']
+2  ['0_a2']                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_b2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])  ['0_c2']
+3  ['0_a3']                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_b3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])  ['0_c3']
+4  ['0_a4']                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_b4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])  ['0_c4']
+5  ['0_a5']          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]  ['0_b5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])  ['0_c5']
+6  ['0_a6']  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ['0_b6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  ['0_c6']
+===============================
+=======with partial table==========
+                                                                COL_0     COL_1
+0                                  [('rank', [('cumsum', ['0_c0'])])]  ['0_b0']
+1                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_b1']
+2                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_b2']
+3          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_b3']
+4  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_b4']
+=======with randomized trace==========
+                                        COL_0     COL_1
+0                              [('rank', [])]  ['0_b0']
+1  [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_b1']
+2  [('rank', [('cumsum', ['0_c0', '0_c2'])])]  ['0_b2']
+3                              [('rank', [])]  ['0_b3']
+4                              [('rank', [])]  ['0_b4']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 35)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 80)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 87)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 91)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 93)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 96)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 103)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 107)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 109)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 112)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 119)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 123)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 125)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 175)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 182)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 186)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 188)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 191)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 198)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 202)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 204)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 217)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 224)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 228)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 230)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4361)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 4617)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4621)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 4623)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 5305)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 5312)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5316)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5318)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5321)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 5328)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5332)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 5334)
+----
+number of programs searched: 5439
+time cost: 98.41417002677917
+number of solutions: 1
+=======target output==========
+                                        COL_0     COL_1
+0                              [('rank', [])]  ['0_b0']
+1  [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_b1']
+2  [('rank', [('cumsum', ['0_c0', '0_c2'])])]  ['0_b2']
+3                              [('rank', [])]  ['0_b3']
+4                              [('rank', [])]  ['0_b4']
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 85==========
+      COL_0                                                                               COL_1                                                                   COL_2     COL_3                                                                                                                                                                             COL_4     COL_5
+0  ['0_a0']                                                  [('rank', [('cumsum', ['0_c0'])])]                                                  [('cumsum', ['0_c0'])]  ['0_b0']                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])  ['0_c0']
+1  ['0_a1']                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                          [('cumsum', ['0_c0', '0_c1'])]  ['0_b1']                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])  ['0_c1']
+2  ['0_a2']                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  ['0_b2']                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])  ['0_c2']
+3  ['0_a3']                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_b3']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])  ['0_c3']
+4  ['0_a4']                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]  ['0_b4']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])  ['0_c4']
+5  ['0_a5']          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]  ['0_b5']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])  ['0_c5']
+6  ['0_a6']  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ['0_b6']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  ['0_c6']
+===============================
+=======with partial table==========
+                                                COL_0                                   COL_1     COL_2
+0                  [('rank', [('cumsum', ['0_c0'])])]                  [('cumsum', ['0_c0'])]  ['0_b0']
+1          [('rank', [('cumsum', ['0_c0', '0_c1'])])]          [('cumsum', ['0_c0', '0_c1'])]  ['0_b1']
+2  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  ['0_b2']
+=======with randomized trace==========
+            COL_0                           COL_1     COL_2
+0  [('rank', [])]                [('cumsum', [])]  ['0_b0']
+1  [('rank', [])]  [('cumsum', ['0_c0', '0_c1'])]  ['0_b1']
+2  [('rank', [])]          [('cumsum', ['0_c0'])]  ['0_b2']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 36)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 40)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 42)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 133)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 140)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 144)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 146)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 149)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 156)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 160)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 162)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 172)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 179)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 183)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 185)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 473)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 514)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 518)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 520)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 530)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 537)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 541)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 543)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 639)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 657)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 661)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 663)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 9551)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 10234)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 10238)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 10240)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 11645)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 11652)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 11656)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 11658)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 11668)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 11675)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 11679)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 11681)
+----
+number of programs searched: 11974
+time cost: 237.35608339309692
+number of solutions: 1
+=======target output==========
+            COL_0                           COL_1     COL_2
+0  [('rank', [])]                [('cumsum', [])]  ['0_b0']
+1  [('rank', [])]  [('cumsum', ['0_c0', '0_c1'])]  ['0_b1']
+2  [('rank', [])]          [('cumsum', ['0_c0'])]  ['0_b2']
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 71==========
+      COL_0                                                                   COL_1                                                                                                                                                                             COL_2                                                                               COL_3     COL_4     COL_5
+0  ['0_a0']                                                  [('cumsum', ['0_c0'])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                  [('rank', [('cumsum', ['0_c0'])])]  ['0_c0']  ['0_b0']
+1  ['0_a1']                                          [('cumsum', ['0_c0', '0_c1'])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_c1']  ['0_b1']
+2  ['0_a2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_c2']  ['0_b2']
+3  ['0_a3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_c3']  ['0_b3']
+4  ['0_a4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_c4']  ['0_b4']
+5  ['0_a5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]  ['0_c5']  ['0_b5']
+6  ['0_a6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ['0_c6']  ['0_b6']
+===============================
+=======with partial table==========
+                                                                                                                                              COL_0                                                               COL_1     COL_2
+0                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_c2']
+1                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_c3']
+2  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_c4']
+=======with randomized trace==========
+                                                          COL_0                                               COL_1     COL_2
+0        ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1'])])                        [('rank', [('cumsum', [])])]  ['0_c2']
+1                        ('lambda x, y: x / y', [('rank', [])])                  [('rank', [('cumsum', ['0_c1'])])]  ['0_c3']
+2  ('lambda x, y: x / y', [('cumsum', ['0_c2']), ('rank', [])])  [('rank', [('cumsum', ['0_c1', '0_c2', '0_c3'])])]  ['0_c4']
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 35)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 38)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 45)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 49)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 51)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 54)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 61)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 65)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 67)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 70)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 81)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 83)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 86)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 93)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 97)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 99)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 102)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 109)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 113)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 115)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 118)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 125)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 129)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 131)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 134)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 141)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 145)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 147)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 150)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 157)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 163)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 166)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 173)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 177)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 179)
+----
+number of programs searched: 236
+time cost: 2.666882276535034
+number of solutions: 1
+=======target output==========
+                                                          COL_0                                               COL_1     COL_2
+0        ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1'])])                        [('rank', [('cumsum', [])])]  ['0_c2']
+1                        ('lambda x, y: x / y', [('rank', [])])                  [('rank', [('cumsum', ['0_c1'])])]  ['0_c3']
+2  ('lambda x, y: x / y', [('cumsum', ['0_c2']), ('rank', [])])  [('rank', [('cumsum', ['0_c1', '0_c2', '0_c3'])])]  ['0_c4']
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 20==========
+      COL_0     COL_1                                                                                                                                                                             COL_2                                                                   COL_3     COL_4                                                                               COL_5
+0  ['0_a0']  ['0_b0']                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                  [('cumsum', ['0_c0'])]  ['0_c0']                                                  [('rank', [('cumsum', ['0_c0'])])]
+1  ['0_a1']  ['0_b1']                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])                                          [('cumsum', ['0_c0', '0_c1'])]  ['0_c1']                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]
+2  ['0_a2']  ['0_b2']                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]  ['0_c2']                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]
+3  ['0_a3']  ['0_b3']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ['0_c3']                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]
+4  ['0_a4']  ['0_b4']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]  ['0_c4']                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]
+5  ['0_a5']  ['0_b5']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]  ['0_c5']          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]
+6  ['0_a6']  ['0_b6']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ['0_c6']  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]
+===============================
+=======with partial table==========
+      COL_0                                                                                                                                                             COL_1                                                           COL_2
+0  ['0_b2']                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                          [('cumsum', ['0_c0', '0_c1', '0_c2'])]
+1  ['0_b3']                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]
+2  ['0_b4']                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]
+3  ['0_b5']  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]
+=======with randomized trace==========
+      COL_0                                                   COL_1                                                   COL_2
+0  ['0_b2']                  ('lambda x, y: x / y', [('rank', [])])                                  [('cumsum', ['0_c1'])]
+1  ['0_b3']                              ('lambda x, y: x / y', [])                          [('cumsum', ['0_c0', '0_c1'])]
+2  ['0_b4']  ('lambda x, y: x / y', [('cumsum', ['0_c2', '0_c3'])])                                  [('cumsum', ['0_c1'])]
+3  ['0_b5']                  ('lambda x, y: x / y', [('rank', [])])  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c5'])]
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 35)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 38)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 45)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 49)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 51)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 61)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 68)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 72)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 74)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 77)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 84)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 88)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 90)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 93)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 100)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 104)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 106)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 116)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 123)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 127)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 129)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 132)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 139)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 143)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 145)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 148)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 155)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 159)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 161)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 171)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 178)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 182)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 184)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 194)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 201)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 205)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 207)
+----
+number of programs searched: 516
+time cost: 7.5622007846832275
+number of solutions: 1
+=======target output==========
+      COL_0                                                   COL_1                                                   COL_2
+0  ['0_b2']                  ('lambda x, y: x / y', [('rank', [])])                                  [('cumsum', ['0_c1'])]
+1  ['0_b3']                              ('lambda x, y: x / y', [])                          [('cumsum', ['0_c0', '0_c1'])]
+2  ['0_b4']  ('lambda x, y: x / y', [('cumsum', ['0_c2', '0_c3'])])                                  [('cumsum', ['0_c1'])]
+3  ['0_b5']                  ('lambda x, y: x / y', [('rank', [])])  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c5'])]
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+------evaluate 006.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': True, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 11==========
+      COL_0     COL_1                                                                   COL_2                                                                                                                                                                             COL_3                                                                               COL_4     COL_5
+0  ['0_a0']  ['0_b0']                                                  [('cumsum', ['0_c0'])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                  [('rank', [('cumsum', ['0_c0'])])]  ['0_c0']
+1  ['0_a1']  ['0_b1']                                          [('cumsum', ['0_c0', '0_c1'])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]  ['0_c1']
+2  ['0_a2']  ['0_b2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]  ['0_c2']
+3  ['0_a3']  ['0_b3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]  ['0_c3']
+4  ['0_a4']  ['0_b4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]  ['0_c4']
+5  ['0_a5']  ['0_b5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]  ['0_c5']
+6  ['0_a6']  ['0_b6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ['0_c6']
+===============================
+=======with partial table==========
+      COL_0     COL_1                                           COL_2                                                                                                                             COL_3
+0  ['0_a2']  ['0_b2']          [('cumsum', ['0_c0', '0_c1', '0_c2'])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+1  ['0_a3']  ['0_b3']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+=======with randomized trace==========
+      COL_0     COL_1                                           COL_2                                                           COL_3
+0  ['0_a2']  ['0_b2']                  [('cumsum', ['0_c0', '0_c1'])]          ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1'])])
+1  ['0_a3']  ['0_b3']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x / y', [('cumsum', ['0_c1', '0_c2', '0_c3'])])
+t0 <- table_ref(0)   (program searched: 0)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 3)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 6)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 13)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 17)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 19)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 22)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 29)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 33)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 35)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 38)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 45)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 49)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 51)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 73)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 80)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 84)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 86)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 89)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 96)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 100)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 102)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 105)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 112)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 116)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 118)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 142)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 149)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 153)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 155)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 158)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 165)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 169)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 171)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 174)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 181)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 185)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 187)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 479)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?); t4 <- group_mutate(t3, ?, ?, ?)   (program searched: 486)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 490)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 492)
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 505)
+t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- mutate_arithmetic(t3, ?, ?)   (program searched: 512)
+t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 516)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 518)
+----
+number of programs searched: 1416
+time cost: 22.692672729492188
+number of solutions: 1
+=======target output==========
+      COL_0     COL_1                                           COL_2                                                           COL_3
+0  ['0_a2']  ['0_b2']                  [('cumsum', ['0_c0', '0_c1'])]          ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1'])])
+1  ['0_a3']  ['0_b3']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x / y', [('cumsum', ['0_c1', '0_c2', '0_c3'])])
+=======correct output==========
+      COL_0     COL_1     COL_2                                                                   COL_3                                                                               COL_4                                                                                                                                                                             COL_5
+0  ['0_a0']  ['0_b0']  ['0_c0']                                                  [('cumsum', ['0_c0'])]                                                  [('rank', [('cumsum', ['0_c0'])])]                                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])
+1  ['0_a1']  ['0_b1']  ['0_c1']                                          [('cumsum', ['0_c0', '0_c1'])]                                          [('rank', [('cumsum', ['0_c0', '0_c1'])])]                                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1'])])])
+2  ['0_a2']  ['0_b2']  ['0_c2']                                  [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])]                                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2'])])])
+3  ['0_a3']  ['0_b3']  ['0_c3']                          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])]                                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])])])
+4  ['0_a4']  ['0_b4']  ['0_c4']                  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])]                                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])])])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]          [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]                  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])]  [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]  ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])
+t0 <- table_ref(0); t1 <- group_mutate(t0, [], cumsum, 2); t2 <- group_mutate(t1, (1,), rank, 3); t3 <- mutate_arithmetic(t2, lambda x, y: x / y, (3, 4))
++----+---------+----------+---------+---------+---------+---------+
+|    | COL_0   | COL_1    |   COL_2 |   COL_3 |   COL_4 |   COL_5 |
+|----+---------+----------+---------+---------+---------+---------|
+|  0 | Smith   | Clerk    |     800 |     800 |       1 |  800    |
+|  1 | Allen   | Salesman |    1600 |    2400 |       1 | 2400    |
+|  2 | Ward    | Salesman |    1250 |    3650 |       2 | 1825    |
+|  3 | Jones   | Manager  |     800 |    4450 |       1 | 4450    |
+|  4 | Blake   | Manager  |    2975 |    7425 |       2 | 3712.5  |
+|  5 | Clark   | Manager  |    2850 |   10275 |       3 | 3425    |
+|  6 | Turner  | Salesman |    2450 |   12725 |       3 | 4241.67 |
++----+---------+----------+---------+---------+---------+---------+
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3                                                                  | COL_4                                                                                                                                                                          | COL_5                                                                                                                                                                                                                                                                |
+|----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('cumsum', ['0_c0'])]                                                 | [('rank', [('cumsum', ['0_c0'])])]                                                                                                                                             | ('lambda x, y: x / y', [('cumsum', ['0_c0']), ('rank', [('cumsum', ['0_c0'])])])                                                                                                                                                                                     |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('cumsum', ['0_c0', '0_c1'])]                                         | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                         |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('cumsum', ['0_c0', '0_c1', '0_c2'])]                                 | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                                                 |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3'])]                         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])                 |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4'])]                 | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])])         |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])]         | [('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])] | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5']), ('rank', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5'])])]) |
+|  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])] | [('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])]                         | ('lambda x, y: x / y', [('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6']), ('rank', [('cumsum', ['0_c0', '0_c1']), ('cumsum', ['0_c0', '0_c1', '0_c2']), ('cumsum', ['0_c0', '0_c1', '0_c2', '0_c3', '0_c4', '0_c5', '0_c6'])])])                 |
++----+----------+----------+----------+------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+number of programs: 1
 
 
 

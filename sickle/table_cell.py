@@ -88,13 +88,13 @@ def semantically_equiv(exp1, exp2):
     # check for containment
     # exp2 is our target expression and exp1 is the output expression
     # looser check if the target cell contain some unknown parts
-    if exp1 == HOLE:
-        return True
-    elif isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
+    # if exp1 == HOLE:
+    #     return True
+    if isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
             return False
-        if HOLE in exp1.children:
-            return True
+        # if HOLE in exp1.children:
+        #    return True
         # if exp2.children is []:
         #     return True
         used = []
@@ -126,11 +126,12 @@ def semantically_equiv(exp1, exp2):
     elif isinstance(exp1, ExpNode) and isinstance(exp2, list):
         return semantically_equiv([exp1], exp2)
     else:
-        # we cannot do straight comparison if one of them is coord and the other is expnode
         # print([exp1,exp2])
         # if isinstance(exp1, ExpNode) and isinstance(exp2,ArgOr):
         #    print(f"exp1: {exp1}     exp2: {exp2}")
         #    print(exp1 == exp2)
+        if exp1 == HOLE or exp2 == HOLE:
+            return True
         return exp1 == exp2
 
 
@@ -207,10 +208,11 @@ class ExpNode(object):
         # if with_operator == 0:
         #     new_op = HOLE
         for e in self.children:
-            partial_trace = random.randrange(2)
-            if isinstance(e, ExpNode):
+            p_miss_cell = random.randrange(2)
+            p_miss_arg = random.randrange(2)
+            if isinstance(e, ExpNode) and p_miss_arg == 0:  # 1/2
                 new_exp += [e.randomize()]
-            elif partial_trace == 0:
+            if not isinstance(e, ExpNode) and p_miss_cell == 0:  # 1/2
                 new_exp += [e]
 
         return ExpNode(new_op, new_exp)

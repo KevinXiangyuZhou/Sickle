@@ -1,31 +1,33 @@
 ------evaluate 013.json on config_4-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max'], 'mutate_func': ['mean', 'sum', 'max', 'count', 'cumsum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': False, 'partial_table': True, 'partial_trace': True, 'level_limit': 4, 'time_limit': 300, 'solution_limit': 1}
-=======output candidates 65==========
-      COL_0     COL_1     COL_2                 COL_3     COL_4     COL_5
-0  ['0_a0']  ['0_d0']  ['0_e0']  ('cumsum', ['0_e0'])  ['0_c0']  ['0_b0']
-1  ['0_a1']  ['0_d1']  ['0_e1']  ('cumsum', ['0_e1'])  ['0_c1']  ['0_b1']
-2  ['0_a2']  ['0_d2']  ['0_e2']  ('cumsum', ['0_e2'])  ['0_c2']  ['0_b2']
-3  ['0_a3']  ['0_d3']  ['0_e3']  ('cumsum', ['0_e3'])  ['0_c3']  ['0_b3']
-4  ['0_a4']  ['0_d4']  ['0_e4']  ('cumsum', ['0_e4'])  ['0_c4']  ['0_b4']
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
+=======output candidates 71==========
+      COL_0     COL_1                 COL_2     COL_3     COL_4     COL_5
+0  ['0_a0']  ['0_d0']  ('cumsum', ['0_e0'])  ['0_e0']  ['0_c0']  ['0_b0']
+1  ['0_a1']  ['0_d1']  ('cumsum', ['0_e1'])  ['0_e1']  ['0_c1']  ['0_b1']
+2  ['0_a2']  ['0_d2']  ('cumsum', ['0_e2'])  ['0_e2']  ['0_c2']  ['0_b2']
+3  ['0_a3']  ['0_d3']  ('cumsum', ['0_e3'])  ['0_e3']  ['0_c3']  ['0_b3']
+4  ['0_a4']  ['0_d4']  ('cumsum', ['0_e4'])  ['0_e4']  ['0_c4']  ['0_b4']
 ===============================
 =======with partial table==========
-                  COL_0     COL_1     COL_2
-0  ('cumsum', ['0_e2'])  ['0_c2']  ['0_b2']
-1  ('cumsum', ['0_e3'])  ['0_c3']  ['0_b3']
-2  ('cumsum', ['0_e4'])  ['0_c4']  ['0_b4']
+      COL_0                 COL_1
+0  ['0_d0']  ('cumsum', ['0_e0'])
+1  ['0_d1']  ('cumsum', ['0_e1'])
 =======with randomized trace==========
-                  COL_0     COL_1     COL_2
-0  ('cumsum', ['0_e2'])  ['0_c2']  ['0_b2']
-1  ('cumsum', ['0_e3'])  ['0_c3']  ['0_b3']
-2  ('cumsum', ['0_e4'])  ['0_c4']  ['0_b4']
+      COL_0           COL_1
+0  ['0_d0']  ('cumsum', [])
+1  ['0_d1']  ('cumsum', [])
 t0 <- table_ref(0)   (program searched: 0)
 t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 222)
+t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 275)
 ----
-number of programs searched: 427
-time cost: 1.353492021560669
+number of programs searched: 555
+time cost: 1.546478271484375
 number of solutions: 1
 =======target output==========
+      COL_0           COL_1
+0  ['0_d0']  ('cumsum', [])
+1  ['0_d1']  ('cumsum', [])
+=======correct output==========
       COL_0     COL_1     COL_2     COL_3     COL_4                 COL_5
 0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  ('cumsum', ['0_e0'])
 1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  ('cumsum', ['0_e1'])
