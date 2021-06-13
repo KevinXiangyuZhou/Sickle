@@ -196,6 +196,7 @@ if __name__ == '__main__':
                 permutation_candidates = permutate_table(correct_out)
                 # run on all configs
                 user_example = copy.copy(correct_out)
+                # TODO: config for each bencmark example
                 for i in range(len(target_configs)):
                     curr_config = target_configs[i]
                     logger = setup_logger(f"{fname}_{i}", f'../eval/{fname[:3]}_config({i}).log')

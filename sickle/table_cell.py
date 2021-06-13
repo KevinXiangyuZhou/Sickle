@@ -88,13 +88,13 @@ def semantically_equiv(exp1, exp2):
     # check for containment
     # exp2 is our target expression and exp1 is the output expression
     # looser check if the target cell contain some unknown parts
-    # if exp1 == HOLE:
-    #     return True
+    if exp1 == HOLE:
+        return True
     if isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
             return False
-        # if HOLE in exp1.children:
-        #    return True
+        if HOLE == exp1.children:
+            return True
         # if exp2.children is []:
         #     return True
         used = []
@@ -140,6 +140,12 @@ class ExpNode(object):
         self.op = op
         self.children = children  # children can be a list of ExpNode and CellCoordinates
 
+    def __hash__(self):
+        return hash(str(self.to_dict()))
+
+    def __repr__(self):
+        return str((self.op, self.children))
+
     def __eq__(self, other):
         def exact_equiv(exp1, exp2):
             if isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
@@ -168,9 +174,6 @@ class ExpNode(object):
 
     def get_children(self):
         return copy.copy(self.children)
-
-    def __repr__(self):
-        return str((self.op, self.children))
 
     def to_flat_list(self):
         # decompose to get a list of coordinates
@@ -258,10 +261,7 @@ class ArgOr:
         self.arguments = arguments  # a list of (note, coordinate_x, coordinate_y)
 
     def __hash__(self):
-        total_hash = 0
-        for e in self.arguments:
-            total_hash += hash(e)
-        return total_hash
+        return hash(str(self.arguments))
 
     def __eq__(self, other):
         if not isinstance(other, ArgOr):

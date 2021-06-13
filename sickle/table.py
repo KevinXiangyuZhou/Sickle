@@ -28,6 +28,17 @@ class AnnotatedTable:
         else:
             self.load_from_source(source)
 
+    def equals(self, other):
+        if self.get_col_num() != other.get_col_num():
+            return False
+        if self.get_row_num() != other.get_row_num():
+            return False
+        for cid in range(self.get_col_num()):
+            for rid in range(self.get_row_num()):
+                if self.get_cell(cid, rid).get_value() != other.get_cell(cid, rid).get_value():
+                    return False
+        return True
+
     # load from two-level array of cells
     def load_from_source(self, source):
         self.df = source.copy()

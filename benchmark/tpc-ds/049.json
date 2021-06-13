@@ -46,18 +46,8 @@
     {"0": 0},
     {"op": "join", "0": "[table: (0, 1); on (4, 1)]", "1": false},
     {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
-    {"op": "mutate_arithmetic", "0": "lambda x, y: x * y", "1": [x, x]},
-    {"op": "group_sum", "0": [0], "1": "sum", "2": [5]},
-    {"op": "group_mutate", "0": [3], "1": "max", "2": x}
+    {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
+    {"op": "group_sum", "0": [0], "1": "rank", "2": x},
+    {"op": "group_mutate", "0": [0], "1": "rank", "2": x}
   ]
 }
-
- (select max(csales) tpcds_cmax
-  from (select c_customer_sk,sum(ss_quantity*ss_sales_price) csales
-        from store_sales
-            ,customer
-            ,date_dim
-        where ss_customer_sk = c_customer_sk
-         and ss_sold_date_sk = d_date_sk
-         and d_year in ([YEAR],[YEAR]+1,[YEAR]+2,[YEAR]+3)
-        group by c_customer_sk)),

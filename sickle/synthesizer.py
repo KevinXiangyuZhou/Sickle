@@ -43,11 +43,15 @@ class Synthesizer(object):
     def __init__(self, config=None):
         if config is None:
             self.config = {
-                "operators": ["select", "filter", "group_sum", "group_mutate", "mutate_arithmetic"],
-                "filer_op": [">", "<", "=="],
-                "constants": [],
-                "aggr_func": ["mean", "sum", "count"],
-                "mutate_op": ["+", "-"]
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["mean", "sum", "count", "max", "min"],
+                "mutate_func": ["mean", "sum", "max", "min", "count", "cumsum", "rank"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x - y",
+                                    "lambda x, y: x + y",
+                                    "lambda x, y: x * y",
+                                    "lambda x, y: x / y"
+                                    ],
             }
         else:
             self.config = config
@@ -63,6 +67,7 @@ class Synthesizer(object):
                           (isinstance(v, str) and ('-' in v or '_' in v or '/' in v))]
         has_sep = (len(sep_in_col_names) > 0) or (len(sep_in_content) > 0)
         """
+        input_size = len(inputs) + 1
         candidates = {}
         for level in range(0, size + 3):
             candidates[level] = []
@@ -75,11 +80,11 @@ class Synthesizer(object):
                     if op not in self.config["operators"]:
                         continue
                     if op == "join":
-                        if level == 1:
+                        if level < input_size:  # enumerate all combinations of inputs
                             # q = abstract_combinators[op]
                             # candidates[level].append(q)
                             # continue
-                            for q0 in candidates[0]:
+                            for q0 in candidates[level - 1]:
                                 for q1 in candidates[0]:
                                     q = abstract_combinators[op](copy.copy(q0), copy.copy(q1))
                                     candidates[level].append(q)
@@ -352,12 +357,14 @@ class Synthesizer(object):
                             if time.time() - start_time > time_limit_sec:
                                 break
                             pp = Node.load_from_dict(partial_p)
+                            # print(pp.program_list())
                             searched.append(pp)
-                            if pp.is_abstract() and with_analysis:
+                            if pp.is_abstract() and not pp.is_fully_abstract() and with_analysis:
+                            # if pp.is_abstract() and with_analysis:
                                 if print_stmts:
                                     print(indent + pp.stmt_string())
                                 infer_start = time.time()
-                                infer_rlt = pp.infer_cell_2(inputs)
+                                infer_rlt = pp.infer_cell_2(inputs, self.config)
                                 if print_time:
                                     print(f"infer cost: {time.time() - infer_start}")
                                 # infer_rlt = pp.infer_cell_2(inputs)
@@ -440,8 +447,10 @@ class Synthesizer(object):
             #    results.append(p)
             if checker_function(curr_out, correct_out, print_result=print_trace, print_time=print_time) is not None:
                 results.append(p)
-            if (solution_limit is not None and len(results) >= solution_limit) \
-                    or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
+            # if (solution_limit is not None and len(results) >= solution_limit) \
+            #         or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
+            if (curr_out.equals(correct_out)) \
+                             or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
                 # stop when enough progs being found
                 return True
             return False

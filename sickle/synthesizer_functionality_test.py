@@ -100,9 +100,9 @@ test_config_010 = {
 test_config_list = {"008": test_config_008,
                     "009": test_config_009}
 
-permutation_test = True  # edit this for permute user outputs
+permutation_test = False  # edit this for permute user outputs
 partial_table = False  # select random region of the table as demonstration
-partial_trace = True  # trace info could be incomplete
+partial_trace = False  # trace info could be incomplete
 level_limit = 5
 time_limit = 900
 solution_limit = 1
@@ -127,7 +127,7 @@ class SynthesizerTest(unittest.TestCase):
 
     # @unittest.skip
     def test_run(self):
-        with open('testbenches/034.json', 'r') as filehandler:
+        with open('testbenches/009.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
@@ -140,6 +140,9 @@ class SynthesizerTest(unittest.TestCase):
                 correct_out = copy.copy(annotated_output)
             else:
                 print("load error")
+            curr_config = test_config
+            if "parameter_config" in data.keys():
+                curr_config = data["parameter_config"]
 
             if permutation_test:
                 columns = [i for i in range(annotated_output.get_col_num())]
@@ -157,7 +160,7 @@ class SynthesizerTest(unittest.TestCase):
                 if random_test:
                     sample_id = random.randrange(len(output_candidates))
                 else:
-                    sample_id = 4
+                    sample_id = 4 if 4 < len(output_candidates) else len(output_candidates) - 1
                 annotated_output = output_candidates[sample_id]
                 print("=======output candidates " + str(sample_id) + "==========")
                 print(annotated_output.to_dataframe())
@@ -180,10 +183,14 @@ class SynthesizerTest(unittest.TestCase):
                 annotated_output = annotated_output.randomize()
                 print("=======with randomized trace==========")
                 print(annotated_output.to_dataframe())
-
+            # only include the first and last column
+            # annotated_output = annotated_output.select_region((annotated_output.get_col_num() - 2, annotated_output.get_col_num()),
+            #                                                   (0, 3))
+            print("=======user sample==========")
+            print(annotated_output.to_dataframe())
             candidates = []
             for i in range(4, level_limit + 1):
-                candidates += Synthesizer(test_config)\
+                candidates += Synthesizer(curr_config)\
                     .enumerative_synthesis(inputs, annotated_output, correct_out, i,
                                            solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False)
                 if len(candidates) > 0:

@@ -7,13 +7,11 @@ from table import *
 from tabulate import tabulate
 from table_cell import *
 from table_cell_structureless import *
-from configuration import config
-import math
 
 
 # two special symbols used in the language
 HOLE = "_?_"
-UNKNOWN = "_UNK_"`
+UNKNOWN = "_UNK_"
 # = 4
 
 # global used dataN storage
@@ -113,6 +111,30 @@ class Node(ABC):
 			return False
 		return contains_hole(self.to_dict())
 
+	def is_fully_abstract(self):
+		"""Check if the subtree is fully abstract (contains only holes)"""
+		def contains_val(node):
+			for i, arg in enumerate(node["children"]):
+				if arg["type"] == "node":
+					if contains_val(arg):
+						return True
+				elif arg["value"] != HOLE:
+					# we find a variable to infer
+					return True
+			return False
+
+		return not contains_val(self.to_dict())
+
+	def program_list(self):
+		def add_op(node, ops):
+			for i, arg in enumerate(node["children"]):
+				if isinstance(arg, (dict,)) and arg["type"] == "node":
+					ops.append(arg["children"][i])
+					add_op(arg, ops)
+		ops = []
+		add_op(self.to_dict(), ops)
+		return ops
+
 	def stmt_string(self):
 		"""generate a string from stmts, for the purpose of pretty printing"""
 		def val_to_str(x):
@@ -176,7 +198,7 @@ class Table(Node):
 	def infer_computation(self, inputs):
 		return self.eval(inputs)
 
-	def infer_cell_2(self, inputs):
+	def infer_cell_2(self, inputs, config):
 		return self.eval(inputs)
 		"""
 		inp = inputs[self.data_id]
@@ -241,7 +263,6 @@ class Join(Node):
 
 
 	def eval(self, inputs):
-		# TODO: notice that the size of predicates could be inconsistent
 		# make a copy of table for argument reference
 		# for convenience of infer_computation
 		# tables = [q.eval(inputs) for q in self.qs]
@@ -369,12 +390,12 @@ class Join(Node):
 			curr += infer_single_cell2(c)
 		return curr
 
-	def infer_cell_2(self, inputs):
+	def infer_cell_2(self, inputs, config):
 		# a cross product of computed intermediate of the two joined programs
 		if self.predicate != HOLE:
 			return self.eval(inputs)
-		table1 = self.q1.infer_cell_2(inputs)
-		table2 = self.q2.infer_cell_2(inputs)
+		table1 = self.q1.infer_cell_2(inputs, config)
+		table2 = self.q2.infer_cell_2(inputs, config)
 
 		# two empty table we will build and merge together
 		empty_table1 = AnnotatedTable([])
@@ -542,7 +563,7 @@ class GroupSummary(Node):
 			table_keys = []
 			col_num = len(schema)
 			col_list_candidates = []
-			for size in range(1, col_num + 1 - 1):
+			for size in range(1, col_num):
 				for gb_keys in itertools.combinations(list(range(col_num)), size):
 					if any([set(banned).issubset(set(gb_keys)) for banned in table_keys]):
 						# current key group is subsumed by a table key, so all fields will be distinct
@@ -564,19 +585,29 @@ class GroupSummary(Node):
 				cols = [i for i in number_fields if i not in self.group_cols]
 			else:
 				cols = number_fields
+			if self.aggr_func != HOLE and not isinstance(self.aggr_func, str):
+				func_list = self.aggr_func
+				cols = itertools.permutations(cols, len(func_list))
+				cols = [list(e) for e in cols]
 			return cols
 		elif arg_id == 2:
-			return config["aggr_func"]
+			valid_cols = [i for i, s in enumerate(schema) if s == "number" and i not in self.group_cols]
+			func_candidates = copy.copy(config["aggr_func"])
+			for size in range(2, len(valid_cols) + 1):
+				func_candidates += itertools.combinations(config["aggr_func"], size)
+			func_candidates = [list(e) if not isinstance(e, str) else e for e in func_candidates]
+			return func_candidates
 		else:
 			assert False, "[Gather] No args to infer domain for id > 1."
 
 	def infer_output_info(self, inputs):
 		input_schema = self.q.infer_output_info(inputs)
 		# aggr_type = input_schema[self.aggr_col] if self.aggr_func != "count" else "number"
-		aggr_type = input_schema[self.aggr_col]
 		# return [s for i, s in enumerate(input_schema) if i in self.group_cols] + [aggr_type]
 		output_schema = [s for i, s in enumerate(input_schema) if i in self.group_cols]
-		if aggr_type == "number":
+		if isinstance(self.aggr_col, list):
+			output_schema += ["number" for col in self.aggr_col if input_schema[col] == "number"]
+		elif input_schema[self.aggr_col] == "number":
 			output_schema += ["number"]
 		return output_schema
 
@@ -587,10 +618,12 @@ class GroupSummary(Node):
 			return table
 		df = table.extract_values()
 		res = df.copy()
-		# print(res)
 		group_keys = [res.columns[idx] for idx in self.group_cols]
-		# print(df.to_dict())
-		target = res.columns[self.aggr_col]
+		# case that aggregate on multiple columns
+		if isinstance(self.aggr_func, str):
+			target = res.columns[self.aggr_col]
+		else:
+			target = self.aggr_col  # not column name
 		res = res.groupby(group_keys)
 
 		# map argument for keys and groups
@@ -600,36 +633,43 @@ class GroupSummary(Node):
 			arguments[gid] = {}
 			for colname in group.columns:
 				val_arg = []
-				key_arg = []
 				# group.to_dict() in {col_name:{rid:}} format
 				for row_index in group.to_dict()[colname]:
 					# (value, cid, rid)
-					if colname == target:
+					if (isinstance(self.aggr_func, str) and colname == target) or \
+							(isinstance(target, list) and get_col_index_by_name(group, colname) in target):  # handle agg_columns
 						val_arg.append((get_col_index_by_name(group, colname),
-										 row_index))
-					elif colname in [group.columns[i] for i in self.group_cols]:
+										row_index))
+					elif colname in [group.columns[i] for i in self.group_cols]:  # handle group columns
 						# check if it is an expnode obj
 						temp_exp = table.get_cell(get_col_index_by_name(group, colname),
 												  row_index).get_exp()
 						if isinstance(temp_exp, ExpNode):
 							temp_exp = [temp_exp]
-						key_arg += temp_exp
+						elif len(temp_exp) == 1 and  isinstance(temp_exp[0], ArgOr):
+							temp_exp = temp_exp[0].to_flat_list()
+						val_arg += temp_exp
 				# map the group argument with the target col
-				arguments[gid][colname] = val_arg
-				if key_arg != []:
-					arguments[gid][colname] += [ArgOr(key_arg)]
+				if colname in [group.columns[i] for i in self.group_cols]:
+					arguments[gid][colname] = [ArgOr(val_arg)]
+				else:
+					arguments[gid][colname] = val_arg
 			gid += 1
-		res = res.agg({target: self.aggr_func})
+
+		if isinstance(self.aggr_func, str):
+			res = res.agg({target: self.aggr_func})
+		else:
+			res = res.agg({df.columns[col_index]: func for func, col_index in zip(self.aggr_func, self.aggr_col)})
+		# for row in arguments:
+		# 	 arguments[row][target] = arguments[row][target]
 		res = res.reset_index()
 		res = round_df(res)
 		# change name of the target col name in arguments
-		res = res.rename(columns={target: f"{self.aggr_func}_{target}"})
-		for row in arguments:
-			arguments[row][self.aggr_func + "_" + target] = arguments[row][target]
+		# res = res.rename(columns={target: f"{self.aggr_func}_{target}"})
 		# print(df)
-		# print(res)
-		return df_to_annotated_table_index_colname(res, self.aggr_func, arguments,
-													table,  target_cols=[self.aggr_func + "_" + target])
+		target_names = [df.columns[i] for i in self.aggr_col] if isinstance(self.aggr_col, list)\
+			else df.columns[self.aggr_col]
+		return df_to_annotated_table_index_colname(res, self.aggr_func, arguments, table, target_cols=target_names)
 
 	def to_dict(self):
 		return {
@@ -705,21 +745,24 @@ class GroupSummary(Node):
 			curr += infer_single_cell(c, n)
 		return curr
 
-	def infer_cell_2(self, inputs):
+	def infer_cell_2(self, inputs, config):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
 
-		table = self.q.infer_cell_2(inputs)
+		table = self.q.infer_cell_2(inputs, config)
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
+		# number of possible aggregated columns
+		agg_allowed = len(config["aggr_func"])
 		if self.group_cols == HOLE:  # we know nothing about parameters
-			for cid in range(colnum + 1):
+			for cid in range(colnum + agg_allowed):
 				temp = []
 				for rid in range(rownum):
-					if cid == colnum:
+					if cid >= colnum:
 						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+						# trace = []
 					else:
 						trace = [(cid, y) for y in range(rownum)]
 					args = []
@@ -729,13 +772,15 @@ class GroupSummary(Node):
 						else:
 							args += [table.get_cell(c[0], c[1]).get_exp()]
 					args = remove_duplicates(args)
-					if cid == colnum:
+
+					if cid >= colnum:
 						func = ArgOr(config["aggr_func"])
 						new_cell = TableCell(HOLE, ExpNode(func, args))
 					else:
 						new_cell = TableCell(HOLE, args)
 					# print(set(args))
 					temp.append(new_cell)
+
 				new_source.append(temp)
 			# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 			return AnnotatedTable(new_source, from_source=True)
@@ -743,17 +788,23 @@ class GroupSummary(Node):
 		df = table.extract_values()
 		group_keys = [df.columns[idx] for idx in self.group_cols]
 		df = df.groupby(group_keys)
-		new_cols = [e for e in self.group_cols] + [colnum]
+		if self.aggr_func == HOLE:
+			agg_allowed = len(config["aggr_func"])
+		elif isinstance(self.aggr_func, list):
+			agg_allowed = len(self.aggr_func)
+		else:
+			agg_allowed = 1
+		new_cols = [e for e in self.group_cols] + [colnum + i for i in range(agg_allowed)]
 		start_row = 0
 		for (key, group) in df:
 			# print(group.to_dict())
 			index_list = group.index.tolist()
-			for cid in range(colnum + 1):  # group_cols + one new col
-				if cid not in self.group_cols and cid != colnum:
+			for cid in range(colnum + agg_allowed):  # group_cols + new col
+				if cid not in self.group_cols and cid < colnum:
 					continue
 				if new_cols.index(cid) >= len(new_source):
 					new_source.append([])
-				if cid == colnum:
+				if cid >= colnum:
 					# the new cell in new column can come from any cell
 					# but it should not be placed in group cols
 					trace = [(x, y) for x in range(colnum) for y in index_list if x not in self.group_cols]
@@ -768,10 +819,13 @@ class GroupSummary(Node):
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
 				args = remove_duplicates(args)
-				if cid == colnum:
-					func = self.aggr_func
+				if cid >= colnum:
 					if self.aggr_func == HOLE:
 						func = ArgOr(config["aggr_func"])
+					elif agg_allowed > 1:
+						func = self.aggr_func[cid - colnum]
+					else:
+						func = self.aggr_func
 					# print(set(args))
 					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
@@ -1000,12 +1054,12 @@ class GroupMutate(Node):
 	# (not quite reasonable)
 	# whether the pruning described above effective (create intermediate table with cell trace)
 
-	def infer_cell_2(self, inputs):
+	def infer_cell_2(self, inputs, config):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.target_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
 
-		table = self.q.infer_cell_2(inputs)
+		table = self.q.infer_cell_2(inputs, config)
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
@@ -1022,7 +1076,7 @@ class GroupMutate(Node):
 				# print(set(args))
 				new_cell = TableCell(HOLE, ExpNode(func, args))
 				new_source.append(new_cell)
-			table.add_column(new_source)
+			table.add_column(new_source)  # add a new column
 			return table
 		df = table.extract_values()
 		if not self.group_cols:
@@ -1131,7 +1185,7 @@ class Mutate_Arithmetic(Node):
 
 		# print(res)
 		return df_to_annotated_table_index_colname(res, self.func, arguments,
-												   table, target_cols=new_colname)
+												   table, target_cols=[new_colname])
 
 	def to_dict(self):
 		return {
@@ -1175,12 +1229,12 @@ class Mutate_Arithmetic(Node):
 			curr += infer_single_cell(c, n)
 		return curr
 
-	def infer_cell_2(self, inputs):
+	def infer_cell_2(self, inputs, config):
 		if self.func != HOLE and self.cols != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
 
-		table = self.q.infer_cell_2(inputs)
+		table = self.q.infer_cell_2(inputs, config)
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
@@ -1209,7 +1263,7 @@ class Mutate_Arithmetic(Node):
 				else:
 					new_cell = TableCell(HOLE, args)
 				new_source[-1].append(new_cell)
-
+		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 		return AnnotatedTable(new_source, from_source=True)
 
 	def infer_colnum(self, inputs):
@@ -1317,8 +1371,11 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 							temp_exp = [temp_exp]
 						cell_arg += temp_exp
 				# there might be duplicate coord representing the same source
-				cell_arg = remove_duplicates(cell_arg)
-				if colName in target_cols:
+				cell_arg = remove_duplicates(cell_arg)  #TODO: change this to make it fast
+				if isinstance(op, list) and colName in target_cols:
+					target_index = target_cols.index(colName)
+					exp = ExpNode(op[target_index], cell_arg)
+				elif colName in target_cols:
 					exp = ExpNode(op, cell_arg)
 				else:
 					exp = cell_arg
@@ -1372,11 +1429,14 @@ def get_alphabet(i):
 	return alphabet_list[i]
 
 def remove_duplicates(x):
+	"""
 	final = []
 	for e in x:
 		if e not in final:
 			final.append(e)
 	return final
+	"""
+	return list(set(x))
 
 
 def dict_to_program(l):

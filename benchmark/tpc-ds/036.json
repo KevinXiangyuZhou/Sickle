@@ -46,7 +46,8 @@
     {"0": 0},
     {"op": "join", "0": "[table: (0, 1); on (4, 1)]", "1": false},
     {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
-    {"op": "group_sum", "0": [0, 1, 2, 3, 4], "1": "sum", "2": [x, x]},
+    {"op": "join", "0": "[table: (1, 2); on (2, 1)]", "1": false},
+    {"op": "group_sum", "0": [], "1": "sum", "2": [x, x]},
     {"op": "group_mutate", "0": [3], "1": "rank", "2": x},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [x, x]}
   ]
