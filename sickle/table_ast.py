@@ -175,6 +175,17 @@ class Table(Node):
 
 	def eval(self, inputs):
 		inp = inputs[self.data_id]
+		source = [[] for i in range(len(inp[0]))]
+		rid = 0
+		for row in inp:
+			for col in row.keys():
+				cid = list(row.keys()).index(col)
+				source[cid].append(TableCell(row[col], [f"{self.data_id}_{get_alphabet(cid)}{rid}"]))
+			rid += 1
+		# print(AnnotatedTable(source, from_source=True).to_dataframe())
+		return AnnotatedTable(source, from_source=True)
+		"""
+		inp = inputs[self.data_id]
 		if isinstance(inp, (list,)):
 			df = pd.DataFrame.from_dict(inp)
 		else:
@@ -182,6 +193,7 @@ class Table(Node):
 		t = df_to_annotated_table_index_colname(df, None,
 												generate_direct_arguments(df, data_id=self.data_id), None)
 		return t
+		"""
 
 	def to_dict(self):
 		return {
@@ -199,7 +211,18 @@ class Table(Node):
 		return self.eval(inputs)
 
 	def infer_cell_2(self, inputs, config):
-		return self.eval(inputs)
+
+		# return self.eval(inputs)
+		inp = inputs[self.data_id]
+		source = [[] for i in range(len(inp[0]))]
+		rid = 0
+		for row in inp:
+			for col in row.keys():
+				cid = list(row.keys()).index(col)
+				source[cid].append(TableCell(row[col], [f"{self.data_id}_{get_alphabet(cid)}{rid}"]))
+			rid += 1
+		# print(AnnotatedTable(source, from_source=True).to_dataframe())
+		return AnnotatedTable(source, from_source=True)
 		"""
 		inp = inputs[self.data_id]
 		if isinstance(inp, (list,)):
@@ -210,13 +233,11 @@ class Table(Node):
 		for col in range(len(df.columns)):
 			res.append([])
 			for row in range(len(df)):
-				if row < N:
-					res[col].append(TableCell(HOLE, HOLE))
-				else:
-					res[col].append(TableCell(HOLE, [f"{self.data_id}_{get_alphabet(col)}{row}"]))
-		print(AnnotatedTable(res, from_source=True).to_dataframe)
+				res[col].append(TableCell(HOLE, [f"{self.data_id}_{get_alphabet(col)}{row}"]))
+		# print(AnnotatedTable(res, from_source=True).to_dataframe)
 		return AnnotatedTable(res, from_source=True)
 		"""
+
 	def infer_cell(self, inputs, target):
 		return [target]
 
@@ -261,6 +282,21 @@ class Join(Node):
 		schema_2 = self.q2.infer_output_info(inputs)
 		return schema_1 + schema_2
 
+	def get_id(self):
+		ids = []
+		if isinstance(self.q1.get_id(), list):
+			ids += self.q1.get_id()
+		else:
+			ids += [self.q1.get_id()]
+		if isinstance(self.q2.get_id(), list):
+			ids += self.q2.get_id()
+		else:
+			ids += [self.q2.get_id()]
+
+		return ids
+
+	def infer_left_colnum(self, inputs):
+		return self.q1.infer_colnum(inputs)
 
 	def eval(self, inputs):
 		# make a copy of table for argument reference
@@ -274,12 +310,19 @@ class Join(Node):
 		# df2 = table2.extract_values()
 		# eval predicate
 		eval_predicate = eval(self.predicate)
-		if self.q1.get_id() != eval_predicate[0][0] or self.q2.get_id() != eval_predicate[0][1]:
-			# return empty table to the next level
-			return AnnotatedTable([], from_source=True)
-		join_keys = eval_predicate[1]
-		if join_keys[0] >= table1.get_col_num() or join_keys[1] >= table2.get_col_num():
-			return AnnotatedTable([], from_source=True)
+		join_keys = list(eval_predicate[1])
+		if isinstance(self.q1.get_id(), list):  # the last level is a join operator
+			if eval_predicate[0][0] not in self.q1.get_id() or self.q2.get_id() != eval_predicate[0][1]:
+				return AnnotatedTable([], from_source=True)
+			join_keys[0] = join_keys[0] + self.q1.infer_left_colnum(inputs)
+			if join_keys[0] >= table1.get_col_num() or join_keys[1] >= table2.get_col_num():
+				return AnnotatedTable([], from_source=True)
+		else:
+			if self.q1.get_id() != eval_predicate[0][0] or self.q2.get_id() != eval_predicate[0][1]:
+				# return empty table to the next level
+				return AnnotatedTable([], from_source=True)
+			if join_keys[0] >= table1.get_col_num() or join_keys[1] >= table2.get_col_num():
+				return AnnotatedTable([], from_source=True)
 
 		# perform join
 		# res = (df1.assign(temp_join_key=1)
@@ -304,10 +347,14 @@ class Join(Node):
 					if cid < table1.get_col_num():
 						arg = table1.get_cell(cid, rid1).get_exp()
 						val = table1.get_cell(cid, rid1).get_value()
+						if not isinstance(arg, list):
+							arg = [arg]
 					else:
 						arg = table2.get_cell(cid - table1.get_col_num(), rid2).get_exp()
 						val = table2.get_cell(cid - table1.get_col_num(), rid2).get_value()
-					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
+						if not isinstance(arg, list):
+							arg = [arg]
+					source[cid].append(TableCell(val, arg))   # not storing predicates
 			if self.is_left_outer and not exist_matches:
 				for cid in range(table1.get_col_num() + table2.get_col_num()):
 					if cid >= len(source):
@@ -315,10 +362,12 @@ class Join(Node):
 					if cid < table1.get_col_num():
 						arg = table1.get_cell(cid, rid1).get_exp()
 						val = table1.get_cell(cid, rid1).get_value()
+						if not isinstance(arg, list):
+							arg = [arg]
 					else:
 						arg = []
 						val = 0.0
-					source[cid].append(TableCell(val, ExpNode(self.predicate, arg)))
+					source[cid].append(TableCell(val, arg))
 		# print(AnnotatedTable(source, from_source=True).to_dataframe())
 		# it is okay to pass empty joined result to the next level
 		return AnnotatedTable(source, from_source=True)
@@ -392,8 +441,10 @@ class Join(Node):
 
 	def infer_cell_2(self, inputs, config):
 		# a cross product of computed intermediate of the two joined programs
-		if self.predicate != HOLE:
+		if self.predicate != HOLE and self.is_left_outer != HOLE:
 			return self.eval(inputs)
+		# return "Pass"
+		# TODO: we need to have a table containing [(Predicate, children)]
 		table1 = self.q1.infer_cell_2(inputs, config)
 		table2 = self.q2.infer_cell_2(inputs, config)
 
@@ -576,8 +627,24 @@ class GroupSummary(Node):
 						table_keys.append(gb_keys)
 						continue
 					col_list_candidates += [gb_keys]
-			# if not col_list_candidates:
-			#	 print("pruned by group keys")
+			"""
+			valid_candidates = []
+			groups_list = []
+			for group_keys in col_list_candidates:
+				keys = [df.columns[idx] for idx in group_keys]
+				# Format: {index: {colname: argument}}
+				# iterate through df, map each cell in resulting table with its argument
+				temp = df.groupby(keys, sort=False)
+				groups = [list(temp.groups[k]) for k in temp.groups]
+				seen = False
+				for found in groups_list:
+					if all(map(lambda x, y: x == y, found, groups)):
+						seen = True
+						break
+				if not seen:
+					groups_list.append(groups)
+					valid_candidates.append(group_keys)
+			"""
 			return col_list_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]
@@ -593,7 +660,10 @@ class GroupSummary(Node):
 		elif arg_id == 2:
 			valid_cols = [i for i, s in enumerate(schema) if s == "number" and i not in self.group_cols]
 			func_candidates = copy.copy(config["aggr_func"])
-			for size in range(2, len(valid_cols) + 1):
+			valid_len = len(valid_cols)
+			if "count" in config["aggr_func"] and len(valid_cols) < len(schema):
+				valid_len += 1
+			for size in range(2, valid_len + 1):
 				func_candidates += itertools.combinations(config["aggr_func"], size)
 			func_candidates = [list(e) if not isinstance(e, str) else e for e in func_candidates]
 			return func_candidates
@@ -604,10 +674,18 @@ class GroupSummary(Node):
 		input_schema = self.q.infer_output_info(inputs)
 		# aggr_type = input_schema[self.aggr_col] if self.aggr_func != "count" else "number"
 		# return [s for i, s in enumerate(input_schema) if i in self.group_cols] + [aggr_type]
+		"""
+		if self.group_cols == HOLE:
+			return input_schema + [s for i, s in enumerate(input_schema) if s == "number"]
+		else:
+			output_schema = [s for i, s in enumerate(input_schema) if i in self.group_cols]
+		if self.aggr_func == HOLE:
+			output_schema += [s for i, s in enumerate(input_schema) if i not in self.group_cols and s == "number"]
+		"""
 		output_schema = [s for i, s in enumerate(input_schema) if i in self.group_cols]
 		if isinstance(self.aggr_col, list):
 			output_schema += ["number" for col in self.aggr_col if input_schema[col] == "number"]
-		elif input_schema[self.aggr_col] == "number":
+		else:
 			output_schema += ["number"]
 		return output_schema
 
@@ -646,13 +724,16 @@ class GroupSummary(Node):
 												  row_index).get_exp()
 						if isinstance(temp_exp, ExpNode):
 							temp_exp = [temp_exp]
-						elif len(temp_exp) == 1 and  isinstance(temp_exp[0], ArgOr):
+						elif len(temp_exp) == 1 and isinstance(temp_exp[0], ArgOr):
 							temp_exp = temp_exp[0].to_flat_list()
+						elif len(temp_exp) == 1 and isinstance(temp_exp[0], list):
+							temp_exp = temp_exp[0]
 						val_arg += temp_exp
 				# map the group argument with the target col
 				if colname in [group.columns[i] for i in self.group_cols]:
 					arguments[gid][colname] = [ArgOr(val_arg)]
 				else:
+					# print(val_arg)
 					arguments[gid][colname] = val_arg
 			gid += 1
 
@@ -685,7 +766,9 @@ class GroupSummary(Node):
 	def infer_colnum(self, inputs):
 		n = self.q.infer_colnum(inputs)
 		if self.group_cols == HOLE:
-			return n + 1
+			return n + 1   # TODO: need to be len(config["aggr_func"])
+		elif self.aggr_func != HOLE:
+			return len(self.group_cols) + len(self.aggr_func) if isinstance(self.aggr_func, list) else 1
 		else:
 			return len(self.group_cols) + 1
 
@@ -749,39 +832,49 @@ class GroupSummary(Node):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
-
+		start_time = time.time()
 		table = self.q.infer_cell_2(inputs, config)
+		if table == "Pass":
+			return "Pass"
+		# print(f"eval last level cost {time.time() - start_time}\n------")
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
 		# number of possible aggregated columns
+		# number_fields = [i for i, s in enumerate(self.q.infer_output_info(inputs)) if s == "number"]
+		# agg_allowed = int(colnum / 2) if colnum > 2 else 1
 		agg_allowed = len(config["aggr_func"])
 		if self.group_cols == HOLE:  # we know nothing about parameters
+			"""
+			new_col_num = colnum + agg_allowed
+			new_row_num = rownum
+			group_trace = [(x, y) for y in range(rownum) for x in range(colnum)]
+			agg_trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+			"""
 			for cid in range(colnum + agg_allowed):
+				# print(f"start time {time.time()}")
 				temp = []
+				if cid >= colnum:
+					trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+				else:
+					trace = [(cid, y) for y in range(rownum)]
+				args = []
+				for c in trace:
+					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+						args += table.get_cell(c[0], c[1]).get_exp()
+					else:
+						args += [table.get_cell(c[0], c[1]).get_exp()]
+				args = remove_duplicates(args)
+				if cid >= colnum:
+					func = ArgOr(config["aggr_func"])
+					new_cell = TableCell(HOLE, ExpNode(func, args))
+				else:
+					new_cell = TableCell(HOLE, args)
 				for rid in range(rownum):
-					if cid >= colnum:
-						trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-						# trace = []
-					else:
-						trace = [(cid, y) for y in range(rownum)]
-					args = []
-					for c in trace:
-						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-							args += table.get_cell(c[0], c[1]).get_exp()
-						else:
-							args += [table.get_cell(c[0], c[1]).get_exp()]
-					args = remove_duplicates(args)
-
-					if cid >= colnum:
-						func = ArgOr(config["aggr_func"])
-						new_cell = TableCell(HOLE, ExpNode(func, args))
-					else:
-						new_cell = TableCell(HOLE, args)
-					# print(set(args))
+					# add the new cells to the table
 					temp.append(new_cell)
-
 				new_source.append(temp)
+				# print(f"end time {time.time()}\n------")
 			# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 			return AnnotatedTable(new_source, from_source=True)
 
@@ -794,7 +887,8 @@ class GroupSummary(Node):
 			agg_allowed = len(self.aggr_func)
 		else:
 			agg_allowed = 1
-		new_cols = [e for e in self.group_cols] + [colnum + i for i in range(agg_allowed)]
+		agg_cols = [colnum + i for i in range(agg_allowed)]
+		new_cols = list(self.group_cols) + agg_cols
 		start_row = 0
 		for (key, group) in df:
 			# print(group.to_dict())
@@ -802,7 +896,7 @@ class GroupSummary(Node):
 			for cid in range(colnum + agg_allowed):  # group_cols + new col
 				if cid not in self.group_cols and cid < colnum:
 					continue
-				if new_cols.index(cid) >= len(new_source):
+				if new_cols.index(cid) >= len(new_source):  # create column at the first group
 					new_source.append([])
 				if cid >= colnum:
 					# the new cell in new column can come from any cell
@@ -818,7 +912,7 @@ class GroupSummary(Node):
 						args += table.get_cell(c[0], c[1]).get_exp()
 					else:
 						args += [table.get_cell(c[0], c[1]).get_exp()]
-				args = remove_duplicates(args)
+				# args = remove_duplicates(args)
 				if cid >= colnum:
 					if self.aggr_func == HOLE:
 						func = ArgOr(config["aggr_func"])
@@ -833,6 +927,7 @@ class GroupSummary(Node):
 				new_source[new_cols.index(cid)].append(new_cell)
 			start_row += len(group)
 		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
+		# print(f"end time {time.time() - start_time}\n------")
 		return AnnotatedTable(new_source, from_source=True)
 
 
@@ -875,16 +970,23 @@ class GroupMutate(Node):
 						table_keys.append(gb_keys)
 						continue
 					col_list_candidates += [gb_keys]
-			group_rlts = []
 			valid_candidates = []
+			groups_list = []
 			for group_keys in col_list_candidates:
 				keys = [df.columns[idx] for idx in group_keys]
 				# Format: {index: {colname: argument}}
 				# iterate through df, map each cell in resulting table with its argument
 				temp = df.groupby(keys, sort=False)
-				if temp not in group_rlts:
+				groups = [list(temp.groups[k]) for k in temp.groups]
+				seen = False
+				for found in groups_list:
+					if all(map(lambda x, y: x == y, found, groups)):
+						seen = True
+						break
+				if not seen:
+					groups_list.append(groups)
 					valid_candidates.append(group_keys)
-			valid_candidates.append([])
+			# valid_candidates.append([])
 			return valid_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]
@@ -906,10 +1008,10 @@ class GroupMutate(Node):
 	def infer_output_info(self, inputs):
 		input_schema = self.q.infer_output_info(inputs)
 		# aggr_type = input_schema[self.aggr_col] if self.aggr_func != "count" else "number"
-		aggr_type = input_schema[self.target_col]
+		# aggr_type = input_schema[self.target_col]
 		output_schema = [s for i, s in enumerate(input_schema)]
-		if aggr_type == "number":
-			output_schema += ["number"]
+		# if aggr_type == "number":
+		output_schema += ["number"]
 		return output_schema
 
 	def eval(self, inputs):
@@ -936,29 +1038,30 @@ class GroupMutate(Node):
 				# key can be a tuple if there are multiple group cols
 				# get the group argument for the target column
 				temp_arg = []
+				# print(target)
+				index_list = group.to_dict()[target]
 				# group.to_dict() in {col_name:{rid:}} format
 				# special trace handler for cumsum
 				if self.aggr_func == "cumsum":
 					# map argument for col cumsum
-					for index in group.to_dict()[target]:
+					for index in index_list:
 						temp_arg.append((self.target_col, index))
 						arguments[index][new_col] = temp_arg.copy()
-					continue
 				elif self.aggr_func == "rank":  # special trace handler for rank
-					for row_index in group.to_dict()[target]:
+					for row_index in index_list:
 						arguments[row_index][new_col] = [(self.target_col, row_index)]
-				# get a list of all coordinate in the same group in target column
-				for row_index in group.to_dict()[target]:
-					temp_arg.append((self.target_col, row_index))
-				# map the group argument with the target col
-				for row_index in group.to_dict()[target]:
-					if row_index not in arguments:
-						arguments[row_index] = {}
-					arguments[row_index][new_col] = temp_arg
+				else:
+					arg = [(self.target_col, rid) for rid in index_list]
+					for row_index in index_list:
+						# arguments[row_index][new_col] = [(cid, rid) for cid in range(len(df.columns)) for rid in index_list]
+						arguments[row_index][new_col] = arg
 			# do aggregation work
 			if self.aggr_func == "rank":
 				res[new_col] = grouped_res[target].rank(method='first')
-			res[new_col] = grouped_res.transform(self.aggr_func)[target]
+			elif self.aggr_func == "rownum":
+				res[new_col] = grouped_res.cumcount() + 1
+			else:
+				res[new_col] = grouped_res.transform(self.aggr_func)[target]
 		else:
 			# if we have not group_key, we simply do a mutate
 			if self.aggr_func == "cumsum":
@@ -973,14 +1076,13 @@ class GroupMutate(Node):
 				for index in arguments:
 					arguments[index][new_col] = arguments[index][target].copy()
 			else:
-				res[new_col] = res.apply(self.aggr_func)[target]
-				# add arguments for the new column
-				temp_arg = []
+				if self.aggr_func == "rownum":
+					res[new_col] = np.arange(len(res))
+				else:
+					res[new_col] = res.apply(self.aggr_func)[target]
+				arg = [(self.target_col, rid) for rid in arguments]
 				for index in arguments:
-					temp_arg += (arguments[index][target].copy())
-				for index in arguments:
-					arguments[index][new_col] = temp_arg.copy()
-
+					arguments[index][new_col] = arg
 		res = round_df(res)
 		# print(df)
 		# print(res)
@@ -1060,21 +1162,23 @@ class GroupMutate(Node):
 			return self.eval(inputs)
 
 		table = self.q.infer_cell_2(inputs, config)
+		if table == "Pass":
+			return "Pass"
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
 		if self.group_cols == HOLE:  # we know nothing about parameters
+			trace = [(x, y) for x in range(colnum) for y in range(rownum)]
+			args = []
+			for c in trace:
+				if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+					args += table.get_cell(c[0], c[1]).get_exp()
+				else:
+					args += [table.get_cell(c[0], c[1]).get_exp()]
+			func = ArgOr(config["mutate_func"])
+			# print(set(args))
+			new_cell = TableCell(HOLE, ExpNode(func, args))
 			for rid in range(rownum):
-				trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-				args = []
-				for c in trace:
-					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-						args += table.get_cell(c[0], c[1]).get_exp()
-					else:
-						args += [table.get_cell(c[0], c[1]).get_exp()]
-				func = ArgOr(config["mutate_func"])
-				# print(set(args))
-				new_cell = TableCell(HOLE, ExpNode(func, args))
 				new_source.append(new_cell)
 			table.add_column(new_source)  # add a new column
 			return table
@@ -1089,38 +1193,32 @@ class GroupMutate(Node):
 		member_gid = {}  # member1 : gid
 		gid = 0
 		for (key, group) in df:
-			group_arg[gid] = [(x, y) for x in range(colnum)
-					for y in group.index.values.tolist() if x not in self.group_cols]
+			group_trace = [(x, y) for x in range(colnum)
+								for y in group.index.values.tolist() if x not in self.group_cols]
+			args = []
+			for c in group_trace:
+				if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+					args += table.get_cell(c[0], c[1]).get_exp()
+				else:
+					args += [table.get_cell(c[0], c[1]).get_exp()]
+			args = remove_duplicates(args)
+			group_arg[gid] = args
 			for m in group.index.values.tolist():
 				member_gid[m] = gid
 			gid += 1
-		for cid in range(colnum + 1):  # include new column
-			new_source.append([])
-			for rid in range(rownum):
-				if cid == colnum:
-					# the new cell in new column can come from any cell
-					# but it should not be placed in group cols
-					trace = group_arg[member_gid[rid]]
-				else:
-					# # this column is group column or other cells can only come from its previous pos
-					trace = [(cid, rid)]
-				args = []
-				for c in trace:
-					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-						args += table.get_cell(c[0], c[1]).get_exp()
-					else:
-						args += [table.get_cell(c[0], c[1]).get_exp()]
-				args = remove_duplicates(args)
-				if cid == colnum:
-					func = self.aggr_func
-					if self.aggr_func == HOLE:
-						func = ArgOr(config["mutate_func"])
-					new_cell = TableCell(HOLE, ExpNode(func, args))
-				else:
-					new_cell = TableCell(HOLE, args)
-				new_source[new_cols.index(cid)].append(new_cell)
+		for rid in range(rownum):
+			# the new cell in new column can come from any cell
+			# but it should not be placed in group cols
+			args = group_arg[member_gid[rid]]
+			func = self.aggr_func
+			if self.aggr_func == HOLE:
+				func = ArgOr(config["mutate_func"])
+			new_cell = TableCell(HOLE, ExpNode(func, args))
+			new_source.append(new_cell)
+		table.add_column(new_source)  # add a new column
+		return table
 		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
-		return AnnotatedTable(new_source, from_source=True)
+		# return AnnotatedTable(new_source, from_source=True)
 
 
 class Mutate_Arithmetic(Node):
@@ -1235,36 +1333,32 @@ class Mutate_Arithmetic(Node):
 			return self.eval(inputs)
 
 		table = self.q.infer_cell_2(inputs, config)
+		if table == "Pass":
+			return "Pass"
 		rownum = table.get_row_num()
 		colnum = table.get_col_num()
 		new_source = []
+		cid = colnum
+		for rid in range(rownum):
+			# the new cell in new column can come from any cell
+			trace = [(x, rid) for x in range(colnum)]
+			args = []
+			for c in trace:
+				if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+					args += table.get_cell(c[0], c[1]).get_exp()
+				else:
+					args += [table.get_cell(c[0], c[1]).get_exp()]
+			# args = remove_duplicates(args)
 
-		for cid in range(colnum + 1):  # include new column
-			new_source.append([])
-			for rid in range(rownum):
-				if cid == colnum:
-					# the new cell in new column can come from any cell
-					trace = [(x, rid) for x in range(colnum)]
-				else:
-					# other cells can only come from its previous pos
-					trace = [(cid, rid)]
-				args = []
-				for c in trace:
-					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-						args += table.get_cell(c[0], c[1]).get_exp()
-					else:
-						args += [table.get_cell(c[0], c[1]).get_exp()]
-				#args = remove_duplicates(args)
-				if cid == colnum:
-					func = self.func
-					if self.func == HOLE:
-						func = ArgOr(config["mutate_function"])
-					new_cell = TableCell(HOLE, ExpNode(func, args))
-				else:
-					new_cell = TableCell(HOLE, args)
-				new_source[-1].append(new_cell)
+			func = self.func
+			if self.func == HOLE:
+				func = ArgOr(config["mutate_function"])
+			new_cell = TableCell(HOLE, ExpNode(func, args))
+			new_source.append(new_cell)
+		table.add_column(new_source)  # add a new column
+		return table
 		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
-		return AnnotatedTable(new_source, from_source=True)
+		# return AnnotatedTable(new_source, from_source=True)
 
 	def infer_colnum(self, inputs):
 		return self.q.infer_colnum(inputs) + 1
@@ -1356,6 +1450,8 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 		cell_list.append([])
 		for index in df.index.tolist():
 			# get full arguments for this level
+			# print(index)
+			# print(arguments)
 			this_arguments = arguments[index][colName]
 			# print(this_arguments)
 			cell_arg = []
@@ -1369,9 +1465,12 @@ def df_to_annotated_table_index_colname(df, op, arguments, table, target_cols=No
 						temp_exp = table.get_cell(arg[0], arg[1]).get_exp()
 						if not isinstance(temp_exp, list):
 							temp_exp = [temp_exp]
+						if isinstance(temp_exp, list):
+							temp_exp = [e[0] if isinstance(e, list) else e for e in temp_exp]
 						cell_arg += temp_exp
 				# there might be duplicate coord representing the same source
-				cell_arg = remove_duplicates(cell_arg)  #TODO: change this to make it fast
+				# print(cell_arg)
+				cell_arg = remove_duplicates(cell_arg)  # TODO: change this to make it fast
 				if isinstance(op, list) and colName in target_cols:
 					target_index = target_cols.index(colName)
 					exp = ExpNode(op[target_index], cell_arg)

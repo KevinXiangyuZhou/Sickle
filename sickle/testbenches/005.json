@@ -14,5 +14,11 @@
   "correct_output": "t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- cumsum(t1, 1)",
   "exp_out": [{"0": 0},
     {"op": "group_sum", "0": [1], "1": "count", "2": 0},
-    {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
+    {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}],
+  "parameter_config": {
+                "aggr_func": ["mean", "count"],
+                "mutate_func": ["sum", "cumsum", "rank"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x / y"]
+            }
 }

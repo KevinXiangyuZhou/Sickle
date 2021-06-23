@@ -1,0 +1,48 @@
+------evaluate 036.json on config_2-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'sum'], 'mutate_func': ['sum'], 'join_predicates': [], 'mutate_function': ['lambda x, y: x * y', 'lambda x, y: np.sqrt(x ** 2 / y)']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+                     COL_0                        COL_1                                                                                            COL_2                                                                                                                                                             COL_3
+0          [ArgOr['0_a0']]          [('sum', ['0_b0'])]                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [ArgOr['0_a1', '0_a2']]  [('sum', ['0_b1', '0_b2'])]  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+2          [ArgOr['0_a3']]          [('sum', ['0_b3'])]                                            [('sum', [('lambda x, y: x * y', ['0_b3', '0_c3'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b3']), ('sum', [('lambda x, y: x * y', ['0_b3', '0_c3'])])])
+3          [ArgOr['0_a4']]          [('sum', ['0_b4'])]                                            [('sum', [('lambda x, y: x * y', ['0_b4', '0_c4'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b4']), ('sum', [('lambda x, y: x * y', ['0_b4', '0_c4'])])])
+4  [ArgOr['0_a5', '0_a6']]  [('sum', ['0_b5', '0_b6'])]  [('sum', [('lambda x, y: x * y', ['0_b6', '0_c6']), ('lambda x, y: x * y', ['0_b5', '0_c5'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b6', '0_c6']), ('lambda x, y: x * y', ['0_b5', '0_c5'])]), ('sum', ['0_b5', '0_b6'])])
+5          [ArgOr['0_a7']]          [('sum', ['0_b7'])]                                            [('sum', [('lambda x, y: x * y', ['0_c7', '0_b7'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b7']), ('sum', [('lambda x, y: x * y', ['0_c7', '0_b7'])])])
+===============================
+=======with partial table==========
+                                                                                             COL_0                                                                                                                                                             COL_1
+0                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+=======with randomized trace==========
+                                                                                             COL_0                                                                                                                                                             COL_1
+0                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+=======permutated output:0==========
+                                                                                             COL_0                                                                                                                                                             COL_1
+0                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+----
+number of programs searched: 3775
+time cost: 120.0144100189209
+number of solutions: 0
+=======target output==========
+                                                                                             COL_0                                                                                                                                                             COL_1
+0                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+=======correct output==========
+                     COL_0                        COL_1                                                                                            COL_2                                                                                                                                                             COL_3
+0          [ArgOr['0_a0']]          [('sum', ['0_b0'])]                                            [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b0', '0_c0'])]), ('sum', ['0_b0'])])
+1  [ArgOr['0_a1', '0_a2']]  [('sum', ['0_b1', '0_b2'])]  [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b2', '0_c2']), ('lambda x, y: x * y', ['0_b1', '0_c1'])]), ('sum', ['0_b1', '0_b2'])])
+2          [ArgOr['0_a3']]          [('sum', ['0_b3'])]                                            [('sum', [('lambda x, y: x * y', ['0_b3', '0_c3'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b3']), ('sum', [('lambda x, y: x * y', ['0_b3', '0_c3'])])])
+3          [ArgOr['0_a4']]          [('sum', ['0_b4'])]                                            [('sum', [('lambda x, y: x * y', ['0_b4', '0_c4'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b4']), ('sum', [('lambda x, y: x * y', ['0_b4', '0_c4'])])])
+4  [ArgOr['0_a5', '0_a6']]  [('sum', ['0_b5', '0_b6'])]  [('sum', [('lambda x, y: x * y', ['0_b6', '0_c6']), ('lambda x, y: x * y', ['0_b5', '0_c5'])])]  ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', [('lambda x, y: x * y', ['0_b6', '0_c6']), ('lambda x, y: x * y', ['0_b5', '0_c5'])]), ('sum', ['0_b5', '0_b6'])])
+5          [ArgOr['0_a7']]          [('sum', ['0_b7'])]                                            [('sum', [('lambda x, y: x * y', ['0_c7', '0_b7'])])]                                                    ('lambda x, y: np.sqrt(x ** 2 / y)', [('sum', ['0_b7']), ('sum', [('lambda x, y: x * y', ['0_c7', '0_b7'])])])
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

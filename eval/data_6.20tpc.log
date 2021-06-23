@@ -1,0 +1,5 @@
+{'id': 7, 'num_program': 2, 'input_size': '502x2', 'user_example_size': '10x5', 'with_pruning_or_not': 1, 'time': 603.4415943622589, 'num_program_visited ': 77, 'timeout': 1}
+{'id': 7, 'num_program': 2, 'input_size': '502x2', 'user_example_size': '2x3', 'with_pruning_or_not': 1, 'time': 602.9284815788269, 'num_program_visited ': 43, 'timeout': 1}
+{'id': 20, 'num_program': 5, 'input_size': '8x2', 'user_example_size': '5x8', 'with_pruning_or_not': 1, 'time': 600.1367034912109, 'num_program_visited ': 934, 'timeout': 1}
+{'id': 20, 'num_program': 5, 'input_size': '8x2', 'user_example_size': '2x4', 'with_pruning_or_not': 1, 'time': 600.1085362434387, 'num_program_visited ': 781, 'timeout': 1}
+

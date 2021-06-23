@@ -1,0 +1,71 @@
+------evaluate 041.json on config_2-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum'], 'mutate_func': ['sum', 'rank'], 'join_predicates': [], 'mutate_function': ['lambda x, y: x / y']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+      COL_0     COL_1                                       COL_2                                                 COL_3
+0  ['0_a0']  ['0_b0']  [('lambda x, y: x / y', ['0_b0', '0_a0'])]  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])
+1  ['0_a1']  ['0_b1']  [('lambda x, y: x / y', ['0_b1', '0_a1'])]  ('rank', [('lambda x, y: x / y', ['0_b1', '0_a1'])])
+2  ['0_a2']  ['0_b2']  [('lambda x, y: x / y', ['0_a2', '0_b2'])]  ('rank', [('lambda x, y: x / y', ['0_a2', '0_b2'])])
+3  ['0_a3']  ['0_b3']  [('lambda x, y: x / y', ['0_a3', '0_b3'])]  ('rank', [('lambda x, y: x / y', ['0_a3', '0_b3'])])
+4  ['0_a4']  ['0_b4']  [('lambda x, y: x / y', ['0_b4', '0_a4'])]  ('rank', [('lambda x, y: x / y', ['0_b4', '0_a4'])])
+5  ['0_a5']  ['0_b5']  [('lambda x, y: x / y', ['0_b5', '0_a5'])]  ('rank', [('lambda x, y: x / y', ['0_b5', '0_a5'])])
+===============================
+=======with partial table==========
+                                        COL_0                                                 COL_1
+0  [('lambda x, y: x / y', ['0_b0', '0_a0'])]  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])
+1  [('lambda x, y: x / y', ['0_b1', '0_a1'])]  ('rank', [('lambda x, y: x / y', ['0_b1', '0_a1'])])
+=======with randomized trace==========
+                                        COL_0                                                 COL_1
+0  [('lambda x, y: x / y', ['0_b0', '0_a0'])]  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])
+1  [('lambda x, y: x / y', ['0_b1', '0_a1'])]          ('rank', [('lambda x, y: x / y', ['0_b1'])])
+=======permutated output:1==========
+                                                  COL_0                                       COL_1
+0  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])  [('lambda x, y: x / y', ['0_b0', '0_a0'])]
+1          ('rank', [('lambda x, y: x / y', ['0_b1'])])  [('lambda x, y: x / y', ['0_b1', '0_a1'])]
+----
+number of programs searched: 73
+time cost: 0.7669775485992432
+number of solutions: 1
+=======target output==========
+                                                  COL_0                                       COL_1
+0  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])  [('lambda x, y: x / y', ['0_b0', '0_a0'])]
+1          ('rank', [('lambda x, y: x / y', ['0_b1'])])  [('lambda x, y: x / y', ['0_b1', '0_a1'])]
+=======correct output==========
+      COL_0     COL_1                                       COL_2                                                 COL_3
+0  ['0_a0']  ['0_b0']  [('lambda x, y: x / y', ['0_b0', '0_a0'])]  ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])])
+1  ['0_a1']  ['0_b1']  [('lambda x, y: x / y', ['0_b1', '0_a1'])]  ('rank', [('lambda x, y: x / y', ['0_b1', '0_a1'])])
+2  ['0_a2']  ['0_b2']  [('lambda x, y: x / y', ['0_a2', '0_b2'])]  ('rank', [('lambda x, y: x / y', ['0_a2', '0_b2'])])
+3  ['0_a3']  ['0_b3']  [('lambda x, y: x / y', ['0_a3', '0_b3'])]  ('rank', [('lambda x, y: x / y', ['0_a3', '0_b3'])])
+4  ['0_a4']  ['0_b4']  [('lambda x, y: x / y', ['0_b4', '0_a4'])]  ('rank', [('lambda x, y: x / y', ['0_b4', '0_a4'])])
+5  ['0_a5']  ['0_b5']  [('lambda x, y: x / y', ['0_b5', '0_a5'])]  ('rank', [('lambda x, y: x / y', ['0_b5', '0_a5'])])
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x / y, (0, 1)); t2 <- group_mutate(t1, [], rank, 2)
++----+-------------+-------------+---------+---------+
+|    |       COL_0 |       COL_1 |   COL_2 |   COL_3 |
+|----+-------------+-------------+---------+---------|
+|  0 | 1.04315e+08 | 3.26529e+06 |   31.95 |       6 |
+|  1 | 9.97878e+07 | 3.26835e+06 |   30.53 |       5 |
+|  2 | 9.68665e+07 | 3.27232e+06 |   29.6  |       4 |
+|  3 | 2.33209e+08 | 7.96552e+06 |   29.28 |       3 |
+|  4 | 9.37787e+07 | 3.275e+06   |   28.63 |       2 |
+|  5 | 1.70052e+08 | 6.06234e+06 |   28.05 |       1 |
++----+-------------+-------------+---------+---------+
++----+----------+----------+--------------------------------------------+------------------------------------------------------+
+|    | COL_0    | COL_1    | COL_2                                      | COL_3                                                |
+|----+----------+----------+--------------------------------------------+------------------------------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | [('lambda x, y: x / y', ['0_b0', '0_a0'])] | ('rank', [('lambda x, y: x / y', ['0_b0', '0_a0'])]) |
+|  1 | ['0_a1'] | ['0_b1'] | [('lambda x, y: x / y', ['0_b1', '0_a1'])] | ('rank', [('lambda x, y: x / y', ['0_b1', '0_a1'])]) |
+|  2 | ['0_a2'] | ['0_b2'] | [('lambda x, y: x / y', ['0_a2', '0_b2'])] | ('rank', [('lambda x, y: x / y', ['0_a2', '0_b2'])]) |
+|  3 | ['0_a3'] | ['0_b3'] | [('lambda x, y: x / y', ['0_a3', '0_b3'])] | ('rank', [('lambda x, y: x / y', ['0_a3', '0_b3'])]) |
+|  4 | ['0_a4'] | ['0_b4'] | [('lambda x, y: x / y', ['0_b4', '0_a4'])] | ('rank', [('lambda x, y: x / y', ['0_b4', '0_a4'])]) |
+|  5 | ['0_a5'] | ['0_b5'] | [('lambda x, y: x / y', ['0_b5', '0_a5'])] | ('rank', [('lambda x, y: x / y', ['0_b5', '0_a5'])]) |
++----+----------+----------+--------------------------------------------+------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

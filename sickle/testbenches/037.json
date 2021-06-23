@@ -10,8 +10,13 @@
    ]],
   "url": "https://stackoverflow.com/questions/52209730/pandas-dataframe-transformation-applying-few-arithmetic-operations-at-once",
   "exp_out": [{"0": 0},
-    {"op": "group_mutate", "0": [0], "1": "mean", "2": 2},
-    {"op": "group_mutate", "0": [0], "1": "count", "2": 2},
-    {"op": "group_mutate", "0": [0], "1": "sum", "2": 3}
-  ]
+    {"op": "group_sum", "0": [0], "1": ["sum", "mean"], "2": [3, 2]}
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["sum", "count", "mean"],
+                "mutate_func": ["sum", "count", "mean"],
+                "join_predicates": [],
+                "mutate_function": []
+            }
 }

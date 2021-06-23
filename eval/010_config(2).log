@@ -1,57 +1,34 @@
 ------evaluate 010.json on config_2-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
-=======output candidates 93==========
-      COL_0     COL_1                               COL_2                             COL_3     COL_4                               COL_5     COL_6
-0  ['0_a0']  ['0_b0']  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  ['0_c0']
-1  ['0_a1']  ['0_b1']  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])  ['0_d1']  [('lambda x: x * 1000', ['0_b1'])]  ['0_c1']
-2  ['0_a2']  ['0_b2']  [('lambda x: x * 1000', ['0_c2'])]  ('lambda x: x * 1000', ['0_d2'])  ['0_d2']  [('lambda x: x * 1000', ['0_b2'])]  ['0_c2']
-3  ['0_a3']  ['0_b3']  [('lambda x: x * 1000', ['0_c3'])]  ('lambda x: x * 1000', ['0_d3'])  ['0_d3']  [('lambda x: x * 1000', ['0_b3'])]  ['0_c3']
-4  ['0_a4']  ['0_b4']  [('lambda x: x * 1000', ['0_c4'])]  ('lambda x: x * 1000', ['0_d4'])  ['0_d4']  [('lambda x: x * 1000', ['0_b4'])]  ['0_c4']
-5  ['0_a5']  ['0_b5']  [('lambda x: x * 1000', ['0_c5'])]  ('lambda x: x * 1000', ['0_d5'])  ['0_d5']  [('lambda x: x * 1000', ['0_b5'])]  ['0_c5']
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'aggr_func': [], 'mutate_func': [], 'join_predicates': [], 'mutate_function': ['lambda x: x * 1000']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+      COL_0     COL_1     COL_2     COL_3                               COL_4                               COL_5                             COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  [('lambda x: x * 1000', ['0_b1'])]  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  [('lambda x: x * 1000', ['0_b2'])]  [('lambda x: x * 1000', ['0_c2'])]  ('lambda x: x * 1000', ['0_d2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  [('lambda x: x * 1000', ['0_b3'])]  [('lambda x: x * 1000', ['0_c3'])]  ('lambda x: x * 1000', ['0_d3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  [('lambda x: x * 1000', ['0_b4'])]  [('lambda x: x * 1000', ['0_c4'])]  ('lambda x: x * 1000', ['0_d4'])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  [('lambda x: x * 1000', ['0_b5'])]  [('lambda x: x * 1000', ['0_c5'])]  ('lambda x: x * 1000', ['0_d5'])
 ===============================
+=======with partial table==========
+      COL_0                               COL_1                               COL_2                             COL_3
+0  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
+1  ['0_d1']  [('lambda x: x * 1000', ['0_b1'])]  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])
 =======with randomized trace==========
-      COL_0     COL_1                               COL_2                             COL_3     COL_4                               COL_5     COL_6
-0  ['0_a0']  ['0_b0']        [('lambda x: x * 1000', [])]  ('lambda x: x * 1000', ['0_d0'])  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  ['0_c0']
-1  ['0_a1']  ['0_b1']        [('lambda x: x * 1000', [])]  ('lambda x: x * 1000', ['0_d1'])  ['0_d1']        [('lambda x: x * 1000', [])]  ['0_c1']
-2  ['0_a2']  ['0_b2']  [('lambda x: x * 1000', ['0_c2'])]        ('lambda x: x * 1000', [])  ['0_d2']  [('lambda x: x * 1000', ['0_b2'])]  ['0_c2']
-3  ['0_a3']  ['0_b3']  [('lambda x: x * 1000', ['0_c3'])]        ('lambda x: x * 1000', [])  ['0_d3']        [('lambda x: x * 1000', [])]  ['0_c3']
-4  ['0_a4']  ['0_b4']  [('lambda x: x * 1000', ['0_c4'])]  ('lambda x: x * 1000', ['0_d4'])  ['0_d4']  [('lambda x: x * 1000', ['0_b4'])]  ['0_c4']
-5  ['0_a5']  ['0_b5']  [('lambda x: x * 1000', ['0_c5'])]        ('lambda x: x * 1000', [])  ['0_d5']        [('lambda x: x * 1000', [])]  ['0_c5']
-t0 <- table_ref(0)   (program searched: 0)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 51)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 130)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 150)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 150)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 719)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 870)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 1632)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 1632)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 3755)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 6252)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 7400)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 7400)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 10432)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- mutate_arithmetic(t2, ?, ?)   (program searched: 15623)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 18283)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 18283)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 18627)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?); t4 <- group_sum(t3, ?, ?, ?)   (program searched: 18733)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 19165)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 19165)
+      COL_0                               COL_1                               COL_2                             COL_3
+0  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
+1  ['0_d1']  [('lambda x: x * 1000', ['0_b1'])]  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])
+=======permutated output:6==========
+                                COL_0     COL_1                               COL_2                             COL_3
+0  [('lambda x: x * 1000', ['0_b0'])]  ['0_d0']  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
+1  [('lambda x: x * 1000', ['0_b1'])]  ['0_d1']  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])
 ----
-number of programs searched: 38424
-time cost: 360.01942324638367
-number of solutions: 0
+number of programs searched: 135
+time cost: 1.46909761428833
+number of solutions: 1
 =======target output==========
-      COL_0     COL_1                               COL_2                             COL_3     COL_4                               COL_5     COL_6
-0  ['0_a0']  ['0_b0']        [('lambda x: x * 1000', [])]  ('lambda x: x * 1000', ['0_d0'])  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  ['0_c0']
-1  ['0_a1']  ['0_b1']        [('lambda x: x * 1000', [])]  ('lambda x: x * 1000', ['0_d1'])  ['0_d1']        [('lambda x: x * 1000', [])]  ['0_c1']
-2  ['0_a2']  ['0_b2']  [('lambda x: x * 1000', ['0_c2'])]        ('lambda x: x * 1000', [])  ['0_d2']  [('lambda x: x * 1000', ['0_b2'])]  ['0_c2']
-3  ['0_a3']  ['0_b3']  [('lambda x: x * 1000', ['0_c3'])]        ('lambda x: x * 1000', [])  ['0_d3']        [('lambda x: x * 1000', [])]  ['0_c3']
-4  ['0_a4']  ['0_b4']  [('lambda x: x * 1000', ['0_c4'])]  ('lambda x: x * 1000', ['0_d4'])  ['0_d4']  [('lambda x: x * 1000', ['0_b4'])]  ['0_c4']
-5  ['0_a5']  ['0_b5']  [('lambda x: x * 1000', ['0_c5'])]        ('lambda x: x * 1000', [])  ['0_d5']        [('lambda x: x * 1000', [])]  ['0_c5']
+                                COL_0     COL_1                               COL_2                             COL_3
+0  [('lambda x: x * 1000', ['0_b0'])]  ['0_d0']  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
+1  [('lambda x: x * 1000', ['0_b1'])]  ['0_d1']  [('lambda x: x * 1000', ['0_c1'])]  ('lambda x: x * 1000', ['0_d1'])
 =======correct output==========
       COL_0     COL_1     COL_2     COL_3                               COL_4                               COL_5                             COL_6
 0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  [('lambda x: x * 1000', ['0_b0'])]  [('lambda x: x * 1000', ['0_c0'])]  ('lambda x: x * 1000', ['0_d0'])
@@ -60,7 +37,30 @@ number of solutions: 0
 3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  [('lambda x: x * 1000', ['0_b3'])]  [('lambda x: x * 1000', ['0_c3'])]  ('lambda x: x * 1000', ['0_d3'])
 4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  [('lambda x: x * 1000', ['0_b4'])]  [('lambda x: x * 1000', ['0_c4'])]  ('lambda x: x * 1000', ['0_d4'])
 5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  [('lambda x: x * 1000', ['0_b5'])]  [('lambda x: x * 1000', ['0_c5'])]  ('lambda x: x * 1000', ['0_d5'])
-number of programs: 0
+t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x: x * 1000, (1,)); t2 <- mutate_arithmetic(t1, lambda x: x * 1000, (2,)); t3 <- mutate_arithmetic(t2, lambda x: x * 1000, (3,))
++----+------------+---------+---------+---------+------------+------------+------------+
+|    | COL_0      |   COL_1 |   COL_2 |   COL_3 |      COL_4 |      COL_5 |      COL_6 |
+|----+------------+---------+---------+---------+------------+------------+------------|
+|  0 | Alabama    | 1296530 | 1317711 | 1118631 | 1296530000 | 1317711000 | 1118631000 |
+|  1 | Alaska     | 1170302 | 1960378 | 1818085 | 1170302000 | 1960378000 | 1818085000 |
+|  2 | Arizona    | 1742027 | 1968140 | 1377583 | 1742027000 | 1968140000 | 1377583000 |
+|  3 | Arkansas   | 1485531 | 1994927 | 1119299 | 1485531000 | 1994927000 | 1119299000 |
+|  4 | California | 1685349 | 1675807 | 1889570 | 1685349000 | 1675807000 | 1889570000 |
+|  5 | Colorado   | 1343824 | 1878473 | 1886149 | 1343824000 | 1878473000 | 1886149000 |
++----+------------+---------+---------+---------+------------+------------+------------+
++----+----------+----------+----------+----------+------------------------------------+------------------------------------+----------------------------------+
+|    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4                              | COL_5                              | COL_6                            |
+|----+----------+----------+----------+----------+------------------------------------+------------------------------------+----------------------------------|
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | [('lambda x: x * 1000', ['0_b0'])] | [('lambda x: x * 1000', ['0_c0'])] | ('lambda x: x * 1000', ['0_d0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | [('lambda x: x * 1000', ['0_b1'])] | [('lambda x: x * 1000', ['0_c1'])] | ('lambda x: x * 1000', ['0_d1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | [('lambda x: x * 1000', ['0_b2'])] | [('lambda x: x * 1000', ['0_c2'])] | ('lambda x: x * 1000', ['0_d2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | [('lambda x: x * 1000', ['0_b3'])] | [('lambda x: x * 1000', ['0_c3'])] | ('lambda x: x * 1000', ['0_d3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | [('lambda x: x * 1000', ['0_b4'])] | [('lambda x: x * 1000', ['0_c4'])] | ('lambda x: x * 1000', ['0_d4']) |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | [('lambda x: x * 1000', ['0_b5'])] | [('lambda x: x * 1000', ['0_c5'])] | ('lambda x: x * 1000', ['0_d5']) |
++----+----------+----------+----------+----------+------------------------------------+------------------------------------+----------------------------------+
+
+
+number of programs: 1
 
 
 

@@ -32,5 +32,12 @@
     {"op": "join", "0": 0, "1": "[(0, 0), (2, 3)]", "2": false},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x - y", "1": [1, 5]},
     {"op": "group_mutate", "0": [], "1": "mean", "2": 8}
-  ]
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["mean"],
+                "mutate_func": ["mean", "min"],
+                "join_predicates": ["[(0, 0), (2, 3)]"],
+                "mutate_function": ["lambda x, y: x - y"]
+            }
 }

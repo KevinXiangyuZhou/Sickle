@@ -22,5 +22,12 @@
     {"op": "join", "0": 1, "1": "[(0, 1), (0, 1)]", "2": true},
     {"op": "group_mutate", "0": [0], "1": "sum", "2": 6},
     {"op": "group_mutate", "0": [0], "1": "count", "2": 6}
-  ]
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["sum", "count"],
+                "mutate_func": ["sum", "count"],
+                "join_predicates": ["[(0, 1), (0, 1)]"],
+                "mutate_function": []
+            }
 }

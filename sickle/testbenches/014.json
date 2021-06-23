@@ -1928,5 +1928,11 @@
     }
   ],
   "exp_out": [{"0": 0},
-      {"op": "group_sum", "0": [1, 5], "1": "sum", "2": 3}]
+      {"op": "group_sum", "0": [1, 5], "1": "sum", "2": 3}],
+  "parameter_config": {
+                "aggr_func": ["sum"],
+                "mutate_func": ["sum", "cumsum"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x + y"]
+            }
 }

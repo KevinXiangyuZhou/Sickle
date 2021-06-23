@@ -532,6 +532,11 @@
     }
   ],
     "exp_out": [{"0": 0},
-      {"op": "mutate_arithmetic", "0": "lambda x: 1", "1": [0]},
-    {"op": "group_mutate", "0": [2], "1": "cumsum", "2": 4}]
+    {"op": "group_mutate", "0": [1], "1": "rownum", "2": 0}],
+  "parameter_config": {
+                "aggr_func": ["sum"],
+                "mutate_func": ["rank", "rownum"],
+                "join_predicates": [],
+                "mutate_function": []
+            }
 }

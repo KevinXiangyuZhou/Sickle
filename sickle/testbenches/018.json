@@ -2626,5 +2626,11 @@
     }
   ],
   "exp_out": [{"0": 0},
-      {"op": "group_sum", "0": [1], "1": "count", "2": 0}]
+      {"op": "group_sum", "0": [1], "1": "count", "2": 0}],
+  "parameter_config": {
+                "aggr_func": ["count"],
+                "mutate_func": ["count"],
+                "join_predicates": [],
+                "mutate_function": []
+            }
 }

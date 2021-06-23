@@ -1,40 +1,50 @@
 ------evaluate 023.json on config_0-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': False, 'random_test': False, 'partial_table': False, 'partial_trace': False, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
-t0 <- table_ref(0)   (program searched: 0)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 37)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 137)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 216)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 236)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 257)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 4515)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 6430)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 9640)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 9991)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 18575)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_mutate(t2, ?, ?, ?)   (program searched: 23526)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 28082)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- mutate_arithmetic(t1, ?, ?)   (program searched: 28268)
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['mean'], 'mutate_func': ['mean', 'cumsum'], 'join_predicates': [], 'mutate_function': ['lambda x, y: x - y']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+      COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])
+===============================
+=======with randomized trace==========
+      COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']          [('mean', ['0_c3', '0_c1', '0_c2'])]          ('lambda x, y: x - y', [('mean', ['0_c3', '0_c1', '0_c2']), '0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])
+=======permutated output:1==========
+      COL_0     COL_1     COL_2     COL_3     COL_4                                                                         COL_5                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']          ('lambda x, y: x - y', [('mean', ['0_c3', '0_c1', '0_c2']), '0_c2'])          [('mean', ['0_c3', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])                  [('mean', ['0_c5', '0_c4'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])                  [('mean', ['0_c5', '0_c4'])]
 ----
-number of programs searched: 28404
-time cost: 316.2885797023773
+number of programs searched: 559
+time cost: 16.231219053268433
 number of solutions: 1
 =======target output==========
-      COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
-0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])
-5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])
+      COL_0     COL_1     COL_2     COL_3     COL_4                                                                         COL_5                                         COL_6
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']          ('lambda x, y: x - y', [('mean', ['0_c3', '0_c1', '0_c2']), '0_c2'])          [('mean', ['0_c3', '0_c1', '0_c2'])]
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3'])  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])                  [('mean', ['0_c5', '0_c4'])]
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])                  [('mean', ['0_c5', '0_c4'])]
 =======correct output==========
       COL_0     COL_1     COL_2     COL_3     COL_4                                         COL_5                                                                         COL_6
-0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]  ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])])
-4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])
-5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c4', '0_c5'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])
+0  ['0_a0']  ['0_b0']  ['0_c0']  ['0_d0']  ['0_e0']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0'])
+1  ['0_a1']  ['0_b1']  ['0_c1']  ['0_d1']  ['0_e1']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  ['0_d2']  ['0_e2']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']  ['0_d3']  ['0_e3']  [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])]  ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  ['0_d4']  ['0_e4']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])
+5  ['0_a5']  ['0_b5']  ['0_c5']  ['0_d5']  ['0_e5']                  [('mean', ['0_c5', '0_c4'])]                  ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])
 t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- mutate_arithmetic(t1, lambda x, y: x - y, (2, 5))
 +----+---------+------------+---------+---------+---------+-------------+-----------+
 |    | COL_0   | COL_1      |   COL_2 |   COL_3 |   COL_4 |       COL_5 |     COL_6 |
@@ -49,12 +59,12 @@ t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), mean, 2); t2 <- mutate_arithmet
 +----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
 |    | COL_0    | COL_1    | COL_2    | COL_3    | COL_4    | COL_5                                        | COL_6                                                                        |
 |----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------|
-|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | ['0_e0'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c0', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
-|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | ['0_e1'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c1', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
-|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | ['0_e2'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c2', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
-|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | ['0_e3'] | [('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])] | ('lambda x, y: x - y', ['0_c3', ('mean', ['0_c0', '0_c1', '0_c2', '0_c3'])]) |
-|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | ['0_e4'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c4', '0_c5'])])                 |
-|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | ['0_e5'] | [('mean', ['0_c4', '0_c5'])]                 | ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c4', '0_c5'])])                 |
+|  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | ['0_d0'] | ['0_e0'] | [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])] | ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c0']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | ['0_d1'] | ['0_e1'] | [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])] | ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | ['0_d2'] | ['0_e2'] | [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])] | ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c2']) |
+|  3 | ['0_a3'] | ['0_b3'] | ['0_c3'] | ['0_d3'] | ['0_e3'] | [('mean', ['0_c3', '0_c0', '0_c1', '0_c2'])] | ('lambda x, y: x - y', [('mean', ['0_c3', '0_c0', '0_c1', '0_c2']), '0_c3']) |
+|  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | ['0_d4'] | ['0_e4'] | [('mean', ['0_c5', '0_c4'])]                 | ('lambda x, y: x - y', ['0_c4', ('mean', ['0_c5', '0_c4'])])                 |
+|  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | ['0_d5'] | ['0_e5'] | [('mean', ['0_c5', '0_c4'])]                 | ('lambda x, y: x - y', ['0_c5', ('mean', ['0_c5', '0_c4'])])                 |
 +----+----------+----------+----------+----------+----------+----------------------------------------------+------------------------------------------------------------------------------+
 
 

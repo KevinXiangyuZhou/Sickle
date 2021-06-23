@@ -15,12 +15,12 @@ from table_ast import (HOLE, Node, Table, Select, Filter, GroupSummary,
 # from eval_main import cheap_check_sw
 
 abstract_combinators = {
+    "join": lambda q1, q2, predicate, is_outer: Join(q1, q2, predicate=predicate, is_left_outer=is_outer),
     "select": lambda q: Select(q, cols=HOLE),
     "filter": lambda q: Filter(q, col_index=HOLE, op=HOLE, const=HOLE),
     "group_sum": lambda q: GroupSummary(q, group_cols=HOLE, aggr_func=HOLE, aggr_col=HOLE),
     "group_mutate": lambda q: GroupMutate(q, group_cols=HOLE, aggr_func=HOLE, target_col=HOLE),
-    "mutate_arithmetic": lambda q: Mutate_Arithmetic(q, cols=HOLE, func=HOLE),
-    "join": lambda q1, q2: Join(q1, q2, predicate=HOLE, is_left_outer=HOLE)
+    "mutate_arithmetic": lambda q: Mutate_Arithmetic(q, cols=HOLE, func=HOLE)
 }
 
 pd.set_option('display.max_colwidth', None)
@@ -67,28 +67,55 @@ class Synthesizer(object):
                           (isinstance(v, str) and ('-' in v or '_' in v or '/' in v))]
         has_sep = (len(sep_in_col_names) > 0) or (len(sep_in_content) > 0)
         """
-        input_size = len(inputs) + 1
+        input_size = len(inputs)
         candidates = {}
+        predicates = self.config["parameter_config"]["join_predicates"]
         for level in range(0, size + 3):
             candidates[level] = []
-        for level in range(0, size + 1):
-            if level == 0:
-                candidates[level] += [Table(data_id=i) for i in range(len(inputs))]
-            else:
-                for op in abstract_combinators:
-                    # ignore operators that are not set
-                    if op not in self.config["operators"]:
-                        continue
-                    if op == "join":
-                        if level < input_size:  # enumerate all combinations of inputs
-                            # q = abstract_combinators[op]
-                            # candidates[level].append(q)
-                            # continue
-                            for q0 in candidates[level - 1]:
-                                for q1 in candidates[0]:
-                                    q = abstract_combinators[op](copy.copy(q0), copy.copy(q1))
-                                    candidates[level].append(q)
-                            """
+
+        if len(predicates) == 0:  # no join needed
+            candidates[0] = [Table(data_id=i) for i in range(len(inputs))]
+        else:
+            if "join_outer" not in self.config["parameter_config"].keys():
+                self.config["parameter_config"]["join_outer"] = [True, False]
+            join_candidates = {}
+            for join_level in range(0, len(predicates)):
+                join_candidates[join_level] = []
+                for is_outer in self.config["parameter_config"]["join_outer"]:
+                    if join_level == 0:
+                        q = abstract_combinators["join"](Table(data_id=0), Table(data_id=1), predicates[0], is_outer)
+                        join_candidates[0].append(q)
+                    else:
+                        for joined in join_candidates[join_level - 1]:
+                            q = abstract_combinators["join"](joined, Table(data_id=1 + join_level), predicates[join_level], is_outer)
+                            join_candidates[join_level].append(q)
+            # for k in join_candidates:
+            candidates[0] += join_candidates[len(predicates) - 1]
+
+        # check the "join" in the first level against user demonstration
+        # only bring the ones that passed the check to the next level
+
+        for level in range(1, size + 1):
+            for op in abstract_combinators:
+                # ignore operators that are not set
+                if op not in self.config["operators"]:
+                    continue
+                if op == "join":
+                    continue
+                """
+                if op == "join":
+                    if level < input_size:  # enumerate all combinations of inputs
+                        # q = abstract_combinators[op]
+                        # candidates[level].append(q)
+                        # continue
+                        for q0 in candidates[level - 1]:
+                            if not isinstance(q0, Join) and not isinstance(q0, Table):
+                                continue
+                            for q1 in candidates[0]:
+                                for predicate in self.config["parameter_config"]["join_predicates"]:
+                                    for outer_join in self.config["parameter_config"]["join_outer"]:
+                                        q = abstract_combinators[op](copy.copy(q0), copy.copy(q1), predicate, outer_join)
+                                        candidates[level].append(q)
                             for q1 in candidates[level - 1]:
                                 for q2 in candidates[0]:
                                     q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))   #TODO
@@ -96,13 +123,12 @@ class Synthesizer(object):
                                 for q2 in candidates[1]:
                                     q = abstract_combinators[op](copy.copy(q1), copy.copy(q2))
                                     candidates[level + 2].append(q)
-                            """
                         else:
                             continue
-                    else:
-                        for q0 in candidates[level - 1]:
-                            q = abstract_combinators[op](copy.copy(q0))
-                            candidates[level].append(q)
+                """
+                for q0 in candidates[level - 1]:
+                    q = abstract_combinators[op](copy.copy(q0))
+                    candidates[level].append(q)
 
         # for level in range(0, size + 1):
         #    candidates[level] = [q for q in candidates[level]]  # if not disable_sketch_limited(q)
@@ -128,7 +154,7 @@ class Synthesizer(object):
     def infer_domain(self, ast, var_path, inputs):
         # infer the set of parameters for nodes
         node = Node.load_from_dict(get_node(ast, var_path[:-1]))
-        return node.infer_domain(arg_id=var_path[-1], inputs=inputs, config=self.config)
+        return node.infer_domain(arg_id=var_path[-1], inputs=inputs, config=self.config["parameter_config"])
 
     def instantiate(self, ast, var_path, inputs):
         """instantiate one hole in the program sketch"""
@@ -241,7 +267,7 @@ class Synthesizer(object):
         log_s = logging.getLogger("summary")
         for level, sketches in all_sketches.items():
             for s in sketches:
-                logger.info(s.stmt_string() + f"   (program searched: {len(searched)})")
+                # logger.info(s.stmt_string() + f"   (program searched: {len(searched)})")
                 # programs = []
                 try:
                     stop = self.iteratively_instantiate(s, inputs, output, flat_out, candidates, searched, start_time,
@@ -335,6 +361,9 @@ class Synthesizer(object):
                     return []
 
                 ast = p.to_dict()
+                if isinstance(p, Join):
+                    return []
+                # join cannot appear on the last level
                 """generate program instantitated from the most recent level
                     i.e., given an abstract program, it will enumerate all possible abstract programs that concretize
                 """
@@ -358,19 +387,19 @@ class Synthesizer(object):
                                 break
                             pp = Node.load_from_dict(partial_p)
                             # print(pp.program_list())
-                            searched.append(pp)
                             if pp.is_abstract() and not pp.is_fully_abstract() and with_analysis:
                             # if pp.is_abstract() and with_analysis:
                                 if print_stmts:
                                     print(indent + pp.stmt_string())
                                 infer_start = time.time()
-                                infer_rlt = pp.infer_cell_2(inputs, self.config)
+                                infer_rlt = pp.infer_cell_2(inputs, self.config["parameter_config"])
                                 if print_time:
                                     print(f"infer cost: {time.time() - infer_start}")
                                 # infer_rlt = pp.infer_cell_2(inputs)
                                 # print(with_analysis)
                                 cheap_check = False
                                 expensive_check = with_analysis
+                                """
                                 # cheap_check
                                 if cheap_check:
                                     # print(indent + "cheap check")
@@ -384,6 +413,7 @@ class Synthesizer(object):
                                             print(flat_rlt.to_dataframe())
                                             print("\n\n")
                                         continue
+                                """
                                 # expensive_check
                                 check_start = time.time()
                                 if expensive_check:
@@ -403,6 +433,7 @@ class Synthesizer(object):
                                             print(f"check cost: {time.time() - check_start}")
                                         if print_trace:
                                             print("***************passed******************************************")
+                                        print("**********")
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
                         if time.time() - start_time > time_limit_sec:
@@ -420,6 +451,8 @@ class Synthesizer(object):
                 return []
         if time_limit_sec is not None and time.time() - start_time > time_limit_sec:
             return True
+        searched.append(p)
+        # print(p.stmt_string())
         if p.is_abstract():
             candidates = instantiate(p, inputs, output, flat_out, indent)
             for _p in candidates:
@@ -431,7 +464,6 @@ class Synthesizer(object):
             return False
         else:
             # handling concrete programs
-            searched.append(p)
             curr_time = time.time()
             if print_stmts:
                 print(indent + p.stmt_string())
@@ -447,11 +479,12 @@ class Synthesizer(object):
             #    results.append(p)
             if checker_function(curr_out, correct_out, print_result=print_trace, print_time=print_time) is not None:
                 results.append(p)
+                print("Passed!")
             # if (solution_limit is not None and len(results) >= solution_limit) \
             #         or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
             if (curr_out.equals(correct_out)) \
                              or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
-                # stop when enough progs being found
+                # stop when we find the program that generate correct output
                 return True
             return False
 

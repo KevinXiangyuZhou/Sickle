@@ -15,5 +15,12 @@
   "exp_out": [{"0": 0},
     {"op": "group_mutate", "0": [0], "1": "sum", "2": 1},
     {"op": "group_mutate", "0": [0], "1": "count", "2": 1}
-  ]
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["sum", "count", "mean"],
+                "mutate_func": ["sum", "count", "cumsum"],
+                "join_predicates": [],
+                "mutate_function": []
+            }
 }

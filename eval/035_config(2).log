@@ -1,57 +1,38 @@
 ------evaluate 035.json on config_2-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
-=======output candidates 61==========
-      COL_0                        COL_1     COL_2                        COL_3     COL_4
-0  ['0_c0']  [('sum', ['0_b0', '0_b2'])]  ['0_a0']  ('count', ['0_b0', '0_b2'])  ['0_b0']
-1  ['0_c1']          [('sum', ['0_b1'])]  ['0_a1']          ('count', ['0_b1'])  ['0_b1']
-2  ['0_c2']  [('sum', ['0_b0', '0_b2'])]  ['0_a2']  ('count', ['0_b0', '0_b2'])  ['0_b2']
-3  ['0_c3']          [('sum', ['0_b3'])]  ['0_a3']          ('count', ['0_b3'])  ['0_b3']
-4  ['0_c4']  [('sum', ['0_b4', '0_b6'])]  ['0_a4']  ('count', ['0_b4', '0_b6'])  ['0_b4']
-5  ['0_c5']          [('sum', ['0_b5'])]  ['0_a5']          ('count', ['0_b5'])  ['0_b5']
-6  ['0_c6']  [('sum', ['0_b4', '0_b6'])]  ['0_a6']  ('count', ['0_b4', '0_b6'])  ['0_b6']
-7  ['0_c7']  [('sum', ['0_b7', '0_b8'])]  ['0_a7']  ('count', ['0_b7', '0_b8'])  ['0_b7']
-8  ['0_c8']  [('sum', ['0_b7', '0_b8'])]  ['0_a8']  ('count', ['0_b7', '0_b8'])  ['0_b8']
-9  ['0_c9']          [('sum', ['0_b9'])]  ['0_a9']          ('count', ['0_b9'])  ['0_b9']
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'count', 'mean'], 'mutate_func': ['sum', 'count', 'cumsum'], 'join_predicates': [], 'mutate_function': []}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+      COL_0     COL_1     COL_2                        COL_3                        COL_4
+0  ['0_a0']  ['0_b0']  ['0_c0']  [('sum', ['0_b0', '0_b2'])]  ('count', ['0_b0', '0_b2'])
+1  ['0_a1']  ['0_b1']  ['0_c1']          [('sum', ['0_b1'])]          ('count', ['0_b1'])
+2  ['0_a2']  ['0_b2']  ['0_c2']  [('sum', ['0_b0', '0_b2'])]  ('count', ['0_b0', '0_b2'])
+3  ['0_a3']  ['0_b3']  ['0_c3']          [('sum', ['0_b3'])]          ('count', ['0_b3'])
+4  ['0_a4']  ['0_b4']  ['0_c4']  [('sum', ['0_b4', '0_b6'])]  ('count', ['0_b4', '0_b6'])
+5  ['0_a5']  ['0_b5']  ['0_c5']          [('sum', ['0_b5'])]          ('count', ['0_b5'])
+6  ['0_a6']  ['0_b6']  ['0_c6']  [('sum', ['0_b4', '0_b6'])]  ('count', ['0_b4', '0_b6'])
+7  ['0_a7']  ['0_b7']  ['0_c7']  [('sum', ['0_b8', '0_b7'])]  ('count', ['0_b8', '0_b7'])
+8  ['0_a8']  ['0_b8']  ['0_c8']  [('sum', ['0_b8', '0_b7'])]  ('count', ['0_b8', '0_b7'])
+9  ['0_a9']  ['0_b9']  ['0_c9']          [('sum', ['0_b9'])]          ('count', ['0_b9'])
 ===============================
+=======with partial table==========
+      COL_0                        COL_1                        COL_2
+0  ['0_c0']  [('sum', ['0_b0', '0_b2'])]  ('count', ['0_b0', '0_b2'])
+1  ['0_c1']          [('sum', ['0_b1'])]          ('count', ['0_b1'])
 =======with randomized trace==========
-      COL_0                        COL_1     COL_2                COL_3     COL_4
-0  ['0_c0']                [('sum', [])]  ['0_a0']  ('count', ['0_b2'])  ['0_b0']
-1  ['0_c1']          [('sum', ['0_b1'])]  ['0_a1']        ('count', [])  ['0_b1']
-2  ['0_c2']          [('sum', ['0_b2'])]  ['0_a2']  ('count', ['0_b0'])  ['0_b2']
-3  ['0_c3']          [('sum', ['0_b3'])]  ['0_a3']  ('count', ['0_b3'])  ['0_b3']
-4  ['0_c4']                [('sum', [])]  ['0_a4']  ('count', ['0_b4'])  ['0_b4']
-5  ['0_c5']                [('sum', [])]  ['0_a5']  ('count', ['0_b5'])  ['0_b5']
-6  ['0_c6']  [('sum', ['0_b4', '0_b6'])]  ['0_a6']  ('count', ['0_b6'])  ['0_b6']
-7  ['0_c7']  [('sum', ['0_b7', '0_b8'])]  ['0_a7']  ('count', ['0_b7'])  ['0_b7']
-8  ['0_c8']  [('sum', ['0_b7', '0_b8'])]  ['0_a8']  ('count', ['0_b8'])  ['0_b8']
-9  ['0_c9']          [('sum', ['0_b9'])]  ['0_a9']        ('count', [])  ['0_b9']
-t0 <- table_ref(0)   (program searched: 0)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 67)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 179)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 190)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 210)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 437)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 6487)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 6944)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 6956)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 7575)
+      COL_0                        COL_1                        COL_2
+0  ['0_c0']  [('sum', ['0_b0', '0_b2'])]  ('count', ['0_b0', '0_b2'])
+1  ['0_c1']          [('sum', ['0_b1'])]          ('count', ['0_b1'])
+=======permutated output:5==========
+                         COL_0                        COL_1     COL_2
+0  ('count', ['0_b0', '0_b2'])  [('sum', ['0_b0', '0_b2'])]  ['0_c0']
+1          ('count', ['0_b1'])          [('sum', ['0_b1'])]  ['0_c1']
 ----
-number of programs searched: 8244
-time cost: 66.78282022476196
+number of programs searched: 798
+time cost: 18.999197244644165
 number of solutions: 1
 =======target output==========
-      COL_0                        COL_1     COL_2                COL_3     COL_4
-0  ['0_c0']                [('sum', [])]  ['0_a0']  ('count', ['0_b2'])  ['0_b0']
-1  ['0_c1']          [('sum', ['0_b1'])]  ['0_a1']        ('count', [])  ['0_b1']
-2  ['0_c2']          [('sum', ['0_b2'])]  ['0_a2']  ('count', ['0_b0'])  ['0_b2']
-3  ['0_c3']          [('sum', ['0_b3'])]  ['0_a3']  ('count', ['0_b3'])  ['0_b3']
-4  ['0_c4']                [('sum', [])]  ['0_a4']  ('count', ['0_b4'])  ['0_b4']
-5  ['0_c5']                [('sum', [])]  ['0_a5']  ('count', ['0_b5'])  ['0_b5']
-6  ['0_c6']  [('sum', ['0_b4', '0_b6'])]  ['0_a6']  ('count', ['0_b6'])  ['0_b6']
-7  ['0_c7']  [('sum', ['0_b7', '0_b8'])]  ['0_a7']  ('count', ['0_b7'])  ['0_b7']
-8  ['0_c8']  [('sum', ['0_b7', '0_b8'])]  ['0_a8']  ('count', ['0_b8'])  ['0_b8']
-9  ['0_c9']          [('sum', ['0_b9'])]  ['0_a9']        ('count', [])  ['0_b9']
+                         COL_0                        COL_1     COL_2
+0  ('count', ['0_b0', '0_b2'])  [('sum', ['0_b0', '0_b2'])]  ['0_c0']
+1          ('count', ['0_b1'])          [('sum', ['0_b1'])]  ['0_c1']
 =======correct output==========
       COL_0     COL_1     COL_2                        COL_3                        COL_4
 0  ['0_a0']  ['0_b0']  ['0_c0']  [('sum', ['0_b0', '0_b2'])]  ('count', ['0_b0', '0_b2'])
@@ -61,8 +42,8 @@ number of solutions: 1
 4  ['0_a4']  ['0_b4']  ['0_c4']  [('sum', ['0_b4', '0_b6'])]  ('count', ['0_b4', '0_b6'])
 5  ['0_a5']  ['0_b5']  ['0_c5']          [('sum', ['0_b5'])]          ('count', ['0_b5'])
 6  ['0_a6']  ['0_b6']  ['0_c6']  [('sum', ['0_b4', '0_b6'])]  ('count', ['0_b4', '0_b6'])
-7  ['0_a7']  ['0_b7']  ['0_c7']  [('sum', ['0_b7', '0_b8'])]  ('count', ['0_b7', '0_b8'])
-8  ['0_a8']  ['0_b8']  ['0_c8']  [('sum', ['0_b7', '0_b8'])]  ('count', ['0_b7', '0_b8'])
+7  ['0_a7']  ['0_b7']  ['0_c7']  [('sum', ['0_b8', '0_b7'])]  ('count', ['0_b8', '0_b7'])
+8  ['0_a8']  ['0_b8']  ['0_c8']  [('sum', ['0_b8', '0_b7'])]  ('count', ['0_b8', '0_b7'])
 9  ['0_a9']  ['0_b9']  ['0_c9']          [('sum', ['0_b9'])]          ('count', ['0_b9'])
 t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), sum, 1); t2 <- group_mutate(t1, (0,), count, 1)
 +----+------------+---------+-----------+---------+---------+
@@ -89,8 +70,8 @@ t0 <- table_ref(0); t1 <- group_mutate(t0, (0,), sum, 1); t2 <- group_mutate(t1,
 |  4 | ['0_a4'] | ['0_b4'] | ['0_c4'] | [('sum', ['0_b4', '0_b6'])] | ('count', ['0_b4', '0_b6']) |
 |  5 | ['0_a5'] | ['0_b5'] | ['0_c5'] | [('sum', ['0_b5'])]         | ('count', ['0_b5'])         |
 |  6 | ['0_a6'] | ['0_b6'] | ['0_c6'] | [('sum', ['0_b4', '0_b6'])] | ('count', ['0_b4', '0_b6']) |
-|  7 | ['0_a7'] | ['0_b7'] | ['0_c7'] | [('sum', ['0_b7', '0_b8'])] | ('count', ['0_b7', '0_b8']) |
-|  8 | ['0_a8'] | ['0_b8'] | ['0_c8'] | [('sum', ['0_b7', '0_b8'])] | ('count', ['0_b7', '0_b8']) |
+|  7 | ['0_a7'] | ['0_b7'] | ['0_c7'] | [('sum', ['0_b8', '0_b7'])] | ('count', ['0_b8', '0_b7']) |
+|  8 | ['0_a8'] | ['0_b8'] | ['0_c8'] | [('sum', ['0_b8', '0_b7'])] | ('count', ['0_b8', '0_b7']) |
 |  9 | ['0_a9'] | ['0_b9'] | ['0_c9'] | [('sum', ['0_b9'])]         | ('count', ['0_b9'])         |
 +----+----------+----------+----------+-----------------------------+-----------------------------+
 

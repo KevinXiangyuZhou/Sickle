@@ -14,25 +14,32 @@ HOLE = "_?_"
 
 # small parameter config for tests
 test_config = {
-                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
-                "filer_op": ["=="],
-                "constants": [3000],
-                "aggr_func": ["mean", "sum", "count", "max"],
-                "mutate_func": ["mean", "sum", "max", "cumsum", "count", "rank"],
-                "join_predicates": ["[(0, 1), (0, 0)]",
-                                    "[(0, 1), (1, 0)]",
-                                    "[(0, 0), (2, 3)]",
-                                    "[(0, 1), (0, 1)]"],
-                "mutate_function": ["lambda x, y: x - y",
-                                    "lambda x, y: x + y",
-                                    "lambda x, y: x * y",
-                                    "lambda x, y: x / y",
-                                    "lambda x: x - (x * 0.1)",
-                                    "lambda x, y: y / (x - y)",
-                                    "lambda x: 1",
-                                    "lambda x, y, z: x - y / z",
-                                    "lambda x: x * 1000"]
-            }
+        "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+        "parameter_config": {
+            "filer_op": ["=="],
+            "constants": [3000],
+            "aggr_func": ["mean", "sum", "count", "max", "min"],
+            "mutate_func": ["mean", "sum", "max", "min", "count", "cumsum", "rank"],
+            "join_predicates": ["[(0, 1), (0, 0)]"],
+            "join_outer": [False, True],
+            "mutate_function": ["lambda x, y: x - y",
+                                "lambda x, y: x + y",
+                                "lambda x, y: x * y",
+                                "lambda x, y: x / y",
+                                "lambda x: x - (x * 0.1)",
+                                "lambda x, y: y / (x - y)",
+                                "lambda x: 1",
+                                "lambda x: x * 1000"
+                                ]
+        },
+        "permutation_test": False,
+        "random_test": False,
+        "partial_table": False,
+        "partial_trace": False,
+        "level_limit": 5,
+        "time_limit": 300,
+        "solution_limit": 5
+    }
 
 test_config_10 = {
                 "operators": ["select", "join", "mutate_2"],
@@ -102,11 +109,12 @@ test_config_list = {"008": test_config_008,
 
 permutation_test = False  # edit this for permute user outputs
 partial_table = False  # select random region of the table as demonstration
-partial_trace = False  # trace info could be incomplete
-level_limit = 5
+partial_trace = True  # trace info could be incomplete
+level_limit = 7
 time_limit = 900
 solution_limit = 1
 random_test = False
+input_size_limit = 100
 
 random.seed(7)
 
@@ -127,10 +135,13 @@ class SynthesizerTest(unittest.TestCase):
 
     # @unittest.skip
     def test_run(self):
-        with open('testbenches/009.json', 'r') as filehandler:
+        # with open('../benchmark/tpc-ds/020.json', 'r') as filehandler:
+        with open('testbenches/021.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
+            inputs = [data[-input_size_limit:] for data in inputs]
+            # inputs = [data[input_size_limit] for data in inputs]
             correct_out = None
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
@@ -142,7 +153,7 @@ class SynthesizerTest(unittest.TestCase):
                 print("load error")
             curr_config = test_config
             if "parameter_config" in data.keys():
-                curr_config = data["parameter_config"]
+                curr_config["parameter_config"] = data["parameter_config"]
 
             if permutation_test:
                 columns = [i for i in range(annotated_output.get_col_num())]
@@ -172,10 +183,15 @@ class SynthesizerTest(unittest.TestCase):
                     x_end = random.randrange(annotated_output.get_col_num() / 2, annotated_output.get_col_num())
                     y_end = random.randrange(annotated_output.get_row_num() / 2, annotated_output.get_row_num())
                 else:
+                    x_s, x_e = int(annotated_output.get_col_num() / 2), annotated_output.get_col_num()
+                    y_s, y_e = int(annotated_output.get_row_num() / 2), annotated_output.get_row_num()
+                    x_start = 0
+                    y_start = 0
                     x_end = annotated_output.get_col_num()
-                    x_start = int(annotated_output.get_col_num() / 2)
-                    y_end = annotated_output.get_row_num()
-                    y_start = int(annotated_output.get_row_num() / 2)
+                    if y_e == 2:
+                        y_end = annotated_output.get_row_num()
+                    else:
+                        y_end = 1
                 annotated_output = annotated_output.select_region((x_start, x_end), (y_start, y_end))
 
                 print(annotated_output.to_dataframe())
@@ -184,12 +200,12 @@ class SynthesizerTest(unittest.TestCase):
                 print("=======with randomized trace==========")
                 print(annotated_output.to_dataframe())
             # only include the first and last column
-            # annotated_output = annotated_output.select_region((annotated_output.get_col_num() - 2, annotated_output.get_col_num()),
-            #                                                   (0, 3))
+            annotated_output = annotated_output.select_region((0, annotated_output.get_col_num()),
+                                                              (0, 5))
             print("=======user sample==========")
             print(annotated_output.to_dataframe())
             candidates = []
-            for i in range(4, level_limit + 1):
+            for i in range(6, level_limit):
                 candidates += Synthesizer(curr_config)\
                     .enumerative_synthesis(inputs, annotated_output, correct_out, i,
                                            solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False)
@@ -211,7 +227,7 @@ class SynthesizerTest(unittest.TestCase):
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/034.json', 'r') as filehandler:
+        with open('testbenches/023.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic

@@ -80,23 +80,19 @@ class TableCell(object):
         return TableCell(self.value, rand_exp)
 
 
-
-EXP_OPS = ["sum", "average", "cumsum", "or"]
-
-
 def semantically_equiv(exp1, exp2):
-    # check for containment
     # exp2 is our target expression and exp1 is the output expression
     # looser check if the target cell contain some unknown parts
     if exp1 == HOLE:
         return True
     if isinstance(exp1, ExpNode) and isinstance(exp2, ExpNode):
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
-            return False
+            sum_ops = ["cumsum", "sum", "lambda x, y: x + y"]
+            if not (exp1.op in sum_ops and exp2.op in sum_ops):  # add ambiguity to operators
+                return False
         if HOLE == exp1.children:
             return True
-        # if exp2.children is []:
-        #     return True
+        """
         used = []
         for child2 in exp2.children:
             # search through the children of exp1 and try to find some ExpNode
@@ -110,17 +106,35 @@ def semantically_equiv(exp1, exp2):
             if not exist:
                 return False
         return True
+        """
+        return semantically_equiv(exp1.children, exp2.children)
     elif isinstance(exp1, list) and isinstance(exp2, list):
         used = []
-        for c2 in exp2:
-            exist = False
-            for i in range(len(exp1)):
-                if semantically_equiv(exp1[i], c2) and i not in used:
-                    exist = True
-                    used.append(i)
-            if not exist:
+        if UNKNOWN in exp2:  # we should check for containment
+            for c2 in exp2:
+                if c2 == UNKNOWN:  # skip the indicator
+                    continue
+                exist = False
+                for i in range(len(exp1)):
+                    if semantically_equiv(exp1[i], c2) and i not in used:
+                        exist = True
+                        used.append(i)
+                if not exist:
+                    return False
+            return True
+        else:  # the trace in user example is exact
+            if len(exp1) != len(exp2):
                 return False
-        return True
+            for c2 in exp2:
+                exist = False
+                for i in range(len(exp1)):
+                    if semantically_equiv(exp1[i], c2) and i not in used:
+                        exist = True
+                        used.append(i)
+                if not exist:
+                    return False
+            return len(used) == len(exp1)  # everything in exp1 is been used
+
     elif isinstance(exp1, list) and isinstance(exp2, ExpNode):
         return semantically_equiv(exp1, [exp2])
     elif isinstance(exp1, ExpNode) and isinstance(exp2, list):
@@ -138,7 +152,7 @@ def semantically_equiv(exp1, exp2):
 class ExpNode(object):
     def __init__(self, op, children):
         self.op = op
-        self.children = children  # children can be a list of ExpNode and CellCoordinates
+        self.children = children  # children can be a set of ExpNode or CellCoordinates
 
     def __hash__(self):
         return hash(str(self.to_dict()))
@@ -205,22 +219,24 @@ class ExpNode(object):
         return res
 
     def randomize(self):
-        # with_operator = random.randrange(3)
         new_op = self.op
         new_exp = []
-        # if with_operator == 0:
-        #     new_op = HOLE
+        children_count = 0
         for e in self.children:
-            p_miss_cell = random.randrange(2)
+            p_miss_cell = random.randrange(4)
             p_miss_arg = random.randrange(2)
-            if isinstance(e, ExpNode) and p_miss_arg == 0:  # 1/2
+            # p_miss_operator = random.randrange(4)
+            # if isinstance(e, ExpNode) and p_miss_arg == 0:  # 1/10
+            if isinstance(e, ExpNode):
                 new_exp += [e.randomize()]
-            if not isinstance(e, ExpNode) and p_miss_cell == 0:  # 1/2
+            elif children_count >= 1 and p_miss_cell == 1:  # 1/10
+                if UNKNOWN not in new_exp:
+                    new_exp += [UNKNOWN]
+            else:
                 new_exp += [e]
+                children_count += 1
 
         return ExpNode(new_op, new_exp)
-
-
 
 
 def dict_to_exp(source):

@@ -13,5 +13,12 @@
   "url":"https://pbpython.com/groupby-agg.html",
   "exp_out": [{"0": 0},
     {"op": "group_mutate", "0": [], "1": "sum", "2": 2},
-    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [2, 3]}]
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [2, 3]}],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["sum"],
+                "mutate_func": ["sum", "min"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x / y"]
+            }
 }

@@ -12,5 +12,12 @@
   "exp_out": [{"0": 0},
     {"op": "group_mutate", "0": [0], "1": "mean", "2": 2},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x - y", "1": [2, 5]}
-  ]
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["mean"],
+                "mutate_func": ["mean", "cumsum"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x - y"]
+            }
 }

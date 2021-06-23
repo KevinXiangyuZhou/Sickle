@@ -11,5 +11,12 @@
   "url": "https://www.listendata.com/2016/08/dplyr-tutorial.html",
   "exp_out": [{"0": 0},
     {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [2, 3]}
-  ]
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": [],
+                "mutate_func": [],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x / y"]
+            }
 }

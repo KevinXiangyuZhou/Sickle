@@ -1,0 +1,54 @@
+------evaluate 036.json on config_5-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'sum'], 'mutate_func': ['sum', 'rownum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(1, 2), (1, 0)]'], 'join_outer': [False], 'mutate_function': ['lambda x, y: x / y']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': False, 'level_limit': 6, 'time_limit': 600, 'solution_limit': 1, 'row_limit': 300}
+=======output candidate ==========
+              COL_0             COL_1                 COL_2                 COL_3                                                             COL_4
+0  [ArgOr['0_b18']]  [ArgOr['0_c18']]  [('sum', ['1_c83'])]  [('sum', ['1_d83'])]  ('lambda x, y: x / y', [('sum', ['1_c83']), ('sum', ['1_d83'])])
+1  [ArgOr['0_b91']]  [ArgOr['0_c91']]  [('sum', ['1_c91'])]  [('sum', ['1_d91'])]  ('lambda x, y: x / y', [('sum', ['1_d91']), ('sum', ['1_c91'])])
+2  [ArgOr['0_b97']]  [ArgOr['0_c97']]  [('sum', ['1_c95'])]  [('sum', ['1_d95'])]  ('lambda x, y: x / y', [('sum', ['1_c95']), ('sum', ['1_d95'])])
+3  [ArgOr['0_b95']]  [ArgOr['0_c95']]  [('sum', ['1_c93'])]  [('sum', ['1_d93'])]  ('lambda x, y: x / y', [('sum', ['1_d93']), ('sum', ['1_c93'])])
+4  [ArgOr['0_b93']]  [ArgOr['0_c93']]  [('sum', ['1_c88'])]  [('sum', ['1_d88'])]  ('lambda x, y: x / y', [('sum', ['1_d88']), ('sum', ['1_c88'])])
+5  [ArgOr['0_b99']]  [ArgOr['0_c99']]  [('sum', ['1_c99'])]  [('sum', ['1_d99'])]  ('lambda x, y: x / y', [('sum', ['1_d99']), ('sum', ['1_c99'])])
+6  [ArgOr['0_b88']]  [ArgOr['0_c88']]  [('sum', ['1_c94'])]  [('sum', ['1_d94'])]  ('lambda x, y: x / y', [('sum', ['1_c94']), ('sum', ['1_d94'])])
+7  [ArgOr['0_b98']]  [ArgOr['0_c98']]  [('sum', ['1_c97'])]  [('sum', ['1_d97'])]  ('lambda x, y: x / y', [('sum', ['1_c97']), ('sum', ['1_d97'])])
+===============================
+=======with partial table==========
+                  COL_0                 COL_1                                                             COL_2
+0  [('sum', ['1_c83'])]  [('sum', ['1_d83'])]  ('lambda x, y: x / y', [('sum', ['1_c83']), ('sum', ['1_d83'])])
+1  [('sum', ['1_c91'])]  [('sum', ['1_d91'])]  ('lambda x, y: x / y', [('sum', ['1_d91']), ('sum', ['1_c91'])])
+2  [('sum', ['1_c95'])]  [('sum', ['1_d95'])]  ('lambda x, y: x / y', [('sum', ['1_c95']), ('sum', ['1_d95'])])
+3  [('sum', ['1_c93'])]  [('sum', ['1_d93'])]  ('lambda x, y: x / y', [('sum', ['1_d93']), ('sum', ['1_c93'])])
+=======permutated output:0==========
+                  COL_0                 COL_1                                                             COL_2
+0  [('sum', ['1_c83'])]  [('sum', ['1_d83'])]  ('lambda x, y: x / y', [('sum', ['1_c83']), ('sum', ['1_d83'])])
+1  [('sum', ['1_c91'])]  [('sum', ['1_d91'])]  ('lambda x, y: x / y', [('sum', ['1_d91']), ('sum', ['1_c91'])])
+2  [('sum', ['1_c95'])]  [('sum', ['1_d95'])]  ('lambda x, y: x / y', [('sum', ['1_c95']), ('sum', ['1_d95'])])
+3  [('sum', ['1_c93'])]  [('sum', ['1_d93'])]  ('lambda x, y: x / y', [('sum', ['1_d93']), ('sum', ['1_c93'])])
+----
+number of programs searched: 3376
+time cost: 600.0979659557343
+number of solutions: 0
+=======target output==========
+                  COL_0                 COL_1                                                             COL_2
+0  [('sum', ['1_c83'])]  [('sum', ['1_d83'])]  ('lambda x, y: x / y', [('sum', ['1_c83']), ('sum', ['1_d83'])])
+1  [('sum', ['1_c91'])]  [('sum', ['1_d91'])]  ('lambda x, y: x / y', [('sum', ['1_d91']), ('sum', ['1_c91'])])
+2  [('sum', ['1_c95'])]  [('sum', ['1_d95'])]  ('lambda x, y: x / y', [('sum', ['1_c95']), ('sum', ['1_d95'])])
+3  [('sum', ['1_c93'])]  [('sum', ['1_d93'])]  ('lambda x, y: x / y', [('sum', ['1_d93']), ('sum', ['1_c93'])])
+=======correct output==========
+              COL_0             COL_1                 COL_2                 COL_3                                                             COL_4
+0  [ArgOr['0_b18']]  [ArgOr['0_c18']]  [('sum', ['1_c83'])]  [('sum', ['1_d83'])]  ('lambda x, y: x / y', [('sum', ['1_c83']), ('sum', ['1_d83'])])
+1  [ArgOr['0_b91']]  [ArgOr['0_c91']]  [('sum', ['1_c91'])]  [('sum', ['1_d91'])]  ('lambda x, y: x / y', [('sum', ['1_d91']), ('sum', ['1_c91'])])
+2  [ArgOr['0_b97']]  [ArgOr['0_c97']]  [('sum', ['1_c95'])]  [('sum', ['1_d95'])]  ('lambda x, y: x / y', [('sum', ['1_c95']), ('sum', ['1_d95'])])
+3  [ArgOr['0_b95']]  [ArgOr['0_c95']]  [('sum', ['1_c93'])]  [('sum', ['1_d93'])]  ('lambda x, y: x / y', [('sum', ['1_d93']), ('sum', ['1_c93'])])
+4  [ArgOr['0_b93']]  [ArgOr['0_c93']]  [('sum', ['1_c88'])]  [('sum', ['1_d88'])]  ('lambda x, y: x / y', [('sum', ['1_d88']), ('sum', ['1_c88'])])
+5  [ArgOr['0_b99']]  [ArgOr['0_c99']]  [('sum', ['1_c99'])]  [('sum', ['1_d99'])]  ('lambda x, y: x / y', [('sum', ['1_d99']), ('sum', ['1_c99'])])
+6  [ArgOr['0_b88']]  [ArgOr['0_c88']]  [('sum', ['1_c94'])]  [('sum', ['1_d94'])]  ('lambda x, y: x / y', [('sum', ['1_c94']), ('sum', ['1_d94'])])
+7  [ArgOr['0_b98']]  [ArgOr['0_c98']]  [('sum', ['1_c97'])]  [('sum', ['1_d97'])]  ('lambda x, y: x / y', [('sum', ['1_c97']), ('sum', ['1_d97'])])
+number of programs: 0
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

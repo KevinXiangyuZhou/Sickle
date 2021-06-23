@@ -1,40 +1,36 @@
 ------evaluate 005.json on config_2-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'filer_op': ['=='], 'constants': [3000], 'aggr_func': ['mean', 'sum', 'count', 'max', 'min'], 'mutate_func': ['mean', 'sum', 'max', 'min', 'count', 'cumsum', 'rank'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(0, 1), (1, 0)]', '[(0, 0), (2, 3)]', '[(0, 1), (0, 1)]'], 'mutate_function': ['lambda x, y: x - y', 'lambda x, y: x + y', 'lambda x, y: x * y', 'lambda x, y: x / y', 'lambda x: x - (x * 0.1)', 'lambda x, y: y / (x - y)', 'lambda x: 1'], 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 360, 'solution_limit': 1}
-=======output candidates 3==========
-                                           COL_0                                                                                                                COL_1                                    COL_2
-0  [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])]                                                            ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]
-1          [('count', ['0_a4', '0_a5', '0_a6'])]                       ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6'])])          [ArgOr['0_b4', '0_b5', '0_b6']]
-2                          [('count', ['0_a7'])]  ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6']), ('count', ['0_a7'])])                          [ArgOr['0_b7']]
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'aggr_func': ['mean', 'count'], 'mutate_func': ['sum', 'cumsum', 'rank'], 'join_predicates': [], 'mutate_function': ['lambda x, y: x / y']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+=======output candidate ==========
+                                     COL_0                                          COL_1                                                                                                                COL_2
+0  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]                                                            ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])])
+1          [ArgOr['0_b4', '0_b5', '0_b6']]          [('count', ['0_a4', '0_a6', '0_a5'])]                       ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])
+2                          [ArgOr['0_b7']]                          [('count', ['0_a7'])]  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a7']), ('count', ['0_a4', '0_a6', '0_a5'])])
 ===============================
+=======with partial table==========
+                                           COL_0                                                                                           COL_1
+0  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]                                       ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])])
+1          [('count', ['0_a4', '0_a6', '0_a5'])]  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])
 =======with randomized trace==========
-                           COL_0                                                                                   COL_1                                    COL_2
-0                [('count', [])]                                                                          ('cumsum', [])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]
-1  [('count', ['0_a4', '0_a5'])]  ('cumsum', [('count', ['0_a0', '0_a1', '0_a2']), ('count', ['0_a4', '0_a5', '0_a6'])])          [ArgOr['0_b4', '0_b5', '0_b6']]
-2                [('count', [])]                                               ('cumsum', [('count', ['0_a5', '0_a6'])])                          [ArgOr['0_b7']]
-t0 <- table_ref(0)   (program searched: 0)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?)   (program searched: 1)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?)   (program searched: 17)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?)   (program searched: 61)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?)   (program searched: 72)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 92)
-t0 <- table_ref(0); t1 <- group_mutate(t0, ?, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 103)
-t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, ?, ?); t2 <- group_sum(t1, ?, ?, ?)   (program searched: 833)
-t0 <- table_ref(0); t1 <- table_ref(0); t2 <- join(t0, t1, ?, ?); t3 <- group_sum(t2, ?, ?, ?)   (program searched: 926)
-t0 <- table_ref(0); t1 <- group_sum(t0, ?, ?, ?); t2 <- group_mutate(t1, ?, ?, ?)   (program searched: 938)
+                                           COL_0                                                                                           COL_1
+0  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]                                               ('cumsum', [('count', ['0_a2', '0_a1', '0_a0'])])
+1          [('count', ['0_a4', '0_a6', '0_a5'])]  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])
+=======permutated output:1==========
+                                                                                            COL_0                                          COL_1
+0                                               ('cumsum', [('count', ['0_a2', '0_a1', '0_a0'])])  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]
+1  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])          [('count', ['0_a4', '0_a6', '0_a5'])]
 ----
-number of programs searched: 1014
-time cost: 4.178582668304443
+number of programs searched: 79
+time cost: 0.7928440570831299
 number of solutions: 1
 =======target output==========
-                           COL_0                                                                                   COL_1                                    COL_2
-0                [('count', [])]                                                                          ('cumsum', [])  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]
-1  [('count', ['0_a4', '0_a5'])]  ('cumsum', [('count', ['0_a0', '0_a1', '0_a2']), ('count', ['0_a4', '0_a5', '0_a6'])])          [ArgOr['0_b4', '0_b5', '0_b6']]
-2                [('count', [])]                                               ('cumsum', [('count', ['0_a5', '0_a6'])])                          [ArgOr['0_b7']]
+                                                                                            COL_0                                          COL_1
+0                                               ('cumsum', [('count', ['0_a2', '0_a1', '0_a0'])])  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]
+1  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])          [('count', ['0_a4', '0_a6', '0_a5'])]
 =======correct output==========
                                      COL_0                                          COL_1                                                                                                                COL_2
-0  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]  [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])]                                                            ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])])
-1          [ArgOr['0_b4', '0_b5', '0_b6']]          [('count', ['0_a4', '0_a5', '0_a6'])]                       ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6'])])
-2                          [ArgOr['0_b7']]                          [('count', ['0_a7'])]  ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6']), ('count', ['0_a7'])])
+0  [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']]  [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])]                                                            ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])])
+1          [ArgOr['0_b4', '0_b5', '0_b6']]          [('count', ['0_a4', '0_a6', '0_a5'])]                       ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])
+2                          [ArgOr['0_b7']]                          [('count', ['0_a7'])]  ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a7']), ('count', ['0_a4', '0_a6', '0_a5'])])
 t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- group_mutate(t1, [], cumsum, 1)
 +----+------------+---------+---------+
 |    | COL_0      |   COL_1 |   COL_2 |
@@ -46,9 +42,9 @@ t0 <- table_ref(0); t1 <- group_sum(t0, (1,), count, 0); t2 <- group_mutate(t1, 
 +----+-----------------------------------------+-----------------------------------------------+---------------------------------------------------------------------------------------------------------------------+
 |    | COL_0                                   | COL_1                                         | COL_2                                                                                                               |
 |----+-----------------------------------------+-----------------------------------------------+---------------------------------------------------------------------------------------------------------------------|
-|  0 | [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']] | [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])] | ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3'])])                                                           |
-|  1 | [ArgOr['0_b4', '0_b5', '0_b6']]         | [('count', ['0_a4', '0_a5', '0_a6'])]         | ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6'])])                      |
-|  2 | [ArgOr['0_b7']]                         | [('count', ['0_a7'])]                         | ('cumsum', [('count', ['0_a0', '0_a1', '0_a2', '0_a3']), ('count', ['0_a4', '0_a5', '0_a6']), ('count', ['0_a7'])]) |
+|  0 | [ArgOr['0_b0', '0_b1', '0_b2', '0_b3']] | [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])] | ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0'])])                                                           |
+|  1 | [ArgOr['0_b4', '0_b5', '0_b6']]         | [('count', ['0_a4', '0_a6', '0_a5'])]         | ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a4', '0_a6', '0_a5'])])                      |
+|  2 | [ArgOr['0_b7']]                         | [('count', ['0_a7'])]                         | ('cumsum', [('count', ['0_a2', '0_a1', '0_a3', '0_a0']), ('count', ['0_a7']), ('count', ['0_a4', '0_a6', '0_a5'])]) |
 +----+-----------------------------------------+-----------------------------------------------+---------------------------------------------------------------------------------------------------------------------+
 
 

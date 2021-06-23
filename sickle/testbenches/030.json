@@ -12,7 +12,13 @@
 ]],
   "url": "https://stackoverflow.com/questions/11199653/javascript-sum-and-group-by-of-json-data",
   "exp_out": [{"0": 0},
-    {"op": "group_mutate", "0": [0], "1": "sum", "2": 1},
-    {"op": "group_mutate", "0": [0], "1": "sum", "2": 2}
-  ]
+    {"op": "group_sum", "0": [0], "1": ["sum", "sum"], "2": [1, 2]}
+  ],
+  "parameter_config": {
+                "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
+                "aggr_func": ["sum"],
+                "mutate_func": ["sum", "mean"],
+                "join_predicates": [],
+                "mutate_function": []
+            }
 }
