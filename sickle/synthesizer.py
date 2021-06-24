@@ -389,8 +389,8 @@ class Synthesizer(object):
                             # print(pp.program_list())
                             if pp.is_abstract() and not pp.is_fully_abstract() and with_analysis:
                             # if pp.is_abstract() and with_analysis:
-                                if print_stmts:
-                                    print(indent + pp.stmt_string())
+                                # if print_stmts:
+                                #     print(indent + pp.stmt_string())
                                 infer_start = time.time()
                                 infer_rlt = pp.infer_cell_2(inputs, self.config["parameter_config"])
                                 if print_time:
@@ -433,7 +433,7 @@ class Synthesizer(object):
                                             print(f"check cost: {time.time() - check_start}")
                                         if print_trace:
                                             print("***************passed******************************************")
-                                        print("**********")
+                                        # print(indent + "Analysis Passed")
                             valid_progs += [partial_p]
                         temp_candidates += valid_progs
                         if time.time() - start_time > time_limit_sec:
@@ -479,7 +479,7 @@ class Synthesizer(object):
             #    results.append(p)
             if checker_function(curr_out, correct_out, print_result=print_trace, print_time=print_time) is not None:
                 results.append(p)
-                print("Passed!")
+                print(indent + "checker_function Passed!")
             # if (solution_limit is not None and len(results) >= solution_limit) \
             #         or (time_limit_sec is not None and curr_time - start_time > time_limit_sec):
             if (curr_out.equals(correct_out)) \

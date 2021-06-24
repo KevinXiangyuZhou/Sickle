@@ -843,6 +843,7 @@ class GroupSummary(Node):
 		# number of possible aggregated columns
 		# number_fields = [i for i, s in enumerate(self.q.infer_output_info(inputs)) if s == "number"]
 		# agg_allowed = int(colnum / 2) if colnum > 2 else 1
+		df = table.extract_values()
 		agg_allowed = len(config["aggr_func"])
 		if self.group_cols == HOLE:  # we know nothing about parameters
 			"""
@@ -852,33 +853,53 @@ class GroupSummary(Node):
 			agg_trace = [(x, y) for x in range(colnum) for y in range(rownum)]
 			"""
 			for cid in range(colnum + agg_allowed):
+				col_cells = []
+				if cid < colnum:  # group columns
+					group_key = df.columns[cid]
+					group_df = df.groupby(group_key)
+					for (key, group) in group_df:
+						# print(group.to_dict())
+						index_list = group.index.tolist()
+						trace = [(cid, y) for y in index_list]
+						args = []
+						for c in trace:
+							if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+								args += table.get_cell(c[0], c[1]).get_exp()
+							else:
+								args += [table.get_cell(c[0], c[1]).get_exp()]
+						args = remove_duplicates(args)
+						for rid in index_list:
+							if cid >= colnum:
+								func = ArgOr(config["aggr_func"])
+								new_cell = TableCell(table.get_cell(cid, rid).get_value(), ExpNode(func, args))
+							else:
+								new_cell = TableCell(table.get_cell(cid, rid).get_value(), args)
+							# add the new cells to the table
+							col_cells.append(new_cell)
 				# print(f"start time {time.time()}")
-				temp = []
-				if cid >= colnum:
+				else:
+				# if cid >= colnum:
 					trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-				else:
-					trace = [(cid, y) for y in range(rownum)]
-				args = []
-				for c in trace:
-					if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
-						args += table.get_cell(c[0], c[1]).get_exp()
+					args = []
+					for c in trace:
+						if isinstance(table.get_cell(c[0], c[1]).get_exp(), list):
+							args += table.get_cell(c[0], c[1]).get_exp()
+						else:
+							args += [table.get_cell(c[0], c[1]).get_exp()]
+					args = remove_duplicates(args)
+					if cid >= colnum:
+						func = ArgOr(config["aggr_func"])
+						new_cell = TableCell(HOLE, ExpNode(func, args))
 					else:
-						args += [table.get_cell(c[0], c[1]).get_exp()]
-				args = remove_duplicates(args)
-				if cid >= colnum:
-					func = ArgOr(config["aggr_func"])
-					new_cell = TableCell(HOLE, ExpNode(func, args))
-				else:
-					new_cell = TableCell(HOLE, args)
-				for rid in range(rownum):
-					# add the new cells to the table
-					temp.append(new_cell)
-				new_source.append(temp)
+						new_cell = TableCell(HOLE, args)
+					for rid in range(rownum):
+						# add the new cells to the table
+						col_cells.append(new_cell)
+				new_source.append(col_cells)
 				# print(f"end time {time.time()}\n------")
 			# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
 			return AnnotatedTable(new_source, from_source=True)
 
-		df = table.extract_values()
 		group_keys = [df.columns[idx] for idx in self.group_cols]
 		df = df.groupby(group_keys)
 		if self.aggr_func == HOLE:
@@ -923,7 +944,7 @@ class GroupSummary(Node):
 					# print(set(args))
 					new_cell = TableCell(HOLE, ExpNode(func, args))
 				else:
-					new_cell = TableCell(HOLE, args)
+					new_cell = TableCell(table.get_cell(cid, index_list[0]).get_value(), args)
 				new_source[new_cols.index(cid)].append(new_cell)
 			start_row += len(group)
 		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
@@ -986,7 +1007,7 @@ class GroupMutate(Node):
 				if not seen:
 					groups_list.append(groups)
 					valid_candidates.append(group_keys)
-			# valid_candidates.append([])
+			valid_candidates.append([])
 			return valid_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]

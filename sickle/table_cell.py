@@ -89,6 +89,7 @@ def semantically_equiv(exp1, exp2):
         if exp1.op != HOLE and exp2.op != HOLE and exp1.op != exp2.op:
             sum_ops = ["cumsum", "sum", "lambda x, y: x + y"]
             if not (exp1.op in sum_ops and exp2.op in sum_ops):  # add ambiguity to operators
+                # print(f"failed {exp1.op} vs {exp2.op}!")
                 return False
         if HOLE == exp1.children:
             return True
@@ -107,21 +108,23 @@ def semantically_equiv(exp1, exp2):
                 return False
         return True
         """
-        return semantically_equiv(exp1.children, exp2.children)
+        return semantically_equiv(exp1.get_children(), exp2.get_children())
     elif isinstance(exp1, list) and isinstance(exp2, list):
         used = []
-        if UNKNOWN in exp2:  # we should check for containment
-            for c2 in exp2:
-                if c2 == UNKNOWN:  # skip the indicator
-                    continue
-                exist = False
-                for i in range(len(exp1)):
-                    if semantically_equiv(exp1[i], c2) and i not in used:
-                        exist = True
-                        used.append(i)
-                if not exist:
-                    return False
-            return True
+        # if UNKNOWN in exp2:  # we should check for containment
+        for c2 in exp2:
+            # if c2 == UNKNOWN:  # skip the indicator
+            #     continue
+            exist = False
+            for i in range(len(exp1)):
+                if semantically_equiv(exp1[i], c2) and i not in used:
+                    exist = True
+                    used.append(i)
+                    break
+            if not exist:
+                return False
+        return True
+        """
         else:  # the trace in user example is exact
             if len(exp1) != len(exp2):
                 return False
@@ -133,7 +136,9 @@ def semantically_equiv(exp1, exp2):
                         used.append(i)
                 if not exist:
                     return False
+        
             return len(used) == len(exp1)  # everything in exp1 is been used
+        """
 
     elif isinstance(exp1, list) and isinstance(exp2, ExpNode):
         return semantically_equiv(exp1, [exp2])
@@ -230,8 +235,9 @@ class ExpNode(object):
             if isinstance(e, ExpNode):
                 new_exp += [e.randomize()]
             elif children_count >= 1 and p_miss_cell == 1:  # 1/10
-                if UNKNOWN not in new_exp:
-                    new_exp += [UNKNOWN]
+                # if UNKNOWN not in new_exp:
+                #     new_exp += [UNKNOWN]
+                continue
             else:
                 new_exp += [e]
                 children_count += 1

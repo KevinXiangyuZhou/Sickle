@@ -136,7 +136,7 @@ class SynthesizerTest(unittest.TestCase):
     # @unittest.skip
     def test_run(self):
         # with open('../benchmark/tpc-ds/020.json', 'r') as filehandler:
-        with open('testbenches/021.json', 'r') as filehandler:
+        with open('testbenches/021c.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
@@ -200,8 +200,8 @@ class SynthesizerTest(unittest.TestCase):
                 print("=======with randomized trace==========")
                 print(annotated_output.to_dataframe())
             # only include the first and last column
-            annotated_output = annotated_output.select_region((0, annotated_output.get_col_num()),
-                                                              (0, 5))
+            # annotated_output = annotated_output.select_region((0, annotated_output.get_col_num()),
+            #                                                   (0, 5))
             print("=======user sample==========")
             print(annotated_output.to_dataframe())
             candidates = []
@@ -227,7 +227,7 @@ class SynthesizerTest(unittest.TestCase):
 
     @unittest.skip
     def test_computation(self):
-        with open('testbenches/023.json', 'r') as filehandler:
+        with open('testbenches/021.json', 'r') as filehandler:
             # with open('testbenches/005.json', 'r') as filehandler:
             data = json.load(filehandler)
             # join with arithmetic
@@ -258,6 +258,11 @@ class SynthesizerTest(unittest.TestCase):
                         {"op": "join", "0": 1, "1": "(0, 0)"},
                         {"op": "group_sum", "0": [1], "1": "count", "2": 0},
                         {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}]
+
+            compute_21 = [{"0": 0},
+    {"op": "group_mutate", "0": [0, 3], "1": "cumsum", "2": 1},
+    {"op": "group_mutate", "0": [0], "1": "sum", "2": 1},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [4,5]}]
 
             p = dict_to_program(compute26)  # select computation
             print(p.stmt_string())
