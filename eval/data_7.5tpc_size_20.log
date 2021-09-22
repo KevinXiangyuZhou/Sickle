@@ -1,0 +1,2 @@
+{'id': 101, 'num_program': 2, 'input_size': "['2x20', '5x20']", 'user_example_size': '2x5', 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 3.406613349914551, 'num_program_visited': 440, 'num_consistent': 1, 'size': 20, 'timeout': 0}
+{'id': 101, 'num_program': 2, 'input_size': "['2x20', '5x20']", 'user_example_size': '2x5', 'with_pruning_or_not': 1, 'analysis_type': 'value', 'time': 22.553568601608276, 'num_program_visited': 1340, 'num_consistent': 1, 'size': 20, 'timeout': 0}

@@ -1,0 +1,107 @@
+------evaluate 104.json on config_0-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'sum'], 'mutate_func': ['sum', 'rownum'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(1, 2), (1, 0)]'], 'join_outer': [False], 'mutate_function': ['lambda x, y: x / y']}, 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'value_analysis': False, 'level_limit': 6, 'time_limit': 3600, 'solution_limit': 1, 'row_limit': 20}
+=======output candidate ==========
+                                      COL_0                                      COL_1                                    COL_2                                    COL_3                                                                                       COL_4
+0                  <Books,[ArgOr['0_b17']]>                    <arts,[ArgOr['0_c17']]>          <-6021.67,[('sum', ['1_c18'])]>           <5481.81,[('sum', ['1_d18'])]>                     <-1.1,('lambda x, y: x / y', [('sum', ['1_c18']), ('sum', ['1_d18'])])>
+1                <Children,[ArgOr['0_b1']]>                  <infants,[ArgOr['0_c1']]>             <342.54,[('sum', ['1_c2'])]>            <8314.02,[('sum', ['1_d2'])]>                       <0.04,('lambda x, y: x / y', [('sum', ['1_c2']), ('sum', ['1_d2'])])>
+2       <Children,[ArgOr['0_b3', '0_b13']]>        <toddlers,[ArgOr['0_c3', '0_c13']]>  <-6268.05,[('sum', ['1_c4', '1_c14'])]>   <2340.85,[('sum', ['1_d4', '1_d14'])]>    <-2.68,('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])>
+3   <Electronics,[ArgOr['0_b10', '0_b11']]>         <karoke,[ArgOr['0_c10', '0_c11']]>   <702.66,[('sum', ['1_c12', '1_c11'])]>  <8700.24,[('sum', ['1_d11', '1_d12'])]>   <0.08,('lambda x, y: x / y', [('sum', ['1_d11', '1_d12']), ('sum', ['1_c12', '1_c11'])])>
+4            <Electronics,[ArgOr['0_b16']]>                <personal,[ArgOr['0_c16']]>           <-2639.0,[('sum', ['1_c17'])]>            <440.22,[('sum', ['1_d17'])]>                    <-5.99,('lambda x, y: x / y', [('sum', ['1_c17']), ('sum', ['1_d17'])])>
+5             <Electronics,[ArgOr['0_b4']]>                 <scanners,[ArgOr['0_c4']]>             <-21.84,[('sum', ['1_c5'])]>            <8484.84,[('sum', ['1_d5'])]>                       <-0.0,('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])>
+6                   <Home,[ArgOr['0_b15']]>         <curtains/drapes,[ArgOr['0_c15']]>             <-34.8,[('sum', ['1_c16'])]>              <33.3,[('sum', ['1_d16'])]>                    <-1.05,('lambda x, y: x / y', [('sum', ['1_d16']), ('sum', ['1_c16'])])>
+7                 <Jewelry,[ArgOr['0_b5']]>                   <estate,[ArgOr['0_c5']]>              <-20.0,[('sum', ['1_c6'])]>               <33.4,[('sum', ['1_d6'])]>                       <-0.6,('lambda x, y: x / y', [('sum', ['1_c6']), ('sum', ['1_d6'])])>
+8                     <Men,[ArgOr['0_b8']]>              <accessories,[ArgOr['0_c8']]>              <-60.9,[('sum', ['1_c9'])]>             <204.16,[('sum', ['1_d9'])]>                       <-0.3,('lambda x, y: x / y', [('sum', ['1_c9']), ('sum', ['1_d9'])])>
+9                     <Men,[ArgOr['0_b2']]>                   <shirts,[ArgOr['0_c2']]>            <-717.78,[('sum', ['1_c3'])]>               <85.4,[('sum', ['1_d3'])]>                       <-8.4,('lambda x, y: x / y', [('sum', ['1_c3']), ('sum', ['1_d3'])])>
+10          <Men,[ArgOr['0_b12', '0_b18']]>  <sportsapparel,[ArgOr['0_c12', '0_c18']]>   <-53.55,[('sum', ['1_c13', '1_c19'])]>  <3568.35,[('sum', ['1_d13', '1_d19'])]>  <-0.02,('lambda x, y: x / y', [('sum', ['1_d13', '1_d19']), ('sum', ['1_c13', '1_c19'])])>
+11                 <Sports,[ArgOr['0_b6']]>                   <hockey,[ArgOr['0_c6']]>           <-1671.84,[('sum', ['1_c7'])]>             <4428.0,[('sum', ['1_d7'])]>                      <-0.38,('lambda x, y: x / y', [('sum', ['1_d7']), ('sum', ['1_c7'])])>
+12                  <Women,[ArgOr['0_b0']]>                  <dresses,[ArgOr['0_c0']]>            <-865.95,[('sum', ['1_c1'])]>            <1534.39,[('sum', ['1_d1'])]>                      <-0.56,('lambda x, y: x / y', [('sum', ['1_c1']), ('sum', ['1_d1'])])>
+13                  <Women,[ArgOr['0_b7']]>               <fragrances,[ArgOr['0_c7']]>            <-161.56,[('sum', ['1_c8'])]>                <0.0,[('sum', ['1_d8'])]>                       <-inf,('lambda x, y: x / y', [('sum', ['1_c8']), ('sum', ['1_d8'])])>
+14                  <Women,[ArgOr['0_b9']]>                <maternity,[ArgOr['0_c9']]>           <-302.72,[('sum', ['1_c10'])]>           <1064.36,[('sum', ['1_d10'])]>                    <-0.28,('lambda x, y: x / y', [('sum', ['1_c10']), ('sum', ['1_d10'])])>
+15                 <Women,[ArgOr['0_b14']]>                <swimwear,[ArgOr['0_c14']]>          <-1919.52,[('sum', ['1_c15'])]>           <1416.39,[('sum', ['1_d15'])]>                    <-1.36,('lambda x, y: x / y', [('sum', ['1_c15']), ('sum', ['1_d15'])])>
+===============================
+=======with partial table==========
+                                 COL_0                                COL_1                                    COL_2                                   COL_3                                                                                     COL_4
+0  <Children,[ArgOr['0_b3', '0_b13']]>  <toddlers,[ArgOr['0_c3', '0_c13']]>  <-6268.05,[('sum', ['1_c4', '1_c14'])]>  <2340.85,[('sum', ['1_d4', '1_d14'])]>  <-2.68,('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])>
+1        <Electronics,[ArgOr['0_b4']]>           <scanners,[ArgOr['0_c4']]>             <-21.84,[('sum', ['1_c5'])]>           <8484.84,[('sum', ['1_d5'])]>                     <-0.0,('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])>
+=======with randomized trace==========
+                                 COL_0                                COL_1                                    COL_2                                   COL_3                                                                                     COL_4
+0  <Children,[ArgOr['0_b3', '0_b13']]>  <toddlers,[ArgOr['0_c3', '0_c13']]>  <-6268.05,[('sum', ['1_c4', '1_c14'])]>  <2340.85,[('sum', ['1_d4', '1_d14'])]>  <-2.68,('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])>
+1        <Electronics,[ArgOr['0_b4']]>           <scanners,[ArgOr['0_c4']]>             <-21.84,[('sum', ['1_c5'])]>           <8484.84,[('sum', ['1_d5'])]>                     <-0.0,('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])>
+----
+number of programs searched: 198
+time cost: 6.588127136230469
+number of solutions: 1
+=======target output==========
+                                 COL_0                                COL_1                                    COL_2                                   COL_3                                                                                     COL_4
+0  <Children,[ArgOr['0_b3', '0_b13']]>  <toddlers,[ArgOr['0_c3', '0_c13']]>  <-6268.05,[('sum', ['1_c4', '1_c14'])]>  <2340.85,[('sum', ['1_d4', '1_d14'])]>  <-2.68,('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])>
+1        <Electronics,[ArgOr['0_b4']]>           <scanners,[ArgOr['0_c4']]>             <-21.84,[('sum', ['1_c5'])]>           <8484.84,[('sum', ['1_d5'])]>                     <-0.0,('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])>
+=======correct output==========
+                                      COL_0                                      COL_1                                    COL_2                                    COL_3                                                                                       COL_4
+0                  <Books,[ArgOr['0_b17']]>                    <arts,[ArgOr['0_c17']]>          <-6021.67,[('sum', ['1_c18'])]>           <5481.81,[('sum', ['1_d18'])]>                     <-1.1,('lambda x, y: x / y', [('sum', ['1_c18']), ('sum', ['1_d18'])])>
+1                <Children,[ArgOr['0_b1']]>                  <infants,[ArgOr['0_c1']]>             <342.54,[('sum', ['1_c2'])]>            <8314.02,[('sum', ['1_d2'])]>                       <0.04,('lambda x, y: x / y', [('sum', ['1_c2']), ('sum', ['1_d2'])])>
+2       <Children,[ArgOr['0_b3', '0_b13']]>        <toddlers,[ArgOr['0_c3', '0_c13']]>  <-6268.05,[('sum', ['1_c4', '1_c14'])]>   <2340.85,[('sum', ['1_d4', '1_d14'])]>    <-2.68,('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])>
+3   <Electronics,[ArgOr['0_b10', '0_b11']]>         <karoke,[ArgOr['0_c10', '0_c11']]>   <702.66,[('sum', ['1_c12', '1_c11'])]>  <8700.24,[('sum', ['1_d11', '1_d12'])]>   <0.08,('lambda x, y: x / y', [('sum', ['1_d11', '1_d12']), ('sum', ['1_c12', '1_c11'])])>
+4            <Electronics,[ArgOr['0_b16']]>                <personal,[ArgOr['0_c16']]>           <-2639.0,[('sum', ['1_c17'])]>            <440.22,[('sum', ['1_d17'])]>                    <-5.99,('lambda x, y: x / y', [('sum', ['1_c17']), ('sum', ['1_d17'])])>
+5             <Electronics,[ArgOr['0_b4']]>                 <scanners,[ArgOr['0_c4']]>             <-21.84,[('sum', ['1_c5'])]>            <8484.84,[('sum', ['1_d5'])]>                       <-0.0,('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])>
+6                   <Home,[ArgOr['0_b15']]>         <curtains/drapes,[ArgOr['0_c15']]>             <-34.8,[('sum', ['1_c16'])]>              <33.3,[('sum', ['1_d16'])]>                    <-1.05,('lambda x, y: x / y', [('sum', ['1_d16']), ('sum', ['1_c16'])])>
+7                 <Jewelry,[ArgOr['0_b5']]>                   <estate,[ArgOr['0_c5']]>              <-20.0,[('sum', ['1_c6'])]>               <33.4,[('sum', ['1_d6'])]>                       <-0.6,('lambda x, y: x / y', [('sum', ['1_c6']), ('sum', ['1_d6'])])>
+8                     <Men,[ArgOr['0_b8']]>              <accessories,[ArgOr['0_c8']]>              <-60.9,[('sum', ['1_c9'])]>             <204.16,[('sum', ['1_d9'])]>                       <-0.3,('lambda x, y: x / y', [('sum', ['1_c9']), ('sum', ['1_d9'])])>
+9                     <Men,[ArgOr['0_b2']]>                   <shirts,[ArgOr['0_c2']]>            <-717.78,[('sum', ['1_c3'])]>               <85.4,[('sum', ['1_d3'])]>                       <-8.4,('lambda x, y: x / y', [('sum', ['1_c3']), ('sum', ['1_d3'])])>
+10          <Men,[ArgOr['0_b12', '0_b18']]>  <sportsapparel,[ArgOr['0_c12', '0_c18']]>   <-53.55,[('sum', ['1_c13', '1_c19'])]>  <3568.35,[('sum', ['1_d13', '1_d19'])]>  <-0.02,('lambda x, y: x / y', [('sum', ['1_d13', '1_d19']), ('sum', ['1_c13', '1_c19'])])>
+11                 <Sports,[ArgOr['0_b6']]>                   <hockey,[ArgOr['0_c6']]>           <-1671.84,[('sum', ['1_c7'])]>             <4428.0,[('sum', ['1_d7'])]>                      <-0.38,('lambda x, y: x / y', [('sum', ['1_d7']), ('sum', ['1_c7'])])>
+12                  <Women,[ArgOr['0_b0']]>                  <dresses,[ArgOr['0_c0']]>            <-865.95,[('sum', ['1_c1'])]>            <1534.39,[('sum', ['1_d1'])]>                      <-0.56,('lambda x, y: x / y', [('sum', ['1_c1']), ('sum', ['1_d1'])])>
+13                  <Women,[ArgOr['0_b7']]>               <fragrances,[ArgOr['0_c7']]>            <-161.56,[('sum', ['1_c8'])]>                <0.0,[('sum', ['1_d8'])]>                       <-inf,('lambda x, y: x / y', [('sum', ['1_c8']), ('sum', ['1_d8'])])>
+14                  <Women,[ArgOr['0_b9']]>                <maternity,[ArgOr['0_c9']]>           <-302.72,[('sum', ['1_c10'])]>           <1064.36,[('sum', ['1_d10'])]>                    <-0.28,('lambda x, y: x / y', [('sum', ['1_c10']), ('sum', ['1_d10'])])>
+15                 <Women,[ArgOr['0_b14']]>                <swimwear,[ArgOr['0_c14']]>          <-1919.52,[('sum', ['1_c15'])]>           <1416.39,[('sum', ['1_d15'])]>                    <-1.36,('lambda x, y: x / y', [('sum', ['1_c15']), ('sum', ['1_d15'])])>
+t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, (1, 2), ['sum', 'sum'], [5, 6]); t6 <- mutate_arithmetic(t5, lambda x, y: x / y, (2, 3))
++----+-------------+-----------------+----------+---------+---------+
+|    | COL_0       | COL_1           |    COL_2 |   COL_3 |   COL_4 |
+|----+-------------+-----------------+----------+---------+---------|
+|  0 | Books       | arts            | -6021.67 | 5481.81 |   -1.1  |
+|  1 | Children    | infants         |   342.54 | 8314.02 |    0.04 |
+|  2 | Children    | toddlers        | -6268.05 | 2340.85 |   -2.68 |
+|  3 | Electronics | karoke          |   702.66 | 8700.24 |    0.08 |
+|  4 | Electronics | personal        | -2639    |  440.22 |   -5.99 |
+|  5 | Electronics | scanners        |   -21.84 | 8484.84 |   -0    |
+|  6 | Home        | curtains/drapes |   -34.8  |   33.3  |   -1.05 |
+|  7 | Jewelry     | estate          |   -20    |   33.4  |   -0.6  |
+|  8 | Men         | accessories     |   -60.9  |  204.16 |   -0.3  |
+|  9 | Men         | shirts          |  -717.78 |   85.4  |   -8.4  |
+| 10 | Men         | sportsapparel   |   -53.55 | 3568.35 |   -0.02 |
+| 11 | Sports      | hockey          | -1671.84 | 4428    |   -0.38 |
+| 12 | Women       | dresses         |  -865.95 | 1534.39 |   -0.56 |
+| 13 | Women       | fragrances      |  -161.56 |    0    | -inf    |
+| 14 | Women       | maternity       |  -302.72 | 1064.36 |   -0.28 |
+| 15 | Women       | swimwear        | -1919.52 | 1416.39 |   -1.36 |
++----+-------------+-----------------+----------+---------+---------+
++----+---------------------------+---------------------------+-------------------------------+-------------------------------+------------------------------------------------------------------------------------+
+|    | COL_0                     | COL_1                     | COL_2                         | COL_3                         | COL_4                                                                              |
+|----+---------------------------+---------------------------+-------------------------------+-------------------------------+------------------------------------------------------------------------------------|
+|  0 | [ArgOr['0_b17']]          | [ArgOr['0_c17']]          | [('sum', ['1_c18'])]          | [('sum', ['1_d18'])]          | ('lambda x, y: x / y', [('sum', ['1_c18']), ('sum', ['1_d18'])])                   |
+|  1 | [ArgOr['0_b1']]           | [ArgOr['0_c1']]           | [('sum', ['1_c2'])]           | [('sum', ['1_d2'])]           | ('lambda x, y: x / y', [('sum', ['1_c2']), ('sum', ['1_d2'])])                     |
+|  2 | [ArgOr['0_b3', '0_b13']]  | [ArgOr['0_c3', '0_c13']]  | [('sum', ['1_c4', '1_c14'])]  | [('sum', ['1_d4', '1_d14'])]  | ('lambda x, y: x / y', [('sum', ['1_d4', '1_d14']), ('sum', ['1_c4', '1_c14'])])   |
+|  3 | [ArgOr['0_b10', '0_b11']] | [ArgOr['0_c10', '0_c11']] | [('sum', ['1_c12', '1_c11'])] | [('sum', ['1_d11', '1_d12'])] | ('lambda x, y: x / y', [('sum', ['1_d11', '1_d12']), ('sum', ['1_c12', '1_c11'])]) |
+|  4 | [ArgOr['0_b16']]          | [ArgOr['0_c16']]          | [('sum', ['1_c17'])]          | [('sum', ['1_d17'])]          | ('lambda x, y: x / y', [('sum', ['1_c17']), ('sum', ['1_d17'])])                   |
+|  5 | [ArgOr['0_b4']]           | [ArgOr['0_c4']]           | [('sum', ['1_c5'])]           | [('sum', ['1_d5'])]           | ('lambda x, y: x / y', [('sum', ['1_c5']), ('sum', ['1_d5'])])                     |
+|  6 | [ArgOr['0_b15']]          | [ArgOr['0_c15']]          | [('sum', ['1_c16'])]          | [('sum', ['1_d16'])]          | ('lambda x, y: x / y', [('sum', ['1_d16']), ('sum', ['1_c16'])])                   |
+|  7 | [ArgOr['0_b5']]           | [ArgOr['0_c5']]           | [('sum', ['1_c6'])]           | [('sum', ['1_d6'])]           | ('lambda x, y: x / y', [('sum', ['1_c6']), ('sum', ['1_d6'])])                     |
+|  8 | [ArgOr['0_b8']]           | [ArgOr['0_c8']]           | [('sum', ['1_c9'])]           | [('sum', ['1_d9'])]           | ('lambda x, y: x / y', [('sum', ['1_c9']), ('sum', ['1_d9'])])                     |
+|  9 | [ArgOr['0_b2']]           | [ArgOr['0_c2']]           | [('sum', ['1_c3'])]           | [('sum', ['1_d3'])]           | ('lambda x, y: x / y', [('sum', ['1_c3']), ('sum', ['1_d3'])])                     |
+| 10 | [ArgOr['0_b12', '0_b18']] | [ArgOr['0_c12', '0_c18']] | [('sum', ['1_c13', '1_c19'])] | [('sum', ['1_d13', '1_d19'])] | ('lambda x, y: x / y', [('sum', ['1_d13', '1_d19']), ('sum', ['1_c13', '1_c19'])]) |
+| 11 | [ArgOr['0_b6']]           | [ArgOr['0_c6']]           | [('sum', ['1_c7'])]           | [('sum', ['1_d7'])]           | ('lambda x, y: x / y', [('sum', ['1_d7']), ('sum', ['1_c7'])])                     |
+| 12 | [ArgOr['0_b0']]           | [ArgOr['0_c0']]           | [('sum', ['1_c1'])]           | [('sum', ['1_d1'])]           | ('lambda x, y: x / y', [('sum', ['1_c1']), ('sum', ['1_d1'])])                     |
+| 13 | [ArgOr['0_b7']]           | [ArgOr['0_c7']]           | [('sum', ['1_c8'])]           | [('sum', ['1_d8'])]           | ('lambda x, y: x / y', [('sum', ['1_c8']), ('sum', ['1_d8'])])                     |
+| 14 | [ArgOr['0_b9']]           | [ArgOr['0_c9']]           | [('sum', ['1_c10'])]          | [('sum', ['1_d10'])]          | ('lambda x, y: x / y', [('sum', ['1_c10']), ('sum', ['1_d10'])])                   |
+| 15 | [ArgOr['0_b14']]          | [ArgOr['0_c14']]          | [('sum', ['1_c15'])]          | [('sum', ['1_d15'])]          | ('lambda x, y: x / y', [('sum', ['1_c15']), ('sum', ['1_d15'])])                   |
++----+---------------------------+---------------------------+-------------------------------+-------------------------------+------------------------------------------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

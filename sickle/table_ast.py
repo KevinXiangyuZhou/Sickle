@@ -88,10 +88,6 @@ class Node(ABC):
 		stmts, _ = _recursive_translate(self.to_dict(), [])
 		return stmts
 
-	""" return an abstract annotated table"""
-	def infer_computation(self, inputs):
-		pass
-
 	def infer_colnum(self, inputs):
 		pass
 
@@ -207,9 +203,6 @@ class Table(Node):
 	def get_id(self):
 		return self.data_id
 
-	def infer_computation(self, inputs):
-		return self.eval(inputs)
-
 	def infer_cell_2(self, inputs, config):
 
 		# return self.eval(inputs)
@@ -238,8 +231,8 @@ class Table(Node):
 		return AnnotatedTable(res, from_source=True)
 		"""
 
-	def infer_cell(self, inputs, target):
-		return [target]
+	def infer_cell(self, inputs, config):
+		return self.eval(inputs)
 
 	def infer_colnum(self, inputs):
 		return len(inputs[self.data_id][0])
@@ -300,8 +293,6 @@ class Join(Node):
 
 	def eval(self, inputs):
 		# make a copy of table for argument reference
-		# for convenience of infer_computation
-		# tables = [q.eval(inputs) for q in self.qs]
 		table1 = self.q1.eval(inputs)
 		table2 = self.q2.eval(inputs)
 
@@ -384,13 +375,12 @@ class Join(Node):
 			]
 		}
 
-	# To make sure there is no duplicate column name
-	# 1. could replace column names in two join tables first then join
-	# 2. could add new name when needed
-	def infer_computation(self, inputs):
+	def infer_cell(self, inputs, config):
 		# a cross product of computed intermediate of the two joined programs
-		table1 = self.q1.infer_computation(inputs)
-		table2 = self.q2.infer_computation(inputs)
+		if self.predicate != HOLE and self.is_left_outer != HOLE:
+			return self.eval(inputs)
+		table1 = self.q1.infer_cell_2(inputs, config)
+		table2 = self.q2.infer_cell_2(inputs, config)
 
 		# two empty table we will build and merge together
 		empty_table1 = AnnotatedTable([])
@@ -410,34 +400,6 @@ class Join(Node):
 		for i in range(empty_table2.get_col_num()):
 			empty_table1.add_column(empty_table2.get_column(i))
 		return empty_table1
-
-	def infer_cell(self, inputs, target):
-		# if loc[0] in [0, n1 - 1] (in table 1)
-		# next loc is (loc[0], row(t2) * loc[1] + i) for i in range(row(t2))
-		# if loc[0] in [n1, n2 - 1] (in table 2)
-		# next loc is (loc[0], row(t2) * i + loc[1]) for i in range(row(t1))
-		def infer_single_cell1(loc):
-			if loc[1] == "?":
-				return [(loc[0], loc[1])]
-			else:
-				return [(loc[0], r2 * loc[1] + i) for i in range(r2)]
-
-		def infer_single_cell2(loc):
-			if loc[1] == "?":
-				return [(loc[0] + n1, loc[1])]
-			else:
-				return [(loc[0] + n1, r2 * i + loc[1]) for i in range(r1)]
-		n1 = self.q1.infer_colnum(inputs)
-		# n2 = self.q2.infer_colnum(inputs)
-		r1 = self.q1.infer_rownum(inputs)
-		r2 = self.q2.infer_rownum(inputs)
-		curr = []
-		for c in self.q1.infer_cell(inputs, target):
-			curr += infer_single_cell1(c)
-
-		for c in self.q2.infer_cell(inputs, target):
-			curr += infer_single_cell2(c)
-		return curr
 
 	def infer_cell_2(self, inputs, config):
 		# a cross product of computed intermediate of the two joined programs
@@ -527,13 +489,6 @@ class Select(Node):
 			"op": "select",
 			"children": [self.q.to_dict(), value_to_dict(self.cols, "col_index_list")]
 		}
-
-	def infer_computation(self, inputs):
-		# if concrete return evaluation of this level
-		if self.cols != HOLE:
-			return self.eval(inputs)
-		else:
-			return self.q.infer_computation(inputs)
 
 class Filter(Node):
 	def __init__(self, q, col_index, op, const):
@@ -627,24 +582,6 @@ class GroupSummary(Node):
 						table_keys.append(gb_keys)
 						continue
 					col_list_candidates += [gb_keys]
-			"""
-			valid_candidates = []
-			groups_list = []
-			for group_keys in col_list_candidates:
-				keys = [df.columns[idx] for idx in group_keys]
-				# Format: {index: {colname: argument}}
-				# iterate through df, map each cell in resulting table with its argument
-				temp = df.groupby(keys, sort=False)
-				groups = [list(temp.groups[k]) for k in temp.groups]
-				seen = False
-				for found in groups_list:
-					if all(map(lambda x, y: x == y, found, groups)):
-						seen = True
-						break
-				if not seen:
-					groups_list.append(groups)
-					valid_candidates.append(group_keys)
-			"""
 			return col_list_candidates
 		elif arg_id == 3:
 			number_fields = [i for i, s in enumerate(schema) if s == "number"]
@@ -738,9 +675,9 @@ class GroupSummary(Node):
 			gid += 1
 
 		if isinstance(self.aggr_func, str):
-			res = res.agg({target: self.aggr_func})
+			res = res.agg({target: self.aggr_func}).fillna(0)
 		else:
-			res = res.agg({df.columns[col_index]: func for func, col_index in zip(self.aggr_func, self.aggr_col)})
+			res = res.agg({df.columns[col_index]: func for func, col_index in zip(self.aggr_func, self.aggr_col)}).fillna(0)
 		# for row in arguments:
 		# 	 arguments[row][target] = arguments[row][target]
 		res = res.reset_index()
@@ -781,52 +718,70 @@ class GroupSummary(Node):
 			return val.get_row_num()
 		return self.q.infer_rownum(inputs)
 
-	def infer_computation(self, inputs):
+	def infer_cell(self, inputs, config):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
-		if self.group_cols == HOLE:
-			table = self.q.infer_computation(inputs)
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE))
-			table.add_column(new_col)
-			return table
-		table = select_columns(self.q.infer_computation(inputs), self.group_cols)
-		if self.aggr_func == HOLE:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE))
-			table.add_column(new_col)
-		else:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
-			table.add_column(new_col)
-		return table
-
-	def infer_cell(self, inputs, target):
-		def infer_single_cell(loc, n):
-			pre = [(i, "?") for i in range(n)]
-			if self.group_cols == HOLE and self.aggr_col == HOLE:
-				return pre
-			if self.group_cols != HOLE:
-				if loc[0] in self.group_cols:
-					pre = [(self.group_cols.index(loc[0]), "?")]
+		table = self.q.infer_cell(inputs, config)
+		# print(f"eval last level cost {time.time() - start_time}\n------")
+		rownum = table.get_row_num()
+		colnum = table.get_col_num()
+		new_source = []
+		df = table.extract_values()
+		agg_allowed = len(config["aggr_func"])
+		if self.group_cols == HOLE:  # we know nothing about parameters
+			for cid in range(colnum + agg_allowed):
+				col_cells = []
+				if cid < colnum:  # group columns
+					group_key = df.columns[cid]
+					group_df = df.groupby(group_key)
+					for (key, group) in group_df:
+						# print(group.to_dict())
+						index_list = group.index.tolist()
+						for rid in index_list:
+							new_cell = TableCell(table.get_cell(cid, rid).get_value(), HOLE)
+							# add the new cells to the table
+							col_cells.append(new_cell)
 				else:
-					pre = [(len(self.group_cols), "?")]
-			if self.aggr_col != HOLE and loc[0] == self.aggr_col:
-				pre = [(len(self.group_cols), "?")]
-			elif self.aggr_col != HOLE and self.group_cols != HOLE and \
-					loc[0] not in self.group_cols and loc[0] != self.aggr_col:
-				pre = []
-			return pre
-		n = self.q.infer_colnum(inputs)
-		pre_list = self.q.infer_cell(inputs, target)
-		curr = []
-		for c in pre_list:
-			curr += infer_single_cell(c, n)
-		return curr
+					for rid in range(rownum):
+						new_cell = TableCell(HOLE, HOLE)
+						col_cells.append(new_cell)
+				new_source.append(col_cells)
+			# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
+			new_table = AnnotatedTable(new_source, from_source=True)
+			new_table.round()
+			return new_table
+
+		group_keys = [df.columns[idx] for idx in self.group_cols]
+		df = df.groupby(group_keys)
+		if self.aggr_func == HOLE:
+			agg_allowed = len(config["aggr_func"])
+		elif isinstance(self.aggr_func, list):
+			agg_allowed = len(self.aggr_func)
+		else:
+			agg_allowed = 1
+		agg_cols = [colnum + i for i in range(agg_allowed)]
+		new_cols = list(self.group_cols) + agg_cols
+		start_row = 0
+		for (key, group) in df:
+			# print(group.to_dict())
+			index_list = group.index.tolist()
+			for cid in range(colnum + agg_allowed):  # group_cols + new col
+				if cid not in self.group_cols and cid < colnum:
+					continue
+				if new_cols.index(cid) >= len(new_source):  # create column at the first group
+					new_source.append([])
+				if cid >= colnum:
+					new_cell = TableCell(HOLE, HOLE)
+				else:
+					new_cell = TableCell(table.get_cell(cid, index_list[0]).get_value(), HOLE)
+				new_source[new_cols.index(cid)].append(new_cell)
+			start_row += len(group)
+		# print(AnnotatedTable(new_source, from_source=True).to_dataframe())
+		# print(f"end time {time.time() - start_time}\n------")
+		new_table = AnnotatedTable(new_source, from_source=True)
+		new_table.round()
+		return new_table
 
 	def infer_cell_2(self, inputs, config):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.aggr_col != HOLE:
@@ -846,12 +801,6 @@ class GroupSummary(Node):
 		df = table.extract_values()
 		agg_allowed = len(config["aggr_func"])
 		if self.group_cols == HOLE:  # we know nothing about parameters
-			"""
-			new_col_num = colnum + agg_allowed
-			new_row_num = rownum
-			group_trace = [(x, y) for y in range(rownum) for x in range(colnum)]
-			agg_trace = [(x, y) for x in range(colnum) for y in range(rownum)]
-			"""
 			for cid in range(colnum + agg_allowed):
 				col_cells = []
 				if cid < colnum:  # group columns
@@ -869,11 +818,7 @@ class GroupSummary(Node):
 								args += [table.get_cell(c[0], c[1]).get_exp()]
 						args = remove_duplicates(args)
 						for rid in index_list:
-							if cid >= colnum:
-								func = ArgOr(config["aggr_func"])
-								new_cell = TableCell(table.get_cell(cid, rid).get_value(), ExpNode(func, args))
-							else:
-								new_cell = TableCell(table.get_cell(cid, rid).get_value(), args)
+							new_cell = TableCell(table.get_cell(cid, rid).get_value(), args)
 							# add the new cells to the table
 							col_cells.append(new_cell)
 				# print(f"start time {time.time()}")
@@ -1083,6 +1028,7 @@ class GroupMutate(Node):
 				res[new_col] = grouped_res.cumcount() + 1
 			else:
 				res[new_col] = grouped_res.transform(self.aggr_func)[target]
+				res = res.fillna(0)
 		else:
 			# if we have not group_key, we simply do a mutate
 			if self.aggr_func == "cumsum":
@@ -1101,6 +1047,7 @@ class GroupMutate(Node):
 					res[new_col] = np.arange(len(res))
 				else:
 					res[new_col] = res.apply(self.aggr_func)[target]
+					res = res.fillna(0)
 				arg = [(self.target_col, rid) for rid in arguments]
 				for index in arguments:
 					arguments[index][new_col] = arg
@@ -1128,44 +1075,21 @@ class GroupMutate(Node):
 	def infer_rownum(self, inputs):
 		return self.q.infer_rownum(inputs)
 
-	def infer_computation(self, inputs):
+	def infer_cell(self, inputs, config):
 		if self.group_cols != HOLE and self.aggr_func != HOLE and self.target_col != HOLE:
 			# the program has all parameters
 			return self.eval(inputs)
-		table = self.q.infer_computation(inputs)
-		df = table.extract_values()
-		#target = get_fresh_col(df.columns)[0]
-		if self.aggr_func == HOLE or self.group_cols == HOLE:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE))
-			table.add_column(new_col)
-		else:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.aggr_func, [HOLE])))
-			table.add_column(new_col)
+		table = self.q.infer_cell(inputs, config)
+		rownum = table.get_row_num()
+		colnum = table.get_col_num()
+		new_source = []
+		new_cell = TableCell(HOLE, HOLE)
+		for rid in range(rownum):
+			new_source.append(new_cell)
+		table.add_column(new_source)  # add a new column
+		table.round()
 		return table
 
-	def infer_cell(self, inputs, target):
-		def infer_single_cell(loc, n):
-			pre = [(loc[0], loc[1]), (n, "?")]
-			if self.group_cols != HOLE:
-				if self.group_cols is []:
-					pre = [(loc[0], loc[1]), (n, loc[1])]
-				elif loc[0] in self.group_cols:
-					pre = [(loc[0], loc[1])]
-			if self.target_col != HOLE and loc[0] != self.target_col:
-				# should only be placed in its original position anyway
-				pre = [(loc[0], loc[1])]
-			return pre
-		n = self.q.infer_colnum(inputs)
-		# get a list of possible positions the target cell could be placed
-		pre_list = self.q.infer_cell(inputs, target)
-		curr = []
-		for c in pre_list:
-			curr += infer_single_cell(c, n)
-		return curr
 
 	# a with-trace version of infer computation
 	# we infer the trace for each cell in the intermediate table
@@ -1301,6 +1225,7 @@ class Mutate_Arithmetic(Node):
 				arguments[index][new_colname] += arguments[index][res.columns[i]]
 
 		res = round_df(res)
+		res = res.fillna(0)
 
 		# print(res)
 		return df_to_annotated_table_index_colname(res, self.func, arguments,
@@ -1316,37 +1241,18 @@ class Mutate_Arithmetic(Node):
 				value_to_dict(self.cols, "cols")
 			]}
 
-	def infer_computation(self, inputs):
-		if self.func != HOLE and self.cols != HOLE:
-			# the program has all parameters
+	def infer_cell(self, inputs, config):
+		if self.func != HOLE and self.cols != HOLE:  # the program has all parameters
 			return self.eval(inputs)
-		table = self.q.infer_computation(inputs)
-		df = table.extract_values()
-		#target = get_fresh_col(df.columns)[0]
-		if self.func == HOLE:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, HOLE))
-			table.add_column(new_col)
-		else:
-			new_col = []
-			for i in range(table.get_row_num()):
-				new_col.append(TableCell(HOLE, ExpNode(self.func, [HOLE])))
-			table.add_column(new_col)
+		table = self.q.infer_cell(inputs, config)
+		rownum = table.get_row_num()
+		new_source = []
+		new_cell = TableCell(HOLE, HOLE)
+		for rid in range(rownum):
+			new_source.append(new_cell)
+		table.add_column(new_source)  # add a new column
+		table.round()
 		return table
-
-	def infer_cell(self, inputs, target):
-		def infer_single_cell(loc, n):
-			pre = [(loc[0], loc[1]), (n, loc[1])]
-			if self.cols != HOLE and loc[0] not in self.cols:
-					pre = [pre[0]]
-			return pre
-		pre_list = self.q.infer_cell(inputs, target)
-		curr = []
-		n = self.q.infer_colnum(inputs)
-		for c in pre_list:
-			curr += infer_single_cell(c, n)
-		return curr
 
 	def infer_cell_2(self, inputs, config):
 		if self.func != HOLE and self.cols != HOLE:

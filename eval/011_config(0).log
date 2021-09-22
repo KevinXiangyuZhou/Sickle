@@ -1,35 +1,32 @@
 ------evaluate 011.json on config_0-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'aggr_func': [], 'mutate_func': [], 'join_predicates': [], 'mutate_function': ['lambda x, y: x + y']}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'aggr_func': ['sum'], 'mutate_func': ['sum', 'cumsum'], 'join_predicates': [], 'mutate_function': ['lambda x, y: x + y']}, 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'value_analysis': False, 'level_limit': 6, 'time_limit': 3600, 'solution_limit': 1, 'row_limit': 20}
 =======output candidate ==========
-      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
-0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_b0', '0_a0'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])
-1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_b1', '0_a1'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1'])
-2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2'])
+          COL_0         COL_1         COL_2                                           COL_3                                                  COL_4
+0  <1,['0_a0']>  <2,['0_b0']>  <3,['0_c0']>  <3,[('lambda x, y: x + y', ['0_b0', '0_a0'])]>   <6,('lambda x, y: x + y', ['0_b0', '0_a0', '0_c0'])>
+1  <2,['0_a1']>  <3,['0_b1']>  <4,['0_c1']>  <5,[('lambda x, y: x + y', ['0_a1', '0_b1'])]>   <9,('lambda x, y: x + y', ['0_a1', '0_b1', '0_c1'])>
+2  <3,['0_a2']>  <4,['0_b2']>  <5,['0_c2']>  <7,[('lambda x, y: x + y', ['0_b2', '0_a2'])]>  <12,('lambda x, y: x + y', ['0_c2', '0_b2', '0_a2'])>
 ===============================
+=======with partial table==========
+          COL_0         COL_1         COL_2                                           COL_3                                                  COL_4
+0  <2,['0_a1']>  <3,['0_b1']>  <4,['0_c1']>  <5,[('lambda x, y: x + y', ['0_a1', '0_b1'])]>   <9,('lambda x, y: x + y', ['0_a1', '0_b1', '0_c1'])>
+1  <3,['0_a2']>  <4,['0_b2']>  <5,['0_c2']>  <7,[('lambda x, y: x + y', ['0_b2', '0_a2'])]>  <12,('lambda x, y: x + y', ['0_c2', '0_b2', '0_a2'])>
 =======with randomized trace==========
-      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
-0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_b0', '0_a0'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])
-1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_b1', '0_a1'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1'])
-2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2'])
-=======permutated output:2==========
-      COL_0     COL_1                                       COL_2     COL_3                                                                       COL_4
-0  ['0_a0']  ['0_b0']  [('lambda x, y: x + y', ['0_b0', '0_a0'])]  ['0_c0']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])
-1  ['0_a1']  ['0_b1']  [('lambda x, y: x + y', ['0_b1', '0_a1'])]  ['0_c1']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1'])
-2  ['0_a2']  ['0_b2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_c2']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2'])
+          COL_0         COL_1         COL_2                                           COL_3                                                  COL_4
+0  <2,['0_a1']>  <3,['0_b1']>  <4,['0_c1']>  <5,[('lambda x, y: x + y', ['0_a1', '0_b1'])]>   <9,('lambda x, y: x + y', ['0_a1', '0_b1', '0_c1'])>
+1  <3,['0_a2']>  <4,['0_b2']>  <5,['0_c2']>  <7,[('lambda x, y: x + y', ['0_b2', '0_a2'])]>  <12,('lambda x, y: x + y', ['0_c2', '0_b2', '0_a2'])>
 ----
-number of programs searched: 44
-time cost: 0.3211383819580078
+number of programs searched: 85
+time cost: 0.4175281524658203
 number of solutions: 1
 =======target output==========
-      COL_0     COL_1                                       COL_2     COL_3                                                                       COL_4
-0  ['0_a0']  ['0_b0']  [('lambda x, y: x + y', ['0_b0', '0_a0'])]  ['0_c0']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])
-1  ['0_a1']  ['0_b1']  [('lambda x, y: x + y', ['0_b1', '0_a1'])]  ['0_c1']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1'])
-2  ['0_a2']  ['0_b2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ['0_c2']  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2'])
+          COL_0         COL_1         COL_2                                           COL_3                                                  COL_4
+0  <2,['0_a1']>  <3,['0_b1']>  <4,['0_c1']>  <5,[('lambda x, y: x + y', ['0_a1', '0_b1'])]>   <9,('lambda x, y: x + y', ['0_a1', '0_b1', '0_c1'])>
+1  <3,['0_a2']>  <4,['0_b2']>  <5,['0_c2']>  <7,[('lambda x, y: x + y', ['0_b2', '0_a2'])]>  <12,('lambda x, y: x + y', ['0_c2', '0_b2', '0_a2'])>
 =======correct output==========
-      COL_0     COL_1     COL_2                                       COL_3                                                                       COL_4
-0  ['0_a0']  ['0_b0']  ['0_c0']  [('lambda x, y: x + y', ['0_b0', '0_a0'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])
-1  ['0_a1']  ['0_b1']  ['0_c1']  [('lambda x, y: x + y', ['0_b1', '0_a1'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1'])
-2  ['0_a2']  ['0_b2']  ['0_c2']  [('lambda x, y: x + y', ['0_a2', '0_b2'])]  ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2'])
+          COL_0         COL_1         COL_2                                           COL_3                                                                            COL_4
+0  <1,['0_a0']>  <2,['0_b0']>  <3,['0_c0']>  <3,[('lambda x, y: x + y', ['0_b0', '0_a0'])]>   <6,('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0'])>
+1  <2,['0_a1']>  <3,['0_b1']>  <4,['0_c1']>  <5,[('lambda x, y: x + y', ['0_a1', '0_b1'])]>   <9,('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a1', '0_b1']), '0_c1'])>
+2  <3,['0_a2']>  <4,['0_b2']>  <5,['0_c2']>  <7,[('lambda x, y: x + y', ['0_b2', '0_a2'])]>  <12,('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_b2', '0_a2'])])>
 t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 <- mutate_arithmetic(t1, lambda x, y: x + y, (2, 3))
 +----+---------+---------+---------+---------+---------+
 |    |   COL_0 |   COL_1 |   COL_2 |   COL_3 |   COL_4 |
@@ -42,8 +39,8 @@ t0 <- table_ref(0); t1 <- mutate_arithmetic(t0, lambda x, y: x + y, (0, 1)); t2 
 |    | COL_0    | COL_1    | COL_2    | COL_3                                      | COL_4                                                                      |
 |----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------|
 |  0 | ['0_a0'] | ['0_b0'] | ['0_c0'] | [('lambda x, y: x + y', ['0_b0', '0_a0'])] | ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b0', '0_a0']), '0_c0']) |
-|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_b1', '0_a1'])] | ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_b1', '0_a1']), '0_c1']) |
-|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_a2', '0_b2'])] | ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a2', '0_b2']), '0_c2']) |
+|  1 | ['0_a1'] | ['0_b1'] | ['0_c1'] | [('lambda x, y: x + y', ['0_a1', '0_b1'])] | ('lambda x, y: x + y', [('lambda x, y: x + y', ['0_a1', '0_b1']), '0_c1']) |
+|  2 | ['0_a2'] | ['0_b2'] | ['0_c2'] | [('lambda x, y: x + y', ['0_b2', '0_a2'])] | ('lambda x, y: x + y', ['0_c2', ('lambda x, y: x + y', ['0_b2', '0_a2'])]) |
 +----+----------+----------+----------+--------------------------------------------+----------------------------------------------------------------------------+
 
 

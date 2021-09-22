@@ -16,9 +16,9 @@
   ],
   "parameter_config": {
                 "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
-                "aggr_func": ["sum"],
-                "mutate_func": ["sum", "mean"],
+                "aggr_func": ["sum", "sum"],
+                "mutate_func": ["sum", "cumsum", "mean"],
                 "join_predicates": [],
-                "mutate_function": []
+                "mutate_function": ["lambda x, y: x + y"]
             }
 }

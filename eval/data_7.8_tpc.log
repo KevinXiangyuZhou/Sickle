@@ -1,0 +1,6 @@
+{"data":[
+{'id': 113, 'num_program': 4, 'input_size': ['3x20', '3x20', '2x20'], 'user_example_size': '2x3', 'input_cells': 1523, 'user_example_cells': 6, 'user_ptrs': 6, 'output_ptrs': 36, 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 2.3159680366516113, 'num_program_visited': 195, 'num_consistent': 1, 'timeout': 0},
+{'id': 107, 'num_program': 5, 'input_size': ['1x20', '4x20', '2x20'], 'user_example_size': '2x4', 'input_cells': 960, 'user_example_cells': 8, 'user_ptrs': 16, 'output_ptrs': 102, 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 7.247897624969482, 'num_program_visited': 470, 'num_consistent': 1, 'timeout': 0},
+{"data":[
+{'id': 113, 'num_program': 4, 'input_size': ['3x20', '3x20', '2x20'], 'user_example_size': '2x3', 'input_cells': 1523, 'user_example_cells': 6, 'user_ptrs': 6, 'output_ptrs': 36, 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 2.2409470081329346, 'num_program_visited': 195, 'num_consistent': 1, 'timeout': 0},
+{'id': 113, 'num_program': 4, 'input_size': ['3x20', '3x20', '2x20'], 'user_example_size': '2x3', 'input_cells': 1523, 'user_example_cells': 6, 'user_ptrs': 0, 'output_ptrs': 0, 'with_pruning_or_not': 1, 'analysis_type': 'value', 'time': 600.006174325943, 'num_program_visited': 19508, 'num_consistent': 0, 'timeout': 1},

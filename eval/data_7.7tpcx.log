@@ -1,0 +1,5 @@
+{"data":[
+{'id': 120, 'num_program': 4, 'input_size': ['2x20', '4x20'], 'user_example_size': '2x3', 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 600.0851275920868, 'num_program_visited': 6281, 'num_consistent': 0, 'size': 20, 'timeout': 1},
+{'id': 120, 'num_program': 4, 'input_size': ['2x20', '4x20'], 'user_example_size': '2x3', 'with_pruning_or_not': 1, 'analysis_type': 'value', 'time': 600.0048041343689, 'num_program_visited': 18468, 'num_consistent': 0, 'size': 20, 'timeout': 1},
+{'id': 120, 'num_program': 4, 'input_size': ['2x20', '4x20'], 'user_example_size': '2x3', 'with_pruning_or_not': 0, 'analysis_type': 'trace', 'time': 600.0110607147217, 'num_program_visited': 17852, 'num_consistent': 0, 'size': 20, 'timeout': 1}
+{'id': 116, 'num_program': 4, 'input_size': ['2x20', '4x20'], 'user_example_size': '2x2', 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 600.3553128242493, 'num_program_visited': 5726, 'num_consistent': 0, 'size': 20, 'timeout': 1},

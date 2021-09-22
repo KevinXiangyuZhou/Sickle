@@ -36,7 +36,7 @@ test_config = {
         "random_test": False,
         "partial_table": False,
         "partial_trace": False,
-        "level_limit": 5,
+        "level_limit": 6,
         "time_limit": 300,
         "solution_limit": 5
     }
@@ -108,15 +108,16 @@ test_config_list = {"008": test_config_008,
                     "009": test_config_009}
 
 permutation_test = False  # edit this for permute user outputs
-partial_table = False  # select random region of the table as demonstration
+partial_table = True  # select random region of the table as demonstration
 partial_trace = True  # trace info could be incomplete
 level_limit = 7
-time_limit = 900
+time_limit = 600
 solution_limit = 1
-random_test = False
-input_size_limit = 100
+random_test = True
+input_size_limit = 20
+use_val = False
 
-random.seed(7)
+random.seed(1)
 
 class SynthesizerTest(unittest.TestCase):
     @unittest.skip
@@ -135,54 +136,77 @@ class SynthesizerTest(unittest.TestCase):
 
     # @unittest.skip
     def test_run(self):
-        # with open('../benchmark/tpc-ds/020.json', 'r') as filehandler:
-        with open('testbenches/021c.json', 'r') as filehandler:
+        # with open('../benchmark/tpc-ds/007.json', 'r') as filehandler:
+        with open('../benchmark/running-example/021c.json', 'r') as filehandler:
+        # with open('testbenches/004.json', 'r') as filehandler:
             data = json.load(filehandler)
             # description:
             inputs = data["input_data"]
-            inputs = [data[-input_size_limit:] for data in inputs]
+            inputs = [data[:input_size_limit] for data in inputs]
             # inputs = [data[input_size_limit] for data in inputs]
             correct_out = None
             if "exp_out" in data.keys():
                 p = dict_to_program(data["exp_out"])
-                annotated_output = p.eval(inputs)
-                print(annotated_output.extract_values())
-                print(annotated_output.to_dataframe())
+                # print(p.eval(inputs).to_dataframe())
+                # print("after compressed ======")
+                annotated_output = p.eval(inputs).compress_sum()
+                # print(annotated_output.extract_values())
+                # print(annotated_output.to_dataframe())
                 correct_out = copy.copy(annotated_output)
             else:
                 print("load error")
             curr_config = test_config
             if "parameter_config" in data.keys():
                 curr_config["parameter_config"] = data["parameter_config"]
+            manual_example = False
+            source = [[TableCell('A', ['0_a0']), TableCell('A', ['0_a7'])],
+                      [TableCell(32.86, ExpNode('lambda x, y: x / y * 100',
+                                                [ExpNode('sum', ['0_b0', '0_b1']), '0_e0'])),
+                       TableCell(61.39, ExpNode('lambda x, y: x / y * 100',
+                                                [ExpNode('sum', ['0_b0', '0_b1', "_UNK_", '0_b7']), '0_e7']))
+                       ]]
+            manual = AnnotatedTable(source, from_source=True)
+            if manual_example:
 
-            if permutation_test:
-                columns = [i for i in range(annotated_output.get_col_num())]
-                permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
-                if len(permutation_list) > 100:
-                    permutation_list = permutation_list[:100]
-                # print(permutation_list)  # verify permutations of column ids
-                output_candidates = [select_columns(annotated_output, selected)
-                                     for selected in permutation_list]
-                for i in range(len(output_candidates)):
-                    att_out = output_candidates[i]
-                    print("=======output candidates " + str(i) + "==========")
-                    print(att_out.to_dataframe())
-                print("\n\n\n")
-                if random_test:
-                    sample_id = random.randrange(len(output_candidates))
-                else:
-                    sample_id = 4 if 4 < len(output_candidates) else len(output_candidates) - 1
-                annotated_output = output_candidates[sample_id]
-                print("=======output candidates " + str(sample_id) + "==========")
-                print(annotated_output.to_dataframe())
-                print("===============================")
-            if partial_table:
-                if random_test:
-                    x_start = random.randrange(annotated_output.get_col_num() / 2)
-                    y_start = random.randrange(annotated_output.get_row_num() / 2)
-                    x_end = random.randrange(annotated_output.get_col_num() / 2, annotated_output.get_col_num())
-                    y_end = random.randrange(annotated_output.get_row_num() / 2, annotated_output.get_row_num())
-                else:
+                source = [[TableCell('A', ['0_a0']), TableCell('A', ['0_a7'])],
+                          [TableCell(32.86, ExpNode('lambda x, y: x / y * 100',
+                                                   [ExpNode('sum', ['0_b0', '0_b1']), '0_e0'])),
+                           TableCell(61.39, ExpNode('lambda x, y: x / y * 100',
+                                                   [ExpNode('sum', ['0_b0', '0_b1', "_UNK_", '0_b7']), '0_e7']))
+                           ]]
+                annotated_output = AnnotatedTable(source, from_source=True)
+                """
+                source = [[TableCell('AAAAAAAAABAAAAAA', ['0_b9']), TableCell('accessories', ['0_e9'])],
+                          [TableCell(32.86, ExpNode('lambda x, y: x / y * 100',
+                                                    [ExpNode('sum', ['0_b0', '0_b1']), '0_e0'])),
+                           TableCell(61.39, ExpNode('lambda x, y: x / y * 100',
+                                                    [ExpNode('sum', ['0_b0', '0_b1', "_UNK_", '0_b7']), '0_e7']))
+                           ]]
+                annotated_output = AnnotatedTable(source, from_source=True)
+                """
+            else:
+                if permutation_test:
+                    columns = [i for i in range(annotated_output.get_col_num())]
+                    permutation_list = list(itertools.permutations(columns, annotated_output.get_col_num()))
+                    if len(permutation_list) > 100:
+                        permutation_list = permutation_list[:100]
+                    # print(permutation_list)  # verify permutations of column ids
+                    output_candidates = [select_columns(annotated_output, selected)
+                                         for selected in permutation_list]
+                    for i in range(len(output_candidates)):
+                        att_out = output_candidates[i]
+                        # print("=======output candidates " + str(i) + "==========")
+                        # print(att_out.to_dataframe())
+                    # print("\n\n\n")
+                    if random_test:
+                        sample_id = random.randrange(len(output_candidates))
+                    else:
+                        sample_id = 4 if 4 < len(output_candidates) else len(output_candidates) - 1
+                    annotated_output = output_candidates[sample_id]
+                    # print("=======output candidates " + str(sample_id) + "==========")
+                    # print(annotated_output.to_dataframe())
+                    # print("===============================")
+                if partial_table:
                     x_s, x_e = int(annotated_output.get_col_num() / 2), annotated_output.get_col_num()
                     y_s, y_e = int(annotated_output.get_row_num() / 2), annotated_output.get_row_num()
                     x_start = 0
@@ -191,35 +215,42 @@ class SynthesizerTest(unittest.TestCase):
                     if y_e == 2:
                         y_end = annotated_output.get_row_num()
                     else:
-                        y_end = 1
-                annotated_output = annotated_output.select_region((x_start, x_end), (y_start, y_end))
+                        y_end = 2
+                    annotated_output = annotated_output.select_region((x_start, x_end), (y_start, y_end))
 
-                print(annotated_output.to_dataframe())
-            if partial_trace:
-                annotated_output = annotated_output.randomize()
-                print("=======with randomized trace==========")
-                print(annotated_output.to_dataframe())
-            # only include the first and last column
-            # annotated_output = annotated_output.select_region((0, annotated_output.get_col_num()),
-            #                                                   (0, 5))
+                    # print(annotated_output.to_dataframe())
+                if partial_trace:
+                    annotated_output = annotated_output.randomize()
+                    # print("=======with randomized trace==========")
+                    # print(annotated_output.to_dataframe())
+                # only include the first and last column
+                # annotated_output = annotated_output.select_region((annotated_output.get_col_num() - 1, annotated_output.get_col_num()),
+                #                                                  (0, 2))
             print("=======user sample==========")
-            print(annotated_output.to_dataframe())
+            print(manual.to_dataframe())
+            # print(f"ptrs in user_example: {annotated_output.count_ptrs()}")
+            # print(f"ptrs in correct_output: {correct_out.count_ptrs(count_or=True)}")
+            # print("=======correct p==========")
+            # print(p.stmt_string())
             candidates = []
             for i in range(6, level_limit):
                 candidates += Synthesizer(curr_config)\
                     .enumerative_synthesis(inputs, annotated_output, correct_out, i,
-                                           solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False)
+                                           solution_limit=solution_limit, time_limit_sec=time_limit, print_trace=False, use_val=use_val)
                 if len(candidates) > 0:
                     break
             print("=======user sample==========")
-            print(annotated_output.to_dataframe())
-            print("=======correct output==========")
-            print(correct_out.to_dataframe())
+            # print(annotated_output.to_dataframe())
+            print(manual.to_dataframe())
+            # print("=======correct output==========")
+            # print(correct_out.to_dataframe())
+            # print("=======correct p==========")
+            # print(p.stmt_string())
             for p in candidates:
                 # print(alignment_result)
                 print(p.stmt_string())
-                print(tabulate(p.eval(inputs).extract_values(), headers='keys', tablefmt='psql'))
-                print(tabulate(p.eval(inputs).extract_traces(), headers='keys', tablefmt='psql'))
+                print(tabulate(p.eval(inputs).compress_sum().extract_values(), headers='keys', tablefmt='psql'))
+                print(tabulate(p.eval(inputs).compress_sum().extract_traces(), headers='keys', tablefmt='psql'))
                 print()
             print(f"number of programs: {len(candidates)}")
             print("\n\n\n\n\n\n")

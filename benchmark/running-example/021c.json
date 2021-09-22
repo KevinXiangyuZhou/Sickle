@@ -1,0 +1,33 @@
+{
+  "input_data":
+   [[
+      {"city": "A", "enrolled": 1667, "quarter":  1, "group":  "Youth", "population":  5668},
+      {"city": "A", "enrolled": 1367, "quarter":  1, "group":  "Adult", "population":  5668},
+      {"city": "A", "enrolled": 256, "quarter":  2, "group":  "Youth", "population":  5668},
+      {"city": "A", "enrolled": 347, "quarter":  2, "group":  "Adult", "population":  5668},
+      {"city": "A", "enrolled": 148, "quarter":  3, "group":  "Youth", "population":  5668},
+      {"city": "A", "enrolled": 237, "quarter":  3, "group":  "Adult", "population":  5668},
+      {"city": "A", "enrolled": 556, "quarter":  4, "group":  "Youth", "population":  5668},
+      {"city": "A", "enrolled": 432, "quarter":  4, "group":  "Adult", "population":  5668},
+      {"city": "B", "enrolled": 2378, "quarter":  1, "group":  "Youth", "population":  10541},
+      {"city": "B", "enrolled": 1200, "quarter":  1, "group":  "Adult", "population":  10541},
+      {"city": "B", "enrolled": 1373, "quarter":  2, "group":  "Youth", "population":  10541},
+      {"city": "B", "enrolled": 853, "quarter":  2, "group":  "Adult", "population":  10541},
+      {"city": "B", "enrolled": 246, "quarter":  3, "group":  "Youth", "population":  10541},
+      {"city": "B", "enrolled": 235, "quarter":  3, "group":  "Adult", "population":  10541},
+      {"city": "B", "enrolled": 768, "quarter":  4, "group":  "Youth", "population":  10541},
+      {"city": "B", "enrolled": 801, "quarter":  4, "group":  "Adult", "population":  10541}
+   ]],
+  "url": "https://stackoverflow.com/questions/60517090/is-there-a-way-to-divide-answers-of-group-by-summary-statistics-in-r",
+  "exp_out": [{"0": 0},
+    {"op": "group_sum", "0": [0, 2, 4], "1": "sum", "2": 1},
+    {"op": "group_mutate", "0": [0], "1": "cumsum", "2": 3},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y * 100", "1": [4, 2]}],
+  "parameter_config": {
+                "operators": ["group_sum", "group_mutate", "mutate_arithmetic", "join"],
+                "aggr_func": ["sum"],
+                "mutate_func": ["sum", "cumsum"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: x / y * 100"]
+            }
+}

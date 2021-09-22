@@ -34,5 +34,12 @@
     {"empno": 7934, "depno": 10, "mean_sal": 2916.67}
   ],
   "url": "https://oracle-base.com/articles/misc/analytic-functions",
-  "exp_out": [{"0": 0}, {"op": "group_mutate", "0": [], "1": "mean", "2": 2}]
+  "exp_out": [{"0": 0}, {"op": "group_mutate", "0": [], "1": "mean", "2": 2}],
+  "parameter_config": {
+                "aggr_func": ["mean"],
+                "mutate_func": ["mean"],
+                "join_predicates": [],
+                 "join_outer": [],
+                "mutate_function": []
+            }
 }

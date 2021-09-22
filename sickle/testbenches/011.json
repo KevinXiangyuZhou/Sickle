@@ -8,17 +8,12 @@
     ]
   ],
   "url": "https://stackoverflow.com/questions/64236076/product-of-multiple-selected-columns-in-a-data-frame-in-r",
-  "correct_output": [
-    {"X": 1, "Y": 2, "Z": 3, "product": 6},
-    {"X": 2, "Y": 3, "Z": 4, "product": 24},
-    {"X": 3, "Y": 4, "Z": 5, "product": 60}
-  ],
   "exp_out": [{"0": 0},
       {"op": "mutate_arithmetic", "0": "lambda x, y: x + y", "1": [0, 1]},
       {"op": "mutate_arithmetic", "0": "lambda x, y: x + y", "1": [2, 3]}],
   "parameter_config": {
-                "aggr_func": [],
-                "mutate_func": [],
+                "aggr_func": ["sum"],
+                "mutate_func": ["sum", "cumsum"],
                 "join_predicates": [],
                 "mutate_function": ["lambda x, y: x + y"]
             }

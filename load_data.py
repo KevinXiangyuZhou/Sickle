@@ -68,13 +68,99 @@ dataset_72 = {
     "item.dat": {0: "i_item_sk", 1: "i_item_id"}
 }
 
+dataset_80 = {
+    "store_sales.dat": {0: "ss_item_sk", 22: "ss_net_profit"},
+    "store_returns.dat": {2: "sr_item_sk", 1:"sr_net_loss", 11:"sr_return_amt"}
+}
+
+dataset_81 = {
+    "catalog_returns.dat": {0: "cr_returned_date_sk", 10: "cr_returning_addr_sk",
+                            20:"cr_return_amt_inc_tax", 3:"cr_returning_customer_sk"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"},
+    "customer_address.dat": {0: "ca_address_sk"}
+}
+"""
+dataset_83 = {
+    "catalog_returns.dat": {0: "cr_returned_date_sk", 1: "cr_returning_addr_sk"},
+    "date_dim.dat": {15: "d_date_sk"},
+    "customer_address.dat": {15: "ca_address_sk"}
+}
+"""
+
+dataset_85 = {
+    "web_sales.dat": {0: "ws_sold_date_sk", 3: "ws_item_sk", 18: "ws_quantity"},
+    "web_returns.dat": {2: "wr_item_sk", 20: "wr_refunded_cash", 18:"wr_fee"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"}
+}
+
+dataset_86 = {
+    "web_sales.dat": {0: "ws_sold_date_sk", 3: "ws_item_sk", 29:"ws_net_paid"},
+    "item.dat": {0: "i_item_sk", 12: "i_category", 10: "i_class"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"}
+}
+
+dataset_89 = {
+    "store_sales.dat": {2: "ss_item_sk", 0: "ss_sold_date_sk", 13: "ss_sales_price"},
+    "date_dim.dat": {0: "d_date_sk", 8: "d_moy"},
+    "item.dat": {0: "i_item_sk", 8: "i_brand", 12: "i_category", 10: "i_class"},
+}
+
+dataset_92 = {
+    "web_sales.dat": {2: "ws_item_sk", 0: "ws_sold_date_sk", 22: "ws_ext_discount_amt"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"},
+    "item.dat": {0: "i_item_sk"}
+}
+
+dataset_93 = {
+    "store_sales.dat": {0: "ss_item_sk", 10: "ss_quantity", 3: "ss_customer_sk", 13: "ss_sales_price"},
+    "store_returns.dat": {2: "sr_item_sk", 10: "sr_return_quantity"}
+}
+
+dataset_94 = {
+    "web_sales.dat": {2: "ws_ship_date_sk",
+                      11: "ws_ship_addr_sk", 28: "ws_ext_ship_cost", 33: "ws_net_profit"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"},
+    "customer_address.dat": {0: "ca_address_sk"}
+}
+
+dataset_98 = {
+    "store_sales.dat": {2: "ss_item_sk", 0: "ss_sold_date_sk", 15: "ss_ext_sales_price"},
+    "item.dat": {0: "i_item_sk", 1: "i_item_id", 4: "i_item_desc", 12: "i_category", 10: "i_class",
+                 5: "i_current_price"},
+    "date_dim.dat": {0: "d_date_sk", 2: "d_date"}
+}
+
+dataset_63 = {
+    "store_sales.dat": {2: "ss_item_sk", 0: "ss_sold_date_sk", 13: "ss_sales_price"},
+    "item.dat": {0: "i_item_sk", 20: "i_manager_id"},
+    "date_dim.dat": {0: "d_date_sk", 8: "d_moy"}
+}
+
+dataset_64 = {
+    "catalog_sales.dat": {15: "cs_item_sk", 25:"cs_ext_list_price"},
+    "catalog_returns.dat": {2: "cr_item_sk", 23: "cr_refunded_cash", 24:"cr_reversed_charge",
+                            25: "cr_store_credit"}
+}
+
 sk_ids_07 = {"item.dat": [0], "store_sales.dat": [2]}
 sk_ids_20 = {"item.dat": [0], "date_dim.dat": [0], "catalog_sales.dat": [15, 0]}
 sk_ids_23 = {"customer.dat": [0], "date_dim.dat": [0], "store_sales.dat": [3, 0]}
 sk_ids_36 = {"item.dat": [0], "date_dim.dat": [0], "store_sales.dat": [2, 0]}
 sk_ids_47 = {"item.dat": [0], "date_dim.dat": [0], "store_sales.dat": [2, 0]}
-sk_ids_58 = {"item.dat": [0], "store_sales.dat": [0], "catalog_sales.dat": [15]}
+sk_ids_58 = {"item.dat": [0], "store_sales.dat": [2], "catalog_sales.dat": [15]}
 sk_ids_72 = {"item.dat": [0], "promotion.dat": [0], "catalog_sales.dat": [15, 16]}
+sk_ids_80 = {"store_sales.dat": [0], "store_returns.dat": [2]}
+sk_ids_81 = {"customer_address.dat": [0], "date_dim.dat": [0], "catalog_returns.dat": [0, 10]}
+sk_ids_85 = {"date_dim.dat": [0], "web_returns.dat": [2], "web_sales.dat": [0, 3]}
+sk_ids_86 = {"item.dat": [0], "date_dim.dat": [0], "web_sales.dat": [0, 3]}
+sk_ids_89 = {"item.dat": [0], "date_dim.dat": [0], "store_sales.dat": [2, 0]}
+sk_ids_92 = {"item.dat": [0], "date_dim.dat": [0], "web_sales.dat": [2, 0]}
+sk_ids_93 = {"store_sales.dat": [0], "store_returns.dat": [2]}
+sk_ids_94 = {"customer_address.dat": [0], "date_dim.dat": [0], "web_sales.dat": [2, 11]}
+sk_ids_98 = {"item.dat": [0], "date_dim.dat": [0], "store_sales.dat": [2, 0]}
+sk_ids_63 = {"item.dat": [0], "date_dim.dat": [0], "store_sales.dat": [2, 0]}
+sk_ids_64 = {"catalog_sales.dat": [15], "catalog_returns.dat": [2]}
+
 data_020 = {0: "ss_asdas"}
 
 data_loader = {7: [dataset_07, sk_ids_07],
@@ -83,7 +169,18 @@ data_loader = {7: [dataset_07, sk_ids_07],
                36: [dataset_36, sk_ids_36],
                47: [dataset_47, sk_ids_47],
                58: [dataset_58, sk_ids_58],
-               72: [dataset_72, sk_ids_72]}
+               72: [dataset_72, sk_ids_72],
+               80: [dataset_80, sk_ids_80],
+               81: [dataset_81, sk_ids_81],
+               85: [dataset_85, sk_ids_85],
+               86: [dataset_86, sk_ids_86],
+               89: [dataset_89, sk_ids_89],
+               92: [dataset_92, sk_ids_92],
+               93: [dataset_93, sk_ids_93],
+               94: [dataset_94, sk_ids_94],
+               98: [dataset_98, sk_ids_98],
+               63: [dataset_63, sk_ids_63],
+               64: [dataset_64, sk_ids_64]}
 
 
 def csv_parser(filename, sk_ids):
@@ -164,6 +261,7 @@ def filter_table(data_dict, values, cid):
             new_source.append(row)
     return new_source
 
+
 def load_data(data_id):
     data_load_app = data_loader[data_id]
     file_list = list(data_load_app[0].keys())
@@ -185,7 +283,7 @@ def load_data(data_id):
     print("=====filtered=====")
     """
     # transfer to json
-    logger = setup_logger("summary", f'./data/tpc-ds_{data_id}.log')
+    logger = setup_logger(f"summary_{data_id}", f'./data/tpc-ds_{data_id}.log')
     for filename in file_list:
         # filter_table(inputs[filename][0], comb_range, 0)
         # filter out the rows are in certain range
@@ -205,9 +303,11 @@ def load_data(data_id):
 
 
 if __name__ == "__main__":
+    # [80, 81, 85, 86, 89, 92, 93, 94, 98, 63, 64]
     # file_list = ["item.dat"]
     # data_id = 20
-    for data_id in [23, 36, 47, 58, 72]:
+    # [23, 36, 47, 58, 72]
+    for data_id in [93]:
         load_data(data_id)
 
 

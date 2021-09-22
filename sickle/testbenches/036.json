@@ -18,7 +18,7 @@
   "parameter_config": {
                 "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
                 "aggr_func": ["sum", "sum"],
-                "mutate_func": ["sum"],
+                "mutate_func": ["sum", "cumsum"],
                 "join_predicates": [],
                 "mutate_function": ["lambda x, y: x * y",
                   "lambda x, y: np.sqrt(x ** 2 / y)"]

@@ -1,35 +1,32 @@
 ------evaluate 032.json on config_0-------
-{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'count'], 'mutate_func': ['sum', 'count'], 'join_predicates': ['[(0, 1), (0, 1)]'], 'mutate_function': []}, 'with_analysis': False, 'permutation_test': True, 'random_test': True, 'partial_table': False, 'partial_trace': True, 'level_limit': 5, 'time_limit': 120, 'solution_limit': 1}
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'count'], 'mutate_func': ['sum', 'cumsum', 'count'], 'join_predicates': ['[(0, 1), (0, 1)]'], 'join_outer': [False, True], 'mutate_function': ['lambda x, y: x + y']}, 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'value_analysis': False, 'level_limit': 6, 'time_limit': 3600, 'solution_limit': 1, 'row_limit': 20}
 =======output candidate ==========
-                                                                     COL_0                                                                      COL_1                                                                        COL_2
-0                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a1'])]]                                        ('sum', [('[(0, 1), (0, 1)]', [])])                                        ('count', [('[(0, 1), (0, 1)]', [])])
-1  [ArgOr[('[(0, 1), (0, 1)]', ['0_a0']), ('[(0, 1), (0, 1)]', ['0_a0'])]]  ('sum', [('[(0, 1), (0, 1)]', ['1_d3']), ('[(0, 1), (0, 1)]', ['1_d1'])])  ('count', [('[(0, 1), (0, 1)]', ['1_c1']), ('[(0, 1), (0, 1)]', ['1_c3'])])
-2                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a2'])]]                                  ('sum', [('[(0, 1), (0, 1)]', ['1_d0'])])                                  ('count', [('[(0, 1), (0, 1)]', ['1_c0'])])
+                               COL_0                            COL_1                            COL_2
+0          <arsenal,[ArgOr['0_a1']]>                <0.0,('sum', [])>                <1,('count', [])>
+1  <chelsea,[ArgOr['0_a0', '0_a0']]>  <4.0,('sum', ['1_d1', '1_d3'])>  <2,('count', ['1_c1', '1_c3'])>
+2        <tottenham,[ArgOr['0_a2']]>          <2.0,('sum', ['1_d0'])>          <1,('count', ['1_c0'])>
 ===============================
+=======with partial table==========
+                               COL_0                            COL_1                            COL_2
+0        <tottenham,[ArgOr['0_a2']]>          <2.0,('sum', ['1_d0'])>          <1,('count', ['1_c0'])>
+1  <chelsea,[ArgOr['0_a0', '0_a0']]>  <4.0,('sum', ['1_d1', '1_d3'])>  <2,('count', ['1_c1', '1_c3'])>
 =======with randomized trace==========
-                                                                     COL_0                                                                      COL_1                                                                        COL_2
-0                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a1'])]]                                        ('sum', [('[(0, 1), (0, 1)]', [])])                                        ('count', [('[(0, 1), (0, 1)]', [])])
-1  [ArgOr[('[(0, 1), (0, 1)]', ['0_a0']), ('[(0, 1), (0, 1)]', ['0_a0'])]]  ('sum', [('[(0, 1), (0, 1)]', ['1_d3']), ('[(0, 1), (0, 1)]', ['1_d1'])])  ('count', [('[(0, 1), (0, 1)]', ['1_c1']), ('[(0, 1), (0, 1)]', ['1_c3'])])
-2                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a2'])]]                                  ('sum', [('[(0, 1), (0, 1)]', ['1_d0'])])                                  ('count', [('[(0, 1), (0, 1)]', ['1_c0'])])
-=======permutated output:2==========
-                                                                       COL_0                                                                    COL_1                                                                        COL_2
-0                                        ('sum', [('[(0, 1), (0, 1)]', [])])                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a1'])]]                                        ('count', [('[(0, 1), (0, 1)]', [])])
-1  ('sum', [('[(0, 1), (0, 1)]', ['1_d3']), ('[(0, 1), (0, 1)]', ['1_d1'])])  [ArgOr[('[(0, 1), (0, 1)]', ['0_a0']), ('[(0, 1), (0, 1)]', ['0_a0'])]]  ('count', [('[(0, 1), (0, 1)]', ['1_c1']), ('[(0, 1), (0, 1)]', ['1_c3'])])
-2                                  ('sum', [('[(0, 1), (0, 1)]', ['1_d0'])])                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a2'])]]                                  ('count', [('[(0, 1), (0, 1)]', ['1_c0'])])
+                               COL_0                            COL_1                            COL_2
+0        <tottenham,[ArgOr['0_a2']]>          <2.0,('sum', ['1_d0'])>          <1,('count', ['1_c0'])>
+1  <chelsea,[ArgOr['0_a0', '0_a0']]>  <4.0,('sum', ['1_d1', '1_d3'])>  <2,('count', ['1_c1', '1_c3'])>
 ----
-number of programs searched: 1087
-time cost: 19.55075454711914
+number of programs searched: 192
+time cost: 0.735496997833252
 number of solutions: 0
 =======target output==========
-                                                                       COL_0                                                                    COL_1                                                                        COL_2
-0                                        ('sum', [('[(0, 1), (0, 1)]', [])])                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a1'])]]                                        ('count', [('[(0, 1), (0, 1)]', [])])
-1  ('sum', [('[(0, 1), (0, 1)]', ['1_d3']), ('[(0, 1), (0, 1)]', ['1_d1'])])  [ArgOr[('[(0, 1), (0, 1)]', ['0_a0']), ('[(0, 1), (0, 1)]', ['0_a0'])]]  ('count', [('[(0, 1), (0, 1)]', ['1_c1']), ('[(0, 1), (0, 1)]', ['1_c3'])])
-2                                  ('sum', [('[(0, 1), (0, 1)]', ['1_d0'])])                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a2'])]]                                  ('count', [('[(0, 1), (0, 1)]', ['1_c0'])])
+                               COL_0                            COL_1                            COL_2
+0        <tottenham,[ArgOr['0_a2']]>          <2.0,('sum', ['1_d0'])>          <1,('count', ['1_c0'])>
+1  <chelsea,[ArgOr['0_a0', '0_a0']]>  <4.0,('sum', ['1_d1', '1_d3'])>  <2,('count', ['1_c1', '1_c3'])>
 =======correct output==========
-                                                                     COL_0                                                                      COL_1                                                                        COL_2
-0                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a1'])]]                                        ('sum', [('[(0, 1), (0, 1)]', [])])                                        ('count', [('[(0, 1), (0, 1)]', [])])
-1  [ArgOr[('[(0, 1), (0, 1)]', ['0_a0']), ('[(0, 1), (0, 1)]', ['0_a0'])]]  ('sum', [('[(0, 1), (0, 1)]', ['1_d3']), ('[(0, 1), (0, 1)]', ['1_d1'])])  ('count', [('[(0, 1), (0, 1)]', ['1_c1']), ('[(0, 1), (0, 1)]', ['1_c3'])])
-2                                  [ArgOr[('[(0, 1), (0, 1)]', ['0_a2'])]]                                  ('sum', [('[(0, 1), (0, 1)]', ['1_d0'])])                                  ('count', [('[(0, 1), (0, 1)]', ['1_c0'])])
+                               COL_0                            COL_1                            COL_2
+0          <arsenal,[ArgOr['0_a1']]>                <0.0,('sum', [])>                <1,('count', [])>
+1  <chelsea,[ArgOr['0_a0', '0_a0']]>  <4.0,('sum', ['1_d1', '1_d3'])>  <2,('count', ['1_c1', '1_c3'])>
+2        <tottenham,[ArgOr['0_a2']]>          <2.0,('sum', ['1_d0'])>          <1,('count', ['1_c0'])>
 number of programs: 0
 
 

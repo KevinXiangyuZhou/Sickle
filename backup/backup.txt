@@ -1,0 +1,2 @@
+{"data":[
+{'id': 105, 'num_program': 5, 'input_size': ['3x20', '3x20', '2x20'], 'user_example_size': '2x11', 'input_cells': 1246, 'user_example_cells': 22, 'user_ptrs': 22, 'output_ptrs': 232, 'with_pruning_or_not': 1, 'analysis_type': 'trace', 'time': 970.1902849674225, 'num_program_visited': 11083, 'num_consistent': 4, 'timeout': 0},

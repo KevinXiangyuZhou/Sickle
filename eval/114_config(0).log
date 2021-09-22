@@ -1,0 +1,115 @@
+------evaluate 114.json on config_0-------
+{'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'parameter_config': {'operators': ['group_sum', 'mutate_arithmetic', 'group_mutate', 'join'], 'aggr_func': ['sum', 'mean'], 'mutate_func': ['sum', 'cumsum', 'mean'], 'join_predicates': ['[(0, 1), (0, 0)]', '[(1, 2), (1, 0)]'], 'join_outer': [False, True], 'mutate_function': ['lambda x, y: x + y']}, 'with_analysis': True, 'permutation_test': False, 'random_test': True, 'partial_table': True, 'partial_trace': True, 'value_analysis': False, 'level_limit': 6, 'time_limit': 3600, 'solution_limit': 1, 'row_limit': 20}
+=======output candidate ==========
+                                             COL_0                                COL_1                                      COL_2                          COL_3                                  COL_4                                    COL_5
+0                  <amalgamalg #1,[ArgOr['0_b1']]>              <Women,[ArgOr['0_c1']]>                  <dresses,[ArgOr['0_d1']]>          <1.0,[ArgOr['2_b1']]>            <41.47,[('sum', ['1_c1'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+1                <amalgimporto #2,[ArgOr['0_b9']]>                <Men,[ArgOr['0_c9']]>              <accessories,[ArgOr['0_d9']]>          <1.0,[ArgOr['2_b1']]>             <3.52,[('sum', ['1_c9'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+2                 <amalgmaxi #12,[ArgOr['0_b18']]>             <Books,[ArgOr['0_c18']]>                    <arts,[ArgOr['0_d18']]>          <1.0,[ArgOr['2_b2']]>           <69.39,[('sum', ['1_c18'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+3               <brandnameless #5,[ArgOr['0_b7']]>             <Sports,[ArgOr['0_c7']]>                   <hockey,[ArgOr['0_d7']]>          <1.0,[ArgOr['2_b1']]>             <61.5,[('sum', ['1_c7'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+4             <brandunivamalg #1,[ArgOr['0_b17']]>       <Electronics,[ArgOr['0_c17']]>                <personal,[ArgOr['0_d17']]>          <1.0,[ArgOr['2_b2']]>            <7.59,[('sum', ['1_c17'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+5              <edu packamalg #2,[ArgOr['0_b15']]>             <Women,[ArgOr['0_c15']]>                <swimwear,[ArgOr['0_d15']]>          <1.0,[ArgOr['2_b2']]>           <15.23,[('sum', ['1_c15'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+6              <edu packbrand #3,[ArgOr['0_b16']]>              <Home,[ArgOr['0_c16']]>         <curtains/drapes,[ArgOr['0_d16']]>          <1.0,[ArgOr['2_b2']]>            <1.11,[('sum', ['1_c16'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+7               <edu packbrand #4,[ArgOr['0_b6']]>            <Jewelry,[ArgOr['0_c6']]>                   <estate,[ArgOr['0_d6']]>          <1.0,[ArgOr['2_b1']]>             <6.68,[('sum', ['1_c6'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+8   <edu packimporto #1,[ArgOr['0_b13', '0_b19']]>      <Men,[ArgOr['0_c13', '0_c19']]>  <sportsapparel,[ArgOr['0_d13', '0_d19']]>  <1.0,[ArgOr['2_b1', '2_b2']]>  <76.83,[('sum', ['1_c13', '1_c19'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+9               <exportiamalg #1,[ArgOr['0_b10']]>             <Women,[ArgOr['0_c10']]>               <maternity,[ArgOr['0_d10']]>          <1.0,[ArgOr['2_b1']]>           <24.19,[('sum', ['1_c10'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+10    <exportiexporti #1,[ArgOr['0_b4', '0_b14']]>  <Children,[ArgOr['0_c4', '0_c14']]>        <toddlers,[ArgOr['0_d4', '0_d14']]>  <1.0,[ArgOr['2_b1', '2_b2']]>   <35.62,[('sum', ['1_c4', '1_c14'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+11             <exportischolar #2,[ArgOr['0_b0']]>              <Music,[ArgOr['0_c0']]>                      <pop,[ArgOr['0_d0']]>          <1.0,[ArgOr['2_b1']]>            <41.47,[('sum', ['1_c1'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+12               <importoamalg #1,[ArgOr['0_b8']]>              <Women,[ArgOr['0_c8']]>               <fragrances,[ArgOr['0_d8']]>          <1.0,[ArgOr['2_b1']]>              <0.0,[('sum', ['1_c8'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+13             <importoexporti #1,[ArgOr['0_b2']]>           <Children,[ArgOr['0_c2']]>                  <infants,[ArgOr['0_d2']]>          <1.0,[ArgOr['2_b1']]>            <83.98,[('sum', ['1_c2'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+14             <importoimporto #2,[ArgOr['0_b3']]>                <Men,[ArgOr['0_c3']]>                   <shirts,[ArgOr['0_d3']]>          <1.0,[ArgOr['2_b1']]>              <6.1,[('sum', ['1_c3'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+15         <namelessunivamalg #11,[ArgOr['0_b5']]>        <Electronics,[ArgOr['0_c5']]>                 <scanners,[ArgOr['0_d5']]>          <1.0,[ArgOr['2_b1']]>            <93.24,[('sum', ['1_c5'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+16          <scholarunivamalg #6,[ArgOr['0_b11']]>       <Electronics,[ArgOr['0_c11']]>                  <karoke,[ArgOr['0_d11']]>          <1.0,[ArgOr['2_b1']]>           <49.23,[('sum', ['1_c11'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+17          <scholarunivamalg #7,[ArgOr['0_b12']]>       <Electronics,[ArgOr['0_c12']]>                  <karoke,[ArgOr['0_d12']]>          <1.0,[ArgOr['2_b1']]>           <87.36,[('sum', ['1_c12'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+===============================
+=======with partial table==========
+                                          COL_0                                COL_1                                COL_2                          COL_3                                 COL_4                                    COL_5
+0  <exportiexporti #1,[ArgOr['0_b4', '0_b14']]>  <Children,[ArgOr['0_c4', '0_c14']]>  <toddlers,[ArgOr['0_d4', '0_d14']]>  <1.0,[ArgOr['2_b1', '2_b2']]>  <35.62,[('sum', ['1_c4', '1_c14'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+1            <edu packbrand #4,[ArgOr['0_b6']]>            <Jewelry,[ArgOr['0_c6']]>             <estate,[ArgOr['0_d6']]>          <1.0,[ArgOr['2_b1']]>            <6.68,[('sum', ['1_c6'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+=======with randomized trace==========
+                                          COL_0                                COL_1                                COL_2                          COL_3                                 COL_4                                    COL_5
+0  <exportiexporti #1,[ArgOr['0_b4', '0_b14']]>  <Children,[ArgOr['0_c4', '0_c14']]>  <toddlers,[ArgOr['0_d4', '0_d14']]>  <1.0,[ArgOr['2_b1', '2_b2']]>  <35.62,[('sum', ['1_c4', '1_c14'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+1            <edu packbrand #4,[ArgOr['0_b6']]>            <Jewelry,[ArgOr['0_c6']]>             <estate,[ArgOr['0_d6']]>          <1.0,[ArgOr['2_b1']]>            <6.68,[('sum', ['1_c6'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+----
+number of programs searched: 1052
+time cost: 25.89168405532837
+number of solutions: 1
+=======target output==========
+                                          COL_0                                COL_1                                COL_2                          COL_3                                 COL_4                                    COL_5
+0  <exportiexporti #1,[ArgOr['0_b4', '0_b14']]>  <Children,[ArgOr['0_c4', '0_c14']]>  <toddlers,[ArgOr['0_d4', '0_d14']]>  <1.0,[ArgOr['2_b1', '2_b2']]>  <35.62,[('sum', ['1_c4', '1_c14'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+1            <edu packbrand #4,[ArgOr['0_b6']]>            <Jewelry,[ArgOr['0_c6']]>             <estate,[ArgOr['0_d6']]>          <1.0,[ArgOr['2_b1']]>            <6.68,[('sum', ['1_c6'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+=======correct output==========
+                                             COL_0                                COL_1                                      COL_2                          COL_3                                  COL_4                                    COL_5
+0                  <amalgamalg #1,[ArgOr['0_b1']]>              <Women,[ArgOr['0_c1']]>                  <dresses,[ArgOr['0_d1']]>          <1.0,[ArgOr['2_b1']]>            <41.47,[('sum', ['1_c1'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+1                <amalgimporto #2,[ArgOr['0_b9']]>                <Men,[ArgOr['0_c9']]>              <accessories,[ArgOr['0_d9']]>          <1.0,[ArgOr['2_b1']]>             <3.52,[('sum', ['1_c9'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+2                 <amalgmaxi #12,[ArgOr['0_b18']]>             <Books,[ArgOr['0_c18']]>                    <arts,[ArgOr['0_d18']]>          <1.0,[ArgOr['2_b2']]>           <69.39,[('sum', ['1_c18'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+3               <brandnameless #5,[ArgOr['0_b7']]>             <Sports,[ArgOr['0_c7']]>                   <hockey,[ArgOr['0_d7']]>          <1.0,[ArgOr['2_b1']]>             <61.5,[('sum', ['1_c7'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+4             <brandunivamalg #1,[ArgOr['0_b17']]>       <Electronics,[ArgOr['0_c17']]>                <personal,[ArgOr['0_d17']]>          <1.0,[ArgOr['2_b2']]>            <7.59,[('sum', ['1_c17'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+5              <edu packamalg #2,[ArgOr['0_b15']]>             <Women,[ArgOr['0_c15']]>                <swimwear,[ArgOr['0_d15']]>          <1.0,[ArgOr['2_b2']]>           <15.23,[('sum', ['1_c15'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+6              <edu packbrand #3,[ArgOr['0_b16']]>              <Home,[ArgOr['0_c16']]>         <curtains/drapes,[ArgOr['0_d16']]>          <1.0,[ArgOr['2_b2']]>            <1.11,[('sum', ['1_c16'])]>          <1.0,('mean', [ArgOr['2_b2']])>
+7               <edu packbrand #4,[ArgOr['0_b6']]>            <Jewelry,[ArgOr['0_c6']]>                   <estate,[ArgOr['0_d6']]>          <1.0,[ArgOr['2_b1']]>             <6.68,[('sum', ['1_c6'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+8   <edu packimporto #1,[ArgOr['0_b13', '0_b19']]>      <Men,[ArgOr['0_c13', '0_c19']]>  <sportsapparel,[ArgOr['0_d13', '0_d19']]>  <1.0,[ArgOr['2_b1', '2_b2']]>  <76.83,[('sum', ['1_c13', '1_c19'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+9               <exportiamalg #1,[ArgOr['0_b10']]>             <Women,[ArgOr['0_c10']]>               <maternity,[ArgOr['0_d10']]>          <1.0,[ArgOr['2_b1']]>           <24.19,[('sum', ['1_c10'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+10    <exportiexporti #1,[ArgOr['0_b4', '0_b14']]>  <Children,[ArgOr['0_c4', '0_c14']]>        <toddlers,[ArgOr['0_d4', '0_d14']]>  <1.0,[ArgOr['2_b1', '2_b2']]>   <35.62,[('sum', ['1_c4', '1_c14'])]>  <1.0,('mean', [ArgOr['2_b1', '2_b2']])>
+11             <exportischolar #2,[ArgOr['0_b0']]>              <Music,[ArgOr['0_c0']]>                      <pop,[ArgOr['0_d0']]>          <1.0,[ArgOr['2_b1']]>            <41.47,[('sum', ['1_c1'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+12               <importoamalg #1,[ArgOr['0_b8']]>              <Women,[ArgOr['0_c8']]>               <fragrances,[ArgOr['0_d8']]>          <1.0,[ArgOr['2_b1']]>              <0.0,[('sum', ['1_c8'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+13             <importoexporti #1,[ArgOr['0_b2']]>           <Children,[ArgOr['0_c2']]>                  <infants,[ArgOr['0_d2']]>          <1.0,[ArgOr['2_b1']]>            <83.98,[('sum', ['1_c2'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+14             <importoimporto #2,[ArgOr['0_b3']]>                <Men,[ArgOr['0_c3']]>                   <shirts,[ArgOr['0_d3']]>          <1.0,[ArgOr['2_b1']]>              <6.1,[('sum', ['1_c3'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+15         <namelessunivamalg #11,[ArgOr['0_b5']]>        <Electronics,[ArgOr['0_c5']]>                 <scanners,[ArgOr['0_d5']]>          <1.0,[ArgOr['2_b1']]>            <93.24,[('sum', ['1_c5'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+16          <scholarunivamalg #6,[ArgOr['0_b11']]>       <Electronics,[ArgOr['0_c11']]>                  <karoke,[ArgOr['0_d11']]>          <1.0,[ArgOr['2_b1']]>           <49.23,[('sum', ['1_c11'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+17          <scholarunivamalg #7,[ArgOr['0_b12']]>       <Electronics,[ArgOr['0_c12']]>                  <karoke,[ArgOr['0_d12']]>          <1.0,[ArgOr['2_b1']]>           <87.36,[('sum', ['1_c12'])]>          <1.0,('mean', [ArgOr['2_b1']])>
+t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, (1, 2, 3, 8), sum, 6); t6 <- group_mutate(t5, (1,), mean, 3)
++----+-----------------------+-------------+-----------------+---------+---------+---------+
+|    | COL_0                 | COL_1       | COL_2           |   COL_3 |   COL_4 |   COL_5 |
+|----+-----------------------+-------------+-----------------+---------+---------+---------|
+|  0 | amalgamalg #1         | Women       | dresses         |       1 |   41.47 |       1 |
+|  1 | amalgimporto #2       | Men         | accessories     |       1 |    3.52 |       1 |
+|  2 | amalgmaxi #12         | Books       | arts            |       1 |   69.39 |       1 |
+|  3 | brandnameless #5      | Sports      | hockey          |       1 |   61.5  |       1 |
+|  4 | brandunivamalg #1     | Electronics | personal        |       1 |    7.59 |       1 |
+|  5 | edu packamalg #2      | Women       | swimwear        |       1 |   15.23 |       1 |
+|  6 | edu packbrand #3      | Home        | curtains/drapes |       1 |    1.11 |       1 |
+|  7 | edu packbrand #4      | Jewelry     | estate          |       1 |    6.68 |       1 |
+|  8 | edu packimporto #1    | Men         | sportsapparel   |       1 |   76.83 |       1 |
+|  9 | exportiamalg #1       | Women       | maternity       |       1 |   24.19 |       1 |
+| 10 | exportiexporti #1     | Children    | toddlers        |       1 |   35.62 |       1 |
+| 11 | exportischolar #2     | Music       | pop             |       1 |   41.47 |       1 |
+| 12 | importoamalg #1       | Women       | fragrances      |       1 |    0    |       1 |
+| 13 | importoexporti #1     | Children    | infants         |       1 |   83.98 |       1 |
+| 14 | importoimporto #2     | Men         | shirts          |       1 |    6.1  |       1 |
+| 15 | namelessunivamalg #11 | Electronics | scanners        |       1 |   93.24 |       1 |
+| 16 | scholarunivamalg #6   | Electronics | karoke          |       1 |   49.23 |       1 |
+| 17 | scholarunivamalg #7   | Electronics | karoke          |       1 |   87.36 |       1 |
++----+-----------------------+-------------+-----------------+---------+---------+---------+
++----+---------------------------+---------------------------+---------------------------+-------------------------+-------------------------------+--------------------------------------------------+
+|    | COL_0                     | COL_1                     | COL_2                     | COL_3                   | COL_4                         | COL_5                                            |
+|----+---------------------------+---------------------------+---------------------------+-------------------------+-------------------------------+--------------------------------------------------|
+|  0 | [ArgOr['0_b1']]           | [ArgOr['0_c1']]           | [ArgOr['0_d1']]           | [ArgOr['2_b1']]         | [('sum', ['1_c1'])]           | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+|  1 | [ArgOr['0_b9']]           | [ArgOr['0_c9']]           | [ArgOr['0_d9']]           | [ArgOr['2_b1']]         | [('sum', ['1_c9'])]           | ('mean', [ArgOr['2_b1', '2_b2'], ArgOr['2_b1']]) |
+|  2 | [ArgOr['0_b18']]          | [ArgOr['0_c18']]          | [ArgOr['0_d18']]          | [ArgOr['2_b2']]         | [('sum', ['1_c18'])]          | ('mean', [ArgOr['2_b2']])                        |
+|  3 | [ArgOr['0_b7']]           | [ArgOr['0_c7']]           | [ArgOr['0_d7']]           | [ArgOr['2_b1']]         | [('sum', ['1_c7'])]           | ('mean', [ArgOr['2_b1']])                        |
+|  4 | [ArgOr['0_b17']]          | [ArgOr['0_c17']]          | [ArgOr['0_d17']]          | [ArgOr['2_b2']]         | [('sum', ['1_c17'])]          | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+|  5 | [ArgOr['0_b15']]          | [ArgOr['0_c15']]          | [ArgOr['0_d15']]          | [ArgOr['2_b2']]         | [('sum', ['1_c15'])]          | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+|  6 | [ArgOr['0_b16']]          | [ArgOr['0_c16']]          | [ArgOr['0_d16']]          | [ArgOr['2_b2']]         | [('sum', ['1_c16'])]          | ('mean', [ArgOr['2_b2']])                        |
+|  7 | [ArgOr['0_b6']]           | [ArgOr['0_c6']]           | [ArgOr['0_d6']]           | [ArgOr['2_b1']]         | [('sum', ['1_c6'])]           | ('mean', [ArgOr['2_b1']])                        |
+|  8 | [ArgOr['0_b13', '0_b19']] | [ArgOr['0_c13', '0_c19']] | [ArgOr['0_d13', '0_d19']] | [ArgOr['2_b1', '2_b2']] | [('sum', ['1_c13', '1_c19'])] | ('mean', [ArgOr['2_b1', '2_b2'], ArgOr['2_b1']]) |
+|  9 | [ArgOr['0_b10']]          | [ArgOr['0_c10']]          | [ArgOr['0_d10']]          | [ArgOr['2_b1']]         | [('sum', ['1_c10'])]          | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+| 10 | [ArgOr['0_b4', '0_b14']]  | [ArgOr['0_c4', '0_c14']]  | [ArgOr['0_d4', '0_d14']]  | [ArgOr['2_b1', '2_b2']] | [('sum', ['1_c4', '1_c14'])]  | ('mean', [ArgOr['2_b1', '2_b2'], ArgOr['2_b1']]) |
+| 11 | [ArgOr['0_b0']]           | [ArgOr['0_c0']]           | [ArgOr['0_d0']]           | [ArgOr['2_b1']]         | [('sum', ['1_c1'])]           | ('mean', [ArgOr['2_b1']])                        |
+| 12 | [ArgOr['0_b8']]           | [ArgOr['0_c8']]           | [ArgOr['0_d8']]           | [ArgOr['2_b1']]         | [('sum', ['1_c8'])]           | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+| 13 | [ArgOr['0_b2']]           | [ArgOr['0_c2']]           | [ArgOr['0_d2']]           | [ArgOr['2_b1']]         | [('sum', ['1_c2'])]           | ('mean', [ArgOr['2_b1', '2_b2'], ArgOr['2_b1']]) |
+| 14 | [ArgOr['0_b3']]           | [ArgOr['0_c3']]           | [ArgOr['0_d3']]           | [ArgOr['2_b1']]         | [('sum', ['1_c3'])]           | ('mean', [ArgOr['2_b1', '2_b2'], ArgOr['2_b1']]) |
+| 15 | [ArgOr['0_b5']]           | [ArgOr['0_c5']]           | [ArgOr['0_d5']]           | [ArgOr['2_b1']]         | [('sum', ['1_c5'])]           | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+| 16 | [ArgOr['0_b11']]          | [ArgOr['0_c11']]          | [ArgOr['0_d11']]          | [ArgOr['2_b1']]         | [('sum', ['1_c11'])]          | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
+| 17 | [ArgOr['0_b12']]          | [ArgOr['0_c12']]          | [ArgOr['0_d12']]          | [ArgOr['2_b1']]         | [('sum', ['1_c12'])]          | ('mean', [ArgOr['2_b1'], ArgOr['2_b2']])         |
++----+---------------------------+---------------------------+---------------------------+-------------------------+-------------------------------+--------------------------------------------------+
+
+
+number of programs: 1
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------

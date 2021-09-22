@@ -1,0 +1,30 @@
+# ----------------------input size exp---------------------
+multi_exp_data <- multi_exp_data %>%
+  mutate(speed = multi_exp_data$num_program_visited / multi_exp_data$time)
+
+plot_size_exp <- ggplot(data = multi_exp_data, aes(color = type, 
+                        x = size, y = speed, shape = type)) +
+  geom_line() +
+  geom_point() + 
+  labs(y = "n program visited / time", x = "size") + 
+  facet_wrap(~ id)  +
+  scale_color_manual(values = c("#00AFB1", "#E7B800", "#FC4E00"))
+
+# ----------------------5 times with random user example, and show std----------------------
+random_exp_data <- random_exp_data %>%
+  mutate(speed = random_exp_data$num_program_visited / random_exp_data$time)
+
+random_exp_data <- random_exp_data %>% 
+  group_by(id, type) %>% 
+  summarise(average = mean(speed), std = sd(speed)) %>%
+  mutate(error = std / sqrt(5)) #  %>% 
+  # filter(type =="Provenance Abstraction (Ours)")
+  # filter(type =="Value Abstraction")
+  # filter(type =="Type Abstraction")
+
+plot_random <- ggplot(random_exp_data, aes(fill=type, y=average, x=id)) + 
+  geom_bar(position="dodge", stat="identity") +
+  geom_errorbar(aes(x=id, ymin=average-std, ymax=average+std), width=1.0, colour="black", alpha=0.9) +
+  coord_cartesian(ylim = c(0, 650)) + 
+  labs(y = "n program visited / time", x = "benchmark") +
+  facet_wrap(~type)

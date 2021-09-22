@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 
 pd.set_option('expand_frame_repr', False)
 
-# DATA_DIR = os.path.join(".", "testbenches")
-DATA_DIR = os.path.join(".", "../benchmark/tpc-ds")
+DATA_DIR = os.path.join(".", "testbenches")
+# DATA_DIR = os.path.join(".", "../benchmark/tpc-ds")
 # storage of current data
 run_time_summary = []
 n_program_search_summary = []
@@ -32,7 +32,7 @@ formatter = logging.Formatter('%(asctime)s %(message)s')
 logging.basicConfig(format='%(asctime)s %(message)s',
                     filemode='w+',
                     level=logging.INFO)
-random.seed(1)
+random.seed(123)
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -44,8 +44,8 @@ def setup_logger(name, log_file, level=logging.INFO):
     return logger
 
 
-logger_summary = setup_logger("summary", f'../eval/summary5.18.log')
-logger_data = setup_logger("data", f'../eval/data_6.21tpc-b.log')
+logger_summary = setup_logger("summary", f'../eval/summary.log')
+logger_data = setup_logger("data", f'../eval/data_8.16.log')
 
 
 def barchart(data_1, data_2, x_label, y_label, fnames, img_name):
@@ -81,8 +81,8 @@ def randomize_table(annotated_output, config, logger):
     logger.info("=======output candidate ==========")
     logger.info(res.to_dataframe())
     logger.info("===============================")
-    # if config["partial_table"]:
-    if config["random_test"]:
+    if config["partial_table"]:
+        """
         x_s, x_e = int(res.get_col_num() / 2), res.get_col_num()
         y_s, y_e = int(res.get_row_num() / 2), res.get_row_num()
         if x_s == 0:
@@ -94,20 +94,34 @@ def randomize_table(annotated_output, config, logger):
         else:
             y_start = random.randrange(y_s)
         # x_end = random.randrange(x_s, x_e)
-        # y_end = random.randrange(y_s, y_e)
-        x_start = x_s
-        y_start = 0
-        x_end = res.get_col_num()
-        if y_e == 2:
-            y_end = res.get_row_num()
+        if config["random_test"]:
+            # x_start = 0
+            # y_start = 0
+            # x_end = res.get_col_num()
+            x_end = random.randrange(x_s, x_e)
+            if y_e < 2:
+                y_end = res.get_row_num()
+            else:
+                y_end = 2
+            y_end = random.randrange(y_s, y_e)
         else:
-            y_end = 4
+            x_start, y_start = 0, 0
+            x_end, y_end = res.get_col_num(), 2
+        """
+        if res.get_row_num() < 2:
+            selected_rids = [0]
+        else:
+            selected_rids = random.sample(range(res.get_row_num()), 2)
     else:
+        """
         x_end = res.get_col_num()
         x_start = int(res.get_col_num() / 2)
         y_end = res.get_row_num()
         y_start = int(res.get_row_num() / 2)
-    res = res.select_region((x_start, x_end), (y_start, y_end))
+        """
+        selected_rids = [i for i in range(res.get_row_num())]
+    # res = res.select_region((x_start, x_end), (y_start, y_end))
+    res = res.select_rows(selected_rids)
     logger.info("=======with partial table==========")
     logger.info(res.to_dataframe())
 
@@ -132,19 +146,19 @@ def eval_correctness(inputs, candidates, correct_out):
     return results
 
 
-def run_wrapper(annotated_output, correct_out, config, logger):
+def run_wrapper(inputs, annotated_output, correct_out, config, logger):
     # logger.info(p.eval(inputs).to_dataframe())
     # logger.error(f"[error] invalid benchmark file")
     candidates = []
     for j in range(config["level_limit"], config["level_limit"] + 1):
-        candidates, run_time, n_program = Synthesizer(config).run_synthesis(inputs, annotated_output, j, logger, correct_out,
-                                                        with_analysis=config["with_analysis"],
-                                                        solution_limit=config["solution_limit"],
-                                                        time_limit_sec=config["time_limit"],
-                                                        print_trace=False)
+        candidates, run_time, n_program = Synthesizer(config).run_synthesis(inputs, annotated_output, j, logger,
+                                                                            correct_out,
+                                                                            with_analysis=config["with_analysis"],
+                                                                            use_val=config["value_analysis"],
+                                                                            solution_limit=config["solution_limit"],
+                                                                            time_limit_sec=config["time_limit"],
+                                                                            print_trace=False)
         # results = eval_correctness(inputs, candidates, correct_out)
-        #if len(candidates) > 0:
-        #
         break
     # eval on the correct output
     logger_summary.info(f"number of correct solutions: {len(candidates)}")
@@ -168,20 +182,12 @@ def run_wrapper(annotated_output, correct_out, config, logger):
 
 if __name__ == '__main__':
     fnames = []
-    for fname in os.listdir(DATA_DIR)[1:]:
+    logger_data.info("{\"data\":[")
+    for fname in os.listdir(DATA_DIR):
     # for fname in ["009.json", "014.json", "018.json", "021.json", "029.json", "034.json", "036.json"]:
-    # for fname in ["035.json"]:
-        if fname == "024.json":  # add more arithmetic operators later
-            continue
-        if fname == "016.json":  # table too big
-            continue
-        if fname == "028.json":  # solution absent
-            continue
-        if fname == "033.json":
-            continue
+    # for fname in ["005.json", "009.json", "111.json"]:
+    # for fname in ["113.json", "107.json", "120.json"]:
         # tpc-ds
-        if fname == "080.json":
-            continue
         if fname.endswith("json") and "discard" not in fname:
             fnames.append(fname[:3])
             fpath = os.path.join(DATA_DIR, fname)
@@ -195,9 +201,11 @@ if __name__ == '__main__':
                 inputs = data["input_data"]
                 # log inputs
                 input_info = []
+                cell_count = 0
                 for inp in inputs:
                     df = pd.DataFrame.from_dict(inp)
                     input_info.append(f"{len(df.columns)}x{len(df)}")
+                    cell_count += len(df.columns) * len(df)
                 logger_summary.info(f"---input info:{input_info}")
 
                 # get the labelled correct program
@@ -206,11 +214,24 @@ if __name__ == '__main__':
                 # permutation_candidates = permutate_table(correct_out)
                 # run on all configs
                 for i in range(len(target_configs)):
+                    # for j in range(5):
                     curr_config = target_configs[i]
-                    config_inputs = inputs = [data[len(data)-curr_config["row_limit"]:] for data in inputs]
+                    if curr_config["row_limit"] is None:
+                        config_inputs = inputs
+                    else:
+                        config_inputs = [data[:curr_config["row_limit"]] for data in inputs]
+                    # print(config_inputs)
+                    input_info = []
+                    for inp in config_inputs:
+                        df = pd.DataFrame.from_dict(inp)
+                        input_info.append(f"{len(df.columns)}x{len(df)}")
                     correct_out = correct_p.eval(config_inputs)
-                    if i < 4:
-                        continue
+                    # if i == 1 or i == 3:
+                    #     continue
+                    # if DATA_DIR == os.path.join(".", "../benchmark/tpc-ds") and i == 0:
+                    #     continue
+                    # if i < 4:  # select configs
+                    #     continue
                     user_example = copy.copy(correct_out)
                     if "parameter_config" in data.keys():
                         curr_config["parameter_config"] = data["parameter_config"]
@@ -231,9 +252,13 @@ if __name__ == '__main__':
                     logger.info(f"------evaluate {fname} on config_{i}-------")
                     logger.info(str(curr_config))
                     # get randomized user sample, according to the given config
+                    print("=======correct p==========")
+                    print(correct_p.stmt_string())
+                    user_example = user_example.compress_sum()
                     user_example = randomize_table(user_example, curr_config, logger)
                     try:
-                        run_time_j, n_program_j, num_candidates = run_wrapper(user_example, correct_out, curr_config, logger)
+                        run_time_j, n_program_j, num_candidates = run_wrapper(config_inputs, user_example, correct_out, curr_config, logger)
+                        # run_time_j, n_program_j, num_candidates = 0, 0, []
                     except Exception as e:
                         logger_summary.info(f"[Error] examining {fname}")
                         print(f"[error] {sys.exc_info()[0]} {e}")
@@ -241,76 +266,46 @@ if __name__ == '__main__':
                         tb_info = ''.join(traceback.format_tb(tb))
                         print(tb_info)
                         continue
-                    # run_time_result[fname][i] = run_time / j
-                    # n_program_result[fname][i] = n_program / j
+
                     # log result for current config
                     log_data = {}
                     log_data["id"] = int(fname[:3])
                     log_data["num_program"] = len(data["exp_out"]) - 1
-                    log_data["input_size"] = f"{input_info}"
+                    log_data["input_size"] = input_info
                     log_data["user_example_size"] = \
                         f"{user_example.get_row_num()}x{user_example.get_col_num()}"
+                    log_data["input_cells"] = cell_count
+                    log_data["output_cells"] = correct_out.get_row_num() * correct_out.get_col_num()
+                    log_data["user_example_cells"] = user_example.get_row_num() * user_example.get_col_num()
+                    if curr_config["with_analysis"] and not curr_config["value_analysis"]:
+                        log_data["user_ptrs"] = user_example.count_ptrs()
+                        log_data["output_ptrs"] = correct_out.count_ptrs(count_or=True)
+                    else:
+                        log_data["user_ptrs"] = 0
+                        log_data["output_ptrs"] = 0
                     if curr_config["with_analysis"]:
                         log_data["with_pruning_or_not"] = 1
                     else:
                         log_data["with_pruning_or_not"] = 0
+                    if curr_config["value_analysis"]:
+                        log_data["analysis_type"] = "value"
+                    else:
+                        log_data["analysis_type"] = "trace"
                     log_data["time"] = run_time_j
                     log_data["num_program_visited"] = n_program_j
                     log_data["num_consistent"] = num_candidates
-                    if run_time_j >= 900:
+                    # log_data["size"] = curr_config["row_limit"]
+                    if run_time_j >= curr_config["time_limit"]:
                         log_data["timeout"] = 1
                     else:
                         log_data["timeout"] = 0
-                    logger_data.info(str(log_data))
+                    if fname == os.listdir(DATA_DIR)[-1] and i == len(target_configs) - 1:
+                        logger_data.info(f"{str(log_data)}")
+                    else:
+                        logger_data.info(f"{str(log_data)},")
+
                     print("<=====Finish")
-                """
-                logger_summary.info("\n")
-                logger_data.info(f"=====result after checking {fname}=====")
-                logger_data.info("number of program searched:")
-                logger_data.info(n_program_result)
-                logger_data.info("run time:")
-                logger_data.info(run_time_result)
-                
-                n_program_search_summary += n_program_search
-                n_program_search_summary_analysis += n_program_search_analysis
-                run_time_summary += run_time
-                run_time_summary_analysis += run_time_analysis
-                logger_data.info(fname)
-                logger_data.info(n_program_search_summary)
-                logger_data.info(n_program_search_summary_analysis)
-                logger_data.info(run_time_summary)
-                logger_data.info(run_time_summary_analysis)
-                n_program_search.clear()
-                n_program_search_analysis.clear()
-                run_time.clear()
-                run_time_analysis.clear()
-                
-    # randomness vs search time/ number of program evaluated on configs
-    n_r1 = [n_program_result[fname][0] for fname in n_program_result]
-    na_r1 = [n_program_result[fname][1] for fname in n_program_result]
-    n_r2 = [n_program_result[fname][2] for fname in n_program_result]
-    na_r2 = [n_program_result[fname][3] for fname in n_program_result]
-    n_r3 = [n_program_result[fname][4] for fname in n_program_result]
-    na_r3 = [n_program_result[fname][5] for fname in n_program_result]
-    print(n_r1)
-    print(na_r1)
-    print(fnames)
 
-    t_r1 = [run_time_result[fname][0] for fname in run_time_result]
-    ta_r1 = [run_time_result[fname][1] for fname in run_time_result]
-    t_r2 = [run_time_result[fname][2] for fname in run_time_result]
-    ta_r2 = [run_time_result[fname][3] for fname in run_time_result]
-    t_r3 = [run_time_result[fname][4] for fname in run_time_result]
-    ta_r3 = [run_time_result[fname][5] for fname in run_time_result]
-    print(t_r1)
-
-    barchart(n_r1, na_r1, "testbench id", "number of program searched", fnames, "n_r1")
-    barchart(n_r2, na_r2, "testbench id", "number of program searched", fnames, "n_r2")
-    barchart(n_r3, na_r3, "testbench id", "number of program searched", fnames, "n_r3")
-
-    barchart(t_r1, ta_r1, "testbench id", "time cost", fnames, "t_r1")
-    barchart(t_r2, ta_r2, "testbench id", "time cost", fnames, "t_r2")
-    barchart(t_r3, ta_r3, "testbench id", "time cost", fnames, "t_r3")
-    """
+    logger_data.info("]}")
     print("<=====Evaluation Ends")
 

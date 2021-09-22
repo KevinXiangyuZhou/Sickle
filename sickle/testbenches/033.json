@@ -1,33 +1,29 @@
 {
-  "input_data": [[
-  {"YEAR": "2009", "MONTH": "1", "CUSTOMER": "Customer1", "REVENUE": "1938.49488391425"},
-  {"YEAR": "2009", "MONTH": "1", "CUSTOMER": "Customer2", "REVENUE": "75.9142774343491"},
-  {"YEAR": "2009", "MONTH": "1", "CUSTOMER": "Customer2", "REVENUE": "99.3456067931875"},
-  {"YEAR": "2009", "MONTH": "2", "CUSTOMER": "Customer1", "REVENUE": "1938.49488391425"},
-  {"YEAR": "2009", "MONTH": "2", "CUSTOMER": "Customer2", "REVENUE": "75.9142774343491"},
-  {"YEAR": "2009", "MONTH": "2", "CUSTOMER": "Customer2", "REVENUE": "99.3456067931875"},
-  {"YEAR": "2008", "MONTH": "1", "CUSTOMER": "Customer1", "REVENUE": "1938.49488391425"},
-  {"YEAR": "2008", "MONTH": "1", "CUSTOMER": "Customer1", "REVENUE": "75.9142774343491"},
-  {"YEAR": "2008", "MONTH": "1", "CUSTOMER": "Customer2", "REVENUE": "99.3456067931875"},
-  {"YEAR": "2008", "MONTH": "2", "CUSTOMER": "Customer1", "REVENUE": "1938.49488391425"},
-  {"YEAR": "2008", "MONTH": "2", "CUSTOMER": "Customer1", "REVENUE": "75.9142774343491"},
-  {"YEAR": "2008", "MONTH": "2", "CUSTOMER": "Customer2", "REVENUE": "99.3456067931875"},
-  {"YEAR": "2007", "MONTH": "1", "CUSTOMER": "Customer1", "REVENUE": "1938.49488391425"},
-  {"YEAR": "2007", "MONTH": "1", "CUSTOMER": "Customer2", "REVENUE": "75.9142774343491"},
-  {"YEAR": "2007", "MONTH": "1", "CUSTOMER": "Customer2", "REVENUE": "99.3456067931875"}
-]
-  ],
-  "url": "https://stackoverflow.com/questions/42485315/aggregate-json-data-in-pyspark",
+  "input_data":
+   [[
+      {"left_company": "Yes", "weekly_hours": 56, "job_level":  "Associate"},
+     {"left_company": "No","weekly_hours": 42, "job_level":  "Manager"},
+     {"left_company": "Yes",  "weekly_hours": 56, "job_level":  "Manager"},
+     {"left_company": "No",  "weekly_hours": 50, "job_level":  "Director"},
+     {"left_company": "No",  "weekly_hours": 46, "job_level":  "President"},
+     {"left_company": "No", "weekly_hours": 48, "job_level":  "Associate"},
+     {"left_company": "No", "weekly_hours": 44, "job_level":  "Manager"},
+     {"left_company": "No", "weekly_hours": 47, "job_level":  "Manager"}
+  ]],
+  "url": "https://www.gmudatamining.com/lesson-03-r-tutorial.html",
   "exp_out": [{"0": 0},
-    {"op": "join", "0": 1, "1": "[(0, 1), (0, 1)]", "2": true},
-    {"op": "group_mutate", "0": [0], "1": "sum", "2": 6},
-    {"op": "group_mutate", "0": [0], "1": "count", "2": 6}
+    {"op": "group_sum", "0": [0, 2], "1": "count", "2": 1},
+    {"op": "group_mutate", "0": [], "1": "sum", "2": 2},
+    {"op": "mutate_arithmetic", "0": "lambda x, y: 100 * (x / y)", "1": [2, 3]}
   ],
   "parameter_config": {
                 "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
                 "aggr_func": ["sum", "count"],
-                "mutate_func": ["sum", "count"],
-                "join_predicates": ["[(0, 1), (0, 1)]"],
-                "mutate_function": []
+                "mutate_func": ["sum", "cumsum", "count"],
+                "join_predicates": [],
+                "mutate_function": ["lambda x, y: 100 * (x / y)",
+                  "lambda x, y: x / y",
+                  "lambda x, y: x * y",
+                  "lambda x, y: x + y"]
             }
 }

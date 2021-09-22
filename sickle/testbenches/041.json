@@ -1,21 +1,71 @@
 {
   "input_data": [[
-    {"income": 104315120 , "population": 3265293 },
-    {"income": 99787808  , "population": 3268346 },
-    {"income": 96866464  , "population": 3272325  },
-    {"income": 233208576  , "population": 7965523  },
-    {"income": 93778704  , "population": 3274997  },
-    {"income": 170051568  , "population": 6062335  }
+    {
+      "Year": 2011,
+      "Amount": 773000,
+      "Year Label": 2011,
+      "Revenue": "$773K",
+      "Variance": 39000,
+      "Variance %": "+5%"
+    },
+    {
+      "Year": 2012,
+      "Amount": 812000,
+      "Year Label": 2012,
+      "Revenue": "$812K",
+      "Variance": -445000,
+      "Variance %": "-55%"
+    },
+    {
+      "Year": 2013,
+      "Amount": 367000,
+      "Year Label": 2013,
+      "Revenue": "$367K",
+      "Variance": 117000,
+      "Variance %": "+32%"
+    },
+    {
+      "Year": 2014,
+      "Amount": 484000,
+      "Year Label": 2014,
+      "Revenue": "$484K",
+      "Variance": 278000,
+      "Variance %": "+57%"
+    },
+    {
+      "Year": 2015,
+      "Amount": 762000,
+      "Year Label": 2015,
+      "Revenue": "$762K",
+      "Variance": -201000,
+      "Variance %": "-26%"
+    },
+    {
+      "Year": 2016,
+      "Amount": 561000,
+      "Year Label": 2016,
+      "Revenue": "$561K",
+      "Variance": 213000,
+      "Variance %": "+38%"
+    },
+    {
+      "Year": 2017,
+      "Amount": 774000,
+      "Year Label": 2017,
+      "Revenue": "$774K",
+      "Variance": 14500,
+      "Variance %": ""
+    }
   ]],
-  "url":"https://stackoverflow.com/questions/64174497/adding-a-variable-to-a-dataframe-in-r-and-sorting-by-said-variable",
+  "url": "-",
   "exp_out": [{"0": 0},
-    {"op": "mutate_arithmetic", "0": "lambda x, y: x / y", "1": [0, 1]},
-    {"op": "group_mutate", "0": [], "1": "rank", "2": 2}],
+    {"op": "mutate_arithmetic", "0": "lambda x, y: x + y", "1": [1, 4]}
+  ],
   "parameter_config": {
                 "operators": ["group_sum", "mutate_arithmetic", "group_mutate", "join"],
                 "aggr_func": ["sum"],
-                "mutate_func": ["sum", "rank"],
+                "mutate_func": ["sum", "cumsum"],
                 "join_predicates": [],
-                "mutate_function": ["lambda x, y: x / y"]
+                "mutate_function": ["lambda x, y: x + y"]
             }
 }

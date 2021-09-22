@@ -16,9 +16,10 @@
     {"op": "group_sum", "0": [1], "1": "count", "2": 0},
     {"op": "group_mutate", "0": [], "1": "cumsum", "2": 1}],
   "parameter_config": {
-                "aggr_func": ["mean", "count"],
-                "mutate_func": ["sum", "cumsum", "rank"],
+                "aggr_func": ["count"],
+                "mutate_func": ["sum", "cumsum", "count"],
                 "join_predicates": [],
-                "mutate_function": ["lambda x, y: x / y"]
+                 "join_outer": [],
+                "mutate_function": ["lambda x, y: x + y"]
             }
 }

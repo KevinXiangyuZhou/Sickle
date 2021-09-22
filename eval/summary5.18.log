@@ -1,301 +1,291 @@
-<==============evaluation of 020.json================>
----input info:['6x202', '3x202', '2x8']
-target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, [1, 2, 3, 4, 5], sum, 8); t6 <- group_mutate(t5, [2], sum, 5); t7 <- mutate_arithmetic(t6, lambda x, y: 100 * x / y, [5, 6])
-------config 4-------
+<==============evaluation of 007.json================>
+---input info:['2x202', '5x201']
+target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- group_sum(t2, [1], ['mean', 'mean', 'mean', 'mean'], [3, 4, 5, 6])
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 837
-time cost: 600.2522075176239
-number of solutions: 26
-number of correct solutions: 26
-------config 5-------
-{
-   "with_analysis": false,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 3079
-time cost: 600.1863963603973
-number of solutions: 0
-number of correct solutions: 0
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 1792
-time cost: 600.2767779827118
-number of solutions: 60
-number of correct solutions: 60
-<==============evaluation of 023.json================>
----input info:['1x1002', '4x202', '2x9']
-target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- mutate_arithmetic(t4, lambda x, y: x * y, [3, 4]); t6 <- group_mutate(t5, [0], sum, 7)
-------config 4-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 19
-time cost: 152.95152807235718
-number of solutions: 1
 number of correct solutions: 1
-------config 5-------
-{
-   "with_analysis": false,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 2185
-time cost: 600.1364023685455
-number of solutions: 0
-number of correct solutions: 0
-------config 6-------
+------config 2-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 19
-time cost: 62.582332134246826
-number of solutions: 1
+number of correct solutions: 1
+------config 3-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 1
+<==============evaluation of 020.json================>
+---input info:['6x202', '3x202', '2x5']
+target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, [1, 2, 3, 4, 5], sum, 8); t6 <- group_mutate(t5, [3], sum, 5); t7 <- mutate_arithmetic(t6, lambda x, y: 100 * x / y, [5, 6])
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 6
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
+<==============evaluation of 023.json================>
+---input info:['1x300', '4x201', '2x20']
+target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- mutate_arithmetic(t4, lambda x, y: x * y, [3, 4]); t6 <- group_mutate(t5, [0], sum, 7)
+------config 1-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
 number of correct solutions: 1
 <==============evaluation of 036.json================>
----input info:['3x202', '4x202', '2x9']
+---input info:['3x201', '4x202', '2x20']
 target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, [1, 2], ['sum', 'sum'], [5, 6]); t6 <- mutate_arithmetic(t5, lambda x, y: x / y, [2, 3])
-------config 4-------
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 245
-time cost: 600.2192242145538
-number of solutions: 0
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
 number of correct solutions: 0
-------config 5-------
+------config 3-------
 {
    "with_analysis": false,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 3376
-time cost: 600.0979659557343
-number of solutions: 0
-number of correct solutions: 0
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 1662
-time cost: 600.0615832805634
-number of solutions: 47
-number of correct solutions: 47
+number of correct solutions: 1
 <==============evaluation of 047.json================>
----input info:['3x202', '3x202', '2x9']
+---input info:['3x201', '3x201', '2x20']
 target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_mutate(t4, [1, 2], sum, 5); t6 <- group_mutate(t5, [1, 2], mean, 8); t7 <- group_mutate(t6, [1, 2], rownum, 0)
-------config 4-------
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 44
-time cost: 600.1230261325836
-number of solutions: 0
+number of correct solutions: 236
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
 number of correct solutions: 0
-------config 5-------
+------config 3-------
 {
    "with_analysis": false,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 3308
-time cost: 600.1518733501434
-number of solutions: 0
-number of correct solutions: 0
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 80
-time cost: 600.028482913971
-number of solutions: 0
 number of correct solutions: 0
 <==============evaluation of 051.json================>
----input info:['3x202', '3x201', '2x9']
+---input info:['3x201', '3x201', '2x20']
 target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, [3, 6], sum, 5); t6 <- group_mutate(t5, [0], sum, 2)
-------config 4-------
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 826
-time cost: 600.0777969360352
-number of solutions: 120
-number of correct solutions: 120
-------config 5-------
+number of correct solutions: 270
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 90
+------config 3-------
 {
    "with_analysis": false,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 5736
-time cost: 600.0671849250793
-number of solutions: 120
-number of correct solutions: 120
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 600,
-   "solution_limit": 1
-}
-number of programs searched: 2749
-time cost: 600.0446629524231
-number of solutions: 562
-number of correct solutions: 562
+number of correct solutions: 270
 <==============evaluation of 054.json================>
----input info:['1x1002', '4x202', '2x9']
+---input info:['1x300', '4x201', '2x20']
 target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], False); t5 <- group_sum(t4, [0], sum, 4); t6 <- mutate_arithmetic(t5, lambda x: np.round(x / 50), [1]); t7 <- group_mutate(t6, [2], count, 0)
-------config 4-------
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 32
-time cost: 193.87061476707458
-number of solutions: 1
-number of correct solutions: 1
-------config 5-------
+number of correct solutions: 84
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
+------config 3-------
 {
    "with_analysis": false,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 3065
-time cost: 600.1773371696472
-number of solutions: 0
 number of correct solutions: 0
-------config 6-------
+<==============evaluation of 058.json================>
+---input info:['2x201', '2x202', '2x201']
+target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (0, 0)], False); t5 <- group_sum(t4, [3], ['sum', 'sum'], [1, 5]); t6 <- mutate_arithmetic(t5, lambda x, y: x / ((x + y) / 3) * 100, [1, 2]); t7 <- mutate_arithmetic(t6, lambda x, y: x / ((x + y) / 3) * 100, [2, 1])
+------config 1-------
 {
    "with_analysis": true,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 600,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   number of programs searched: 76
-time cost: 1000.1629393100739
-number of solutions: 0
-number of correct solutions: 0
-------config 5-------
-{
-   "with_analysis": false,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 1000,
-   "solution_limit": 1
-}
-number of programs searched: 2173
-time cost: 1000.2939605712891
-number of solutions: 0
-number of correct solutions: 0
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 1000,
-   "solution_limit": 1
-}
-number of programs searched: 143
-time cost: 366.65352511405945
-number of solutions: 2
 number of correct solutions: 2
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
+------config 3-------
+{
+   "with_analysis": false,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
+number of correct solutions: 0
 <==============evaluation of 072.json================>
 ---input info:['2x202', '2x202', '2x202']
 target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1), (0, 0)], False); t3 <- table_ref(2); t4 <- join(t2, t3, [(1, 2), (1, 0)], True); t5 <- group_mutate(t4, [1], sum, 5); t6 <- group_mutate(t5, [1], count, 0)
@@ -303,69 +293,32 @@ target program:t0 <- table_ref(0); t1 <- table_ref(1); t2 <- join(t0, t1, [(0, 1
 {
    "with_analysis": true,
    "permutation_test": true,
-   "partial_table": false,
+   "partial_table": true,
    "partial_trace": true,
-   "level_limit": 5,
-   "time_limit": 1000,
+   "level_limit": 6,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 36
-time cost: 1001.9428064823151
-number of solutions: 0
+number of correct solutions: 1
+------config 2-------
+{
+   "with_analysis": true,
+   "permutation_test": true,
+   "partial_table": true,
+   "partial_trace": true,
+   "level_limit": 6,
+   "time_limit": 1200,
+   "solution_limit": 1
+}
 number of correct solutions: 0
 ------config 3-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": true,
-   "level_limit": 5,
-   "time_limit": 1000,
-   "solution_limit": 1
-}
-number of programs searched: 36
-time cost: 1000.3334889411926
-number of solutions: 0
-number of correct solutions: 0
-------config 4-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 1000,
-   "solution_limit": 1
-}
-number of programs searched: 36
-time cost: 1001.7191438674927
-number of solutions: 0
-number of correct solutions: 0
-------config 5-------
 {
    "with_analysis": false,
    "permutation_test": true,
    "partial_table": true,
-   "partial_trace": false,
+   "partial_trace": true,
    "level_limit": 6,
-   "time_limit": 1000,
+   "time_limit": 1200,
    "solution_limit": 1
 }
-number of programs searched: 777
-time cost: 1000.1729786396027
-number of solutions: 0
 number of correct solutions: 0
-------config 6-------
-{
-   "with_analysis": true,
-   "permutation_test": true,
-   "partial_table": true,
-   "partial_trace": false,
-   "level_limit": 6,
-   "time_limit": 1000,
-   "solution_limit": 1
-}
-number of programs searched: 39
-time cost: 26.581947565078735
-number of solutions: 1
-number of correct solutions: 1
